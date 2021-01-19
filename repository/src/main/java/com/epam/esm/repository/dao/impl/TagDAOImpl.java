@@ -17,53 +17,53 @@ import java.util.Optional;
  */
 @Repository
 public class TagDAOImpl implements TagDAO {
-
-    /**
-     * An object of {@link JdbcTemplate}
-     */
-    private final JdbcTemplate jdbcTemplate;
-
     /**
      * An object of {@link TagMapper}
      */
-    private final static TagMapper tagMapper = TagMapper.getInstance();
+    private static final TagMapper tagMapper = TagMapper.getInstance();
 
     /**
      * Query for database to create a tag with provided name
      */
-    private final static String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
+    private static final String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
 
     /**
      * Query for database to delete a tag with provided id
      */
-    private final static String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
+    private static final String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
 
     /**
      * Query for database to get the tag with provided id
      */
-    private final static String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
+    private static final String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
 
     /**
      * Query for database to get all tags
      */
-    private final static String GET_TAGS_SQL = "SELECT * FROM tag";
+    private static final String GET_TAGS_SQL = "SELECT * FROM tag";
 
     /**
      * Query for database to get the tags that linked to a gift with provided id
      */
-    private final static String SELECT_BY_GIFT_ID_SQL = "SELECT * FROM tag tags " +
+    private static final String SELECT_BY_GIFT_ID_SQL = "SELECT * FROM tag tags " +
             "INNER JOIN gift_tag link ON tags.id = link.tag " +
             "WHERE (link.gift = ?)";
 
     /**
      * Query for database to get the tags that linked to a gift with provided name
      */
-    private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
+    private static final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
 
     /**
      * Index of the first element from List.
      */
-    private final static int FIRST_ELEMENT_INDEX = 0;
+    private static final int FIRST_ELEMENT_INDEX = 0;
+
+    /**
+     * An object of {@link JdbcTemplate}
+     */
+    private final JdbcTemplate jdbcTemplate;
+
 
     /**
      * Constructor that requires dataSource

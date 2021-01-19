@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EntityDTOTagMapperTest {
 
-    private final static Integer TEST_ID = 2;
-    private final static String TEST_NAME = "Test Tag name";
+    private static final Integer TEST_ID = 2;
+    private static final String TEST_NAME = "Test Tag name";
     private Tag tag;
     private TagDTO tagDTO;
 

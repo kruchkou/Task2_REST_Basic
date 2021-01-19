@@ -27,8 +27,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class TagServiceImplTest {
 
-    private final static int TEST_ID = 1;
-    private final static String TEST_NAME = "Tag";
+    private static final int TEST_ID = 1;
+    private static final String TEST_NAME = "Tag";
 
     @InjectMocks
     private TagServiceImpl tagService;

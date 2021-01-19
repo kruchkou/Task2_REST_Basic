@@ -2,9 +2,11 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.util.GetGiftCertificateSQLBuilder;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.GiftCertificateSQL;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
@@ -31,15 +33,15 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {
 
-    private final static int TEST_ID = 1;
-    private final static int TEST_TAG_ID = 2;
-    private final static String TEST_TAG_NAME = "Test tag";
-    private final static String TEST_NAME = "Cert";
-    private final static String TEST_DESCRIPTION = "certificate";
-    private final static String TEST_NEW_NAME = "New name";
-    private final static String TEST_NEW_DESCRIPTION = "New description";
-    private final static int TEST_PRICE = 10;
-    private final static int TEST_DURATION = 30;
+    private static final int TEST_ID = 1;
+    private static final int TEST_TAG_ID = 2;
+    private static final String TEST_TAG_NAME = "Test tag";
+    private static final String TEST_NAME = "Cert";
+    private static final String TEST_DESCRIPTION = "certificate";
+    private static final String TEST_NEW_NAME = "New name";
+    private static final String TEST_NEW_DESCRIPTION = "New description";
+    private static final int TEST_PRICE = 10;
+    private static final int TEST_DURATION = 30;
 
     @InjectMocks
     private GiftCertificateServiceImpl giftCertificateService;
@@ -205,9 +207,14 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void getCertificatesByQueryParameter() {
-        given(giftCertificateDAO.getGiftCertificates(any())).willReturn(giftCertificateList);
-        List<GiftCertificateDTO> giftCertificateDTO = giftCertificateService.getCertificates(queryParameter);
+        final int CORRECT_SIZE = 3;
 
+        GiftCertificateSQL giftCertificateSQL = GetGiftCertificateSQLBuilder.getInstance().build(queryParameter);
+        given(giftCertificateDAO.getGiftCertificates(giftCertificateSQL)).willReturn(giftCertificateList);
 
+        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateService.getCertificates(queryParameter);
+
+        verify(giftCertificateDAO).getGiftCertificates(giftCertificateSQL);
+        assertEquals(CORRECT_SIZE, giftCertificateDTOList.size());
     }
 }

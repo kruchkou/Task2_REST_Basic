@@ -25,9 +25,6 @@ public final class EntityDTOGiftCertificateMapper {
      * @return transformed to {@link GiftCertificate} entity.
      */
     public static GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {
-        LocalDateTime createDateLocalDateTime = giftCertificateDTO.getCreateDate();
-        LocalDateTime lastUpdateDateLocalDateTime = giftCertificateDTO.getLastUpdateDate();
-
         GiftCertificate giftCertificate = new GiftCertificate();
 
         giftCertificate.setId(giftCertificateDTO.getId());
@@ -36,11 +33,13 @@ public final class EntityDTOGiftCertificateMapper {
         giftCertificate.setPrice(giftCertificateDTO.getPrice());
         giftCertificate.setDuration(giftCertificateDTO.getDuration());
 
+        LocalDateTime createDateLocalDateTime = giftCertificateDTO.getCreateDate();
         if (createDateLocalDateTime != null) {
             Instant createDateInstant = giftCertificateDTO.getCreateDate().toInstant(ZoneOffset.UTC);
             giftCertificate.setCreateDate(createDateInstant);
         }
 
+        LocalDateTime lastUpdateDateLocalDateTime = giftCertificateDTO.getLastUpdateDate();
         if (lastUpdateDateLocalDateTime != null) {
             Instant lastUpdateDateZonedDateInstant = giftCertificateDTO.getLastUpdateDate().toInstant(ZoneOffset.UTC);
             giftCertificate.setLastUpdateDate(lastUpdateDateZonedDateInstant);
@@ -56,10 +55,6 @@ public final class EntityDTOGiftCertificateMapper {
      * @return transformed to {@link GiftCertificateDTO} data.
      */
     public static GiftCertificateDTO toDTO(GiftCertificate giftCertificate) {
-        Instant createDateLocalInstant = giftCertificate.getCreateDate();
-        Instant lastUpdateDateInstant = giftCertificate.getLastUpdateDate();
-        List<Tag> tagList = giftCertificate.getTagList();
-
         GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
 
         giftCertificateDTO.setId(giftCertificate.getId());
@@ -68,6 +63,7 @@ public final class EntityDTOGiftCertificateMapper {
         giftCertificateDTO.setPrice(giftCertificate.getPrice());
         giftCertificateDTO.setDuration(giftCertificate.getDuration());
 
+        List<Tag> tagList = giftCertificate.getTagList();
         if (tagList != null) {
             List<String> tagNamesList = new ArrayList<>();
 
@@ -75,11 +71,13 @@ public final class EntityDTOGiftCertificateMapper {
             giftCertificateDTO.setTagNames(tagNamesList);
         }
 
+        Instant createDateLocalInstant = giftCertificate.getCreateDate();
         if (createDateLocalInstant != null) {
             LocalDateTime createDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getCreateDate(), ZoneOffset.UTC);
             giftCertificateDTO.setCreateDate(createDateLocalDateTime);
         }
 
+        Instant lastUpdateDateInstant = giftCertificate.getLastUpdateDate();
         if (lastUpdateDateInstant != null) {
             LocalDateTime lastUpdateDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getLastUpdateDate(), ZoneOffset.UTC);
             giftCertificateDTO.setLastUpdateDate(lastUpdateDateLocalDateTime);

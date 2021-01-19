@@ -13,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EntityDTOGiftCertificateMapperTest {
 
-    private final static Integer TEST_ID = 3;
-    private final static String TEST_NAME = "test name";
-    private final static String TEST_DESCRIPTION = "test description";
-    private final static Integer TEST_PRICE = 10;
-    private final static Integer TEST_DURATION = 20;
-    private final static Instant TEST_CREATE_DATE_INSTANT = Instant.now();
-    private final static Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
-    private final static LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT, ZoneOffset.UTC);
-    private final static LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT, ZoneOffset.UTC);
+    private static final Integer TEST_ID = 3;
+    private static final String TEST_NAME = "test name";
+    private static final String TEST_DESCRIPTION = "test description";
+    private static final Integer TEST_PRICE = 10;
+    private static final Integer TEST_DURATION = 20;
+    private static final Instant TEST_CREATE_DATE_INSTANT = Instant.now();
+    private static final Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
+    private static final LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT, ZoneOffset.UTC);
+    private static final LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT, ZoneOffset.UTC);
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
 

@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public final class TagMapper implements RowMapper<Tag> {
 
-    private final static TagMapper instance = new TagMapper();
+    private static final TagMapper instance = new TagMapper();
 
     private TagMapper() {
     }

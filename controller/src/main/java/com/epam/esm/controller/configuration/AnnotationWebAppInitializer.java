@@ -11,8 +11,8 @@ import javax.servlet.ServletRegistration;
 
 public class AnnotationWebAppInitializer implements WebApplicationInitializer {
 
-    private final static String PROD_PROFILE = "prod";
-    private final static String PACKAGE_PATH = "com.epam.esm.controller";
+    private static final String PROD_PROFILE = "prod";
+    private static final String PACKAGE_PATH = "com.epam.esm.controller";
 
     @Override
     public void onStartup(ServletContext container) {

@@ -24,52 +24,52 @@ import java.util.Optional;
  */
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
+    /**
+     * An object of {@link GiftCertificateMapper}
+     */
+    private static final GiftCertificateMapper giftCertificateMapper = GiftCertificateMapper.getInstance();
+
+    /**
+     * Query for database to get all GiftCertificates
+     */
+    private static final String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
+
+    /**
+     * Query for database to get the GiftCertificate with provided id
+     */
+    private static final String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
+
+    /**
+     * Query for database to delete a GiftCertificate with provided id
+     */
+    private static final String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
+
+    /**
+     * Query for database to delete records from gift_tag table with provided gift ID
+     */
+    private static final String DELETE_FROM_GIFT_TAG_SQL = "DELETE FROM gift_tag WHERE (gift = ?)";
+
+    /**
+     * Query for database to create a GiftCertificate with provided data
+     */
+    private static final String CREATE_SQL = "INSERT INTO gift_certificate" +
+            " (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
+
+    /**
+     * Query for database to make record to gift_tag table that Gift with provided giftID have tag with provided
+     */
+    private static final String INSERT_INTO_GIFT_TAG_SQL = "INSERT INTO gift_tag(gift, tag) VALUES (?,?)";
+
+    /**
+     * Index of the first element from List.
+     */
+    private static final int FIRST_ELEMENT_INDEX = 0;
 
     /**
      * An object of {@link JdbcTemplate}
      */
     private final JdbcTemplate jdbcTemplate;
 
-    /**
-     * An object of {@link GiftCertificateMapper}
-     */
-    private final static GiftCertificateMapper giftCertificateMapper = GiftCertificateMapper.getInstance();
-
-    /**
-     * Query for database to get all GiftCertificates
-     */
-    private final static String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
-
-    /**
-     * Query for database to get the GiftCertificate with provided id
-     */
-    private final static String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
-
-    /**
-     * Query for database to delete a GiftCertificate with provided id
-     */
-    private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
-
-    /**
-     * Query for database to delete records from gift_tag table with provided gift ID
-     */
-    private final static String DELETE_FROM_GIFT_TAG_SQL = "DELETE FROM gift_tag WHERE (gift = ?)";
-
-    /**
-     * Query for database to create a GiftCertificate with provided data
-     */
-    private final static String CREATE_SQL = "INSERT INTO gift_certificate" +
-            " (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
-
-    /**
-     * Query for database to make record to gift_tag table that Gift with provided giftID have tag with provided
-     */
-    private final static String INSERT_INTO_GIFT_TAG_SQL = "INSERT INTO gift_tag(gift, tag) VALUES (?,?)";
-
-    /**
-     * Index of the first element from List.
-     */
-    private final static int FIRST_ELEMENT_INDEX = 0;
 
     /**
      * Constructor that requires dataSource
@@ -194,12 +194,12 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
      * Static class that contains parameters of GiftCertificates table.
      */
     private static class ParamColumn {
-        private final static int NAME_PARAM_ID = 1;
-        private final static int DESC_PARAM_ID = 2;
-        private final static int PRICE_PARAM_ID = 3;
-        private final static int DURATION_PARAM_ID = 4;
-        private final static int CREATE_DATE_PARAM_ID = 5;
-        private final static int LAST_UPDATE_DATE_PARAM_ID = 6;
+        private static final int NAME_PARAM_ID = 1;
+        private static final int DESC_PARAM_ID = 2;
+        private static final int PRICE_PARAM_ID = 3;
+        private static final int DURATION_PARAM_ID = 4;
+        private static final int CREATE_DATE_PARAM_ID = 5;
+        private static final int LAST_UPDATE_DATE_PARAM_ID = 6;
     }
 
 }

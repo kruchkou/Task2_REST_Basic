@@ -18,11 +18,11 @@ import java.util.Locale;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final static String RUNTIME_EXCEPTION_MESSAGE_LOCALE = "runtime_exception";
-    private final static String ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_LOCALE = "illegal_argument_exception";
-    private final static String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
-    private final static String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
-    private final static String TAG_NOT_FOUND_LOCALE = "tags.not_found";
+    private static final String RUNTIME_EXCEPTION_MESSAGE_LOCALE = "runtime_exception";
+    private static final String ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_LOCALE = "illegal_argument_exception";
+    private static final String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
+    private static final String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
+    private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
 
     private final MessageSource messageSource;
 
@@ -33,71 +33,62 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
-        HttpStatus HTTP_STATUS = HttpStatus.INTERNAL_SERVER_ERROR;
 
         String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e, Locale locale) {
-        HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
         String errorMessage = messageSource.getMessage(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GiftCertificateDataValidationException.class)
     public ResponseEntity<ExceptionResponse> handleGiftCertificateDataValidationException(
             GiftCertificateDataValidationException e, Locale locale) {
 
-        HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
-
         String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TagDataValidationException.class)
     public ResponseEntity<ExceptionResponse> handleTagDataValidationException(
             TagDataValidationException e, Locale locale) {
 
-        final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
-
         String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GiftCertificateNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleGiftCertificateNotFoundException(
             GiftCertificateNotFoundException e, Locale locale) {
 
-        final HttpStatus HTTP_STATUS = HttpStatus.NOT_FOUND;
-
         String errorMessage = messageSource.getMessage(
                 GIFT_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(TagNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleTagNotFoundException(TagNotFoundException e, Locale locale) {
-        final HttpStatus HTTP_STATUS = HttpStatus.NOT_FOUND;
 
         String errorMessage = messageSource.getMessage(
                 TAG_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 
-        return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }

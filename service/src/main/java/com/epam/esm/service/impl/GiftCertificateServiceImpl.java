@@ -30,6 +30,31 @@ import java.util.Optional;
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     /**
+     * Error message when GiftCertificate wasn't found by id
+     */
+    private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
+
+    /**
+     * Format string to provide info by what id GiftCertificate wasn't found.
+     */
+    private static final String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
+
+    /**
+     * Error message when data failed validation
+     */
+    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
+
+    /**
+     * Error code when data failed validation
+     */
+    private static final String ERROR_CODE_GIFT_VALIDATION_FAILED = "0101";
+
+    /**
+     * Error code when GiftCertificate wasn't found by id
+     */
+    private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
+
+    /**
      * An object of {@link GiftCertificateDAO}
      */
     private final GiftCertificateDAO giftCertificateDAO;
@@ -38,31 +63,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * An object of {@link TagDAO}
      */
     private final TagDAO tagDAO;
-
-    /**
-     * Error message when GiftCertificate wasn't found by id
-     */
-    private final static String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
-
-    /**
-     * Format string to provide info by what id GiftCertificate wasn't found.
-     */
-    private final static String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
-
-    /**
-     * Error message when data failed validation
-     */
-    private final static String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
-
-    /**
-     * Error code when data failed validation
-     */
-    private final static String ERROR_CODE_GIFT_VALIDATION_FAILED = "0101";
-
-    /**
-     * Error code when GiftCertificate wasn't found by id
-     */
-    private final static String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
 
     /**
      * Public constructor that receives giftCertificateDAO and tagDAO
@@ -140,8 +140,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         giftCertificateDTO.setId(id);
 
-        UpdateGiftCertificateSQLBuilder updateBuilder = UpdateGiftCertificateSQLBuilder.getInstance();
         GiftCertificate giftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
+        UpdateGiftCertificateSQLBuilder updateBuilder = UpdateGiftCertificateSQLBuilder.getInstance();
         GiftCertificateSQL updateGiftCertificateSQL = updateBuilder.build(giftCertificate);
 
         GiftCertificate updatedGiftCertificate = giftCertificateDAO.updateGiftCertificate(updateGiftCertificateSQL, id);
@@ -183,9 +183,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     public List<GiftCertificateDTO> getCertificates() {
-        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
 
+        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
         giftCertificateList.forEach(giftCertificate ->
                 giftCertificateDTOList.add(loadTagsAndTransformToDTO(giftCertificate)));
 
@@ -203,7 +203,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (giftCertificateQueryParameter.isEmpty()) {
             return getCertificates();
         }
-        GiftCertificateSQL giftCertificateRequest = GetGiftCertificateSQLBuilder.getInstance().build(giftCertificateQueryParameter);
+        GiftCertificateSQL giftCertificateRequest = GetGiftCertificateSQLBuilder.getInstance()
+                .build(giftCertificateQueryParameter);
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateRequest);
         return loadTagsAndTransformToDTO(giftCertificateList);

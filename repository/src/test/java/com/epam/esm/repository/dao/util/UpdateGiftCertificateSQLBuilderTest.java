@@ -12,16 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UpdateGiftCertificateSQLBuilderTest {
 
-    private final static String CORRECT_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
+    private static final String CORRECT_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
             "duration = ?, last_update_date = ? WHERE id = ?";
-    private final static String TEST_NAME = "test_name";
-    private final static String TEST_DESCRIPTION = "test_desc";
-    private final static int TEST_ID = 2;
-    private final static int TEST_PRICE = 10;
-    private final static int TEST_DURATION = 30;
-    private final static int FAKE_PRICE = 20;
-    private final static Instant LAST_UPDATE_INSTANT = Instant.now();
-    private final static UpdateGiftCertificateSQLBuilder updateGiftCertificateQueryBuilder =
+    private static final String TEST_NAME = "test_name";
+    private static final String TEST_DESCRIPTION = "test_desc";
+    private static final int TEST_ID = 2;
+    private static final int TEST_PRICE = 10;
+    private static final int TEST_DURATION = 30;
+    private static final int FAKE_PRICE = 20;
+    private static final Instant LAST_UPDATE_INSTANT = Instant.now();
+    private static final UpdateGiftCertificateSQLBuilder updateGiftCertificateQueryBuilder =
             UpdateGiftCertificateSQLBuilder.getInstance();
 
     private Object[] correctElements;

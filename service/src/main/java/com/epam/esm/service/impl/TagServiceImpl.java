@@ -23,50 +23,49 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
 
     /**
-     * An object of {@link TagDAO}
-     */
-    private final TagDAO tagDAO;
-
-
-    /**
      * Format string to provide info by what id Tag wasn't found.
      */
-    private final static String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
+    private static final String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
 
     /**
      * Format string to provide info by what name Tag wasn't found.
      */
-    private final static String NOT_FOUND_BY_NAME_PARAMETER = "name: %s";
+    private static final String NOT_FOUND_BY_NAME_PARAMETER = "name: %s";
 
     /**
      * Error message when Tag wasn't found by id
      */
-    private final static String NO_TAG_WITH_ID_FOUND = "No tag with id: %d found";
+    private static final String NO_TAG_WITH_ID_FOUND = "No tag with id: %d found";
 
     /**
      * Error message when Tag wasn't found by name
      */
-    private final static String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
+    private static final String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
 
     /**
      * Error message when data failed validation
      */
-    private final static String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
+    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     /**
      * Error code when data failed validation
      */
-    private final static String ERROR_CODE_TAG_VALIDATION_FAILED = "0201";
+    private static final String ERROR_CODE_TAG_VALIDATION_FAILED = "0201";
 
     /**
      * Error code when Tag wasn't found by id
      */
-    private final static String ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED = "0202404%d";
+    private static final String ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED = "0202404%d";
 
     /**
      * Error code when Tag wasn't found by name
      */
-    private final static String ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED = "0212404";
+    private static final String ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED = "0212404";
+
+    /**
+     * An object of {@link TagDAO}
+     */
+    private final TagDAO tagDAO;
 
     /**
      * Public constructor that receives tagDAO

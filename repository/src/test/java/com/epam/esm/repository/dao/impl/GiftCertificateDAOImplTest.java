@@ -20,18 +20,18 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GiftCertificateDAOImplTest {
-    private final static int TEST_ID = 1;
-    private final static int NOT_EXIST_ID = 15;
-    private final static String TEST_NAME = "Cert";
-    private final static String TEST_DESC = "This is";
-    private final static int TEST_PRICE = 300;
-    private final static int NEW_TEST_PRICE = 500;
-    private final static int TEST_DURATION = 30;
-    private final static String FIRST_TEST_TAG_NAME = "first";
-    private final static String SECOND_TEST_TAG_NAME = "second";
-    private final static String THIRD_TEST_TAG_NAME = "third";
+    private static final int TEST_ID = 1;
+    private static final int NOT_EXIST_ID = 15;
+    private static final String TEST_NAME = "Cert";
+    private static final String TEST_DESC = "This is";
+    private static final int TEST_PRICE = 300;
+    private static final int NEW_TEST_PRICE = 500;
+    private static final int TEST_DURATION = 30;
+    private static final String FIRST_TEST_TAG_NAME = "first";
+    private static final String SECOND_TEST_TAG_NAME = "second";
+    private static final String THIRD_TEST_TAG_NAME = "third";
 
-    private final static GetGiftCertificateSQLBuilder getGiftSQLBuilder = GetGiftCertificateSQLBuilder.getInstance();
+    private static final GetGiftCertificateSQLBuilder getGiftSQLBuilder = GetGiftCertificateSQLBuilder.getInstance();
 
     private GiftCertificate giftCertificate;
     private EmbeddedDatabase embeddedDatabase;
@@ -110,8 +110,6 @@ class GiftCertificateDAOImplTest {
 
     @Test
     public void getCertificateByID() {
-
-
         Optional<GiftCertificate> existGiftCertificate = giftCertificateDAO.getGiftCertificateByID(TEST_ID);
         Optional<GiftCertificate> notExistGiftCertificate = giftCertificateDAO.getGiftCertificateByID(NOT_EXIST_ID);
 

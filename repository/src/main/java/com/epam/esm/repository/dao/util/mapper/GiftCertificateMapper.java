@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public final class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 
-    private final static GiftCertificateMapper instance = new GiftCertificateMapper();
+    private static final GiftCertificateMapper instance = new GiftCertificateMapper();
 
     private GiftCertificateMapper() {
     }

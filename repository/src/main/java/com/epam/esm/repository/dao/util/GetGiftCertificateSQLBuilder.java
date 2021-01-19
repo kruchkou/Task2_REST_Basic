@@ -13,24 +13,24 @@ import java.util.List;
  */
 public final class GetGiftCertificateSQLBuilder {
 
-    private final static GetGiftCertificateSQLBuilder instance = new GetGiftCertificateSQLBuilder();
+    private static final GetGiftCertificateSQLBuilder instance = new GetGiftCertificateSQLBuilder();
 
-    private final static String SPLIT_PARAM_STRING = " AND ";
+    private static final String SPLIT_PARAM_STRING = " AND ";
 
-    private final static String SELECT_SQL = "SELECT * from gift_certificate gifts ";
-    private final static String SELECT_WITH_TAG_NAME_SQL = "SELECT * from gift_certificate gifts " +
+    private static final String SELECT_SQL = "SELECT * from gift_certificate gifts ";
+    private static final String SELECT_WITH_TAG_NAME_SQL = "SELECT * from gift_certificate gifts " +
             "INNER JOIN gift_tag link ON gifts.id = link.gift " +
             "INNER JOIN tag tags ON link.tag = tags.id ";
-    private final static String WHERE_SQL = "WHERE (";
-    private final static String ADD_NAME_SQL = "gifts.name REGEXP ?";
-    private final static String ADD_DESCRIPTION_SQL = "description REGEXP ?";
-    private final static String ADD_TAG_NAME_PARAM = "tags.name = ?";
-    private final static String CLOSE_WHERE_SQL = ")";
-    private final static String ORDER_BY_SQL = " ORDER BY ";
-    private final static String NAME_PARAM = "gifts.name";
-    private final static String LAST_UPDATE_DATE_PARAM = "last_update_date";
-    private final static String ORDER_ORIENTATION_ASC = " ASC";
-    private final static String ORDER_ORIENTATION_DESC = " DESC";
+    private static final String WHERE_SQL = "WHERE (";
+    private static final String ADD_NAME_SQL = "gifts.name REGEXP ?";
+    private static final String ADD_DESCRIPTION_SQL = "description REGEXP ?";
+    private static final String ADD_TAG_NAME_PARAM = "tags.name = ?";
+    private static final String CLOSE_WHERE_SQL = ")";
+    private static final String ORDER_BY_SQL = " ORDER BY ";
+    private static final String NAME_PARAM = "gifts.name";
+    private static final String LAST_UPDATE_DATE_PARAM = "last_update_date";
+    private static final String ORDER_ORIENTATION_ASC = " ASC";
+    private static final String ORDER_ORIENTATION_DESC = " DESC";
 
 
     private GetGiftCertificateSQLBuilder() {
@@ -58,12 +58,8 @@ public final class GetGiftCertificateSQLBuilder {
         List<Object> params = new ArrayList<>();
         boolean whereIsUsed = false;
 
-        String name = giftCertificateQueryParameter.getName();
-        String description = giftCertificateQueryParameter.getDescription();
-        String tagName = giftCertificateQueryParameter.getTagName();
-        SortBy sortBy = giftCertificateQueryParameter.getSortBy();
-        SortOrientation sortOrientation = giftCertificateQueryParameter.getSortOrientation();
 
+        String tagName = giftCertificateQueryParameter.getTagName();
         if (tagName != null) {
             whereIsUsed = true;
             queryBuilder.append(SELECT_WITH_TAG_NAME_SQL);
@@ -73,12 +69,14 @@ public final class GetGiftCertificateSQLBuilder {
             queryBuilder.append(SELECT_SQL);
         }
 
+        String name = giftCertificateQueryParameter.getName();
         if (name != null) {
             whereIsUsed = true;
             conditionList.add(ADD_NAME_SQL);
             params.add(name);
         }
 
+        String description = giftCertificateQueryParameter.getDescription();
         if (description != null) {
             whereIsUsed = true;
             conditionList.add(ADD_DESCRIPTION_SQL);
@@ -91,6 +89,7 @@ public final class GetGiftCertificateSQLBuilder {
             queryBuilder.append(CLOSE_WHERE_SQL);
         }
 
+        SortBy sortBy = giftCertificateQueryParameter.getSortBy();
         if (sortBy != null) {
             queryBuilder.append(ORDER_BY_SQL);
 
@@ -101,6 +100,7 @@ public final class GetGiftCertificateSQLBuilder {
             }
         }
 
+        SortOrientation sortOrientation = giftCertificateQueryParameter.getSortOrientation();
         if (sortOrientation != null) {
             switch (sortOrientation) {
                 case ASC: {

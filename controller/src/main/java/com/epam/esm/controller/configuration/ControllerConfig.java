@@ -20,8 +20,8 @@ import java.util.Locale;
 @EnableTransactionManagement
 public class ControllerConfig {
 
-    private final static String ERROR_MESSAGE_CLASSPATH = "classpath:error_messages";
-    private final static String DEFAULT_ENCODING = "UTF-8";
+    private static final String ERROR_MESSAGE_CLASSPATH = "classpath:error_messages";
+    private static final String DEFAULT_ENCODING = "UTF-8";
 
     @Bean
     public LocaleResolver localeResolver() {
