@@ -20,7 +20,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
     private static final String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
     private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
-    private static final String TAG_ALREADY_EXISTS_LOCALE = "";
+    private static final String TAG_ALREADY_EXISTS_LOCALE = "tags.already_exists";
 
     private final MessageSource messageSource;
 
