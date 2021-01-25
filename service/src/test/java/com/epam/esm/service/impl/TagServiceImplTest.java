@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
 import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
 import com.epam.esm.service.model.dto.TagDTO;
@@ -84,7 +85,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    public void getGiftCertificateByID() {
+    public void getTagByID() {
         given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
         TagDTO receivedTagDTO = tagService.getTagByID(TEST_ID);
 
@@ -94,14 +95,14 @@ class TagServiceImplTest {
 
 
     @Test
-    public void getGiftCertificateByIDShouldException() {
+    public void getTagByIDShouldException() {
         given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.getTagByID(TEST_ID));
     }
 
     @Test
-    public void createGiftCertificate() {
+    public void createTag() {
         given(tagDAO.createTag(any())).willReturn(tag);
 
         TagDTO receivedDTO = tagService.createTag(tagDTO);
@@ -110,9 +111,17 @@ class TagServiceImplTest {
     }
 
     @Test
-    public void createGiftCertificateShouldException() {
+    public void createTagShouldValidationException() {
         assertThrows(TagDataValidationException.class,
                 () -> tagService.createTag(emptyTagDTO));
+    }
+
+    @Test
+    public void createTagShouldAlreadyExistsException() {
+        given(tagDAO.getTagByName(TEST_NAME)).willReturn(Optional.of(tag));
+
+        assertThrows(TagAlreadyExistsException.class,
+                () -> tagService.createTag(tagDTO));
     }
 
     @Test

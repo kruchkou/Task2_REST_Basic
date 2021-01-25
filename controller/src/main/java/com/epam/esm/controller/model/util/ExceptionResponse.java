@@ -29,4 +29,6 @@ public class ExceptionResponse {
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
+
+
 }

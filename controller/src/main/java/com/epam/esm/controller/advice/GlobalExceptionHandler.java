@@ -1,10 +1,7 @@
 package com.epam.esm.controller.advice;
 
 import com.epam.esm.controller.model.util.ExceptionResponse;
-import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
-import com.epam.esm.service.exception.impl.TagDataValidationException;
-import com.epam.esm.service.exception.impl.TagNotFoundException;
+import com.epam.esm.service.exception.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -23,21 +20,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
     private static final String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
     private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
+    private static final String TAG_ALREADY_EXISTS_LOCALE = "";
 
     private final MessageSource messageSource;
 
     @Autowired
     public GlobalExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
-
-        String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
-
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -90,5 +79,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TagAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleTagAlreadyExistsException(TagAlreadyExistsException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                TAG_ALREADY_EXISTS_LOCALE, new Object[]{}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

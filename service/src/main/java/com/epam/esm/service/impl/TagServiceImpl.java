@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
 import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
 import com.epam.esm.service.model.dto.TagDTO;
@@ -48,6 +49,11 @@ public class TagServiceImpl implements TagService {
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     /**
+     * Error message when Tag with provided name already exists
+     */
+    private static final String TAG_ALREADY_EXISTS_EXCEPTION = "Tag with provided name already exists";
+
+    /**
      * Error code when data failed validation
      */
     private static final String ERROR_CODE_TAG_VALIDATION_FAILED = "0201";
@@ -61,6 +67,12 @@ public class TagServiceImpl implements TagService {
      * Error code when Tag wasn't found by name
      */
     private static final String ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED = "0212404";
+
+    /**
+     * Error code when Tag with provided name already exists
+     */
+    private static final String ERROR_CODE_TAG_ALREADY_EXISTS = "0222";
+
 
     /**
      * An object of {@link TagDAO}
@@ -92,6 +104,13 @@ public class TagServiceImpl implements TagService {
         }
 
         String tagName = tagDTO.getName();
+
+        Optional<Tag> tagByName = tagDAO.getTagByName(tagName);
+
+        if(tagByName.isPresent()) {
+            throw new TagAlreadyExistsException(TAG_ALREADY_EXISTS_EXCEPTION, ERROR_CODE_TAG_ALREADY_EXISTS);
+        }
+
         Tag tag = tagDAO.createTag(tagName);
 
         return EntityDTOTagMapper.toDTO(tag);

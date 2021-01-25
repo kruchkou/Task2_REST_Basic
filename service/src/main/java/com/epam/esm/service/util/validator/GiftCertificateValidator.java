@@ -35,8 +35,8 @@ public final class GiftCertificateValidator {
      * @param duration parameter of GiftCertificate
      * @return true if data is OK, false if data failed validation
      */
-    private static boolean validateDuration(int duration) {
-        return duration > 0;
+    private static boolean validateDuration(Integer duration) {
+            return duration != null && duration > 0;
     }
 
     /**
@@ -45,8 +45,8 @@ public final class GiftCertificateValidator {
      * @param price parameter of GiftCertificate
      * @return true if data is OK, false if data failed validation
      */
-    private static boolean validatePrice(int price) {
-        return price > 0;
+    private static boolean validatePrice(Integer price) {
+        return price != null && price > 0;
     }
 
     /**
