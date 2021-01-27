@@ -13,10 +13,24 @@
         <groupId>com.epam.esm</groupId>
         <artifactId>RESTbasics</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -44,12 +58,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.11</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>5.3.3</version>
-        </dependency>
-
     </dependencies>
 </project>
 
