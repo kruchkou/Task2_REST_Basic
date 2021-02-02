@@ -4,9 +4,6 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,18 +29,8 @@ public final class EntityDTOGiftCertificateMapper {
         giftCertificate.setDescription(giftCertificateDTO.getDescription());
         giftCertificate.setPrice(giftCertificateDTO.getPrice());
         giftCertificate.setDuration(giftCertificateDTO.getDuration());
-
-        LocalDateTime createDateLocalDateTime = giftCertificateDTO.getCreateDate();
-        if (createDateLocalDateTime != null) {
-            Instant createDateInstant = giftCertificateDTO.getCreateDate().toInstant(ZoneOffset.UTC);
-            giftCertificate.setCreateDate(createDateInstant);
-        }
-
-        LocalDateTime lastUpdateDateLocalDateTime = giftCertificateDTO.getLastUpdateDate();
-        if (lastUpdateDateLocalDateTime != null) {
-            Instant lastUpdateDateZonedDateInstant = giftCertificateDTO.getLastUpdateDate().toInstant(ZoneOffset.UTC);
-            giftCertificate.setLastUpdateDate(lastUpdateDateZonedDateInstant);
-        }
+        giftCertificate.setCreateDate(giftCertificateDTO.getCreateDate());
+        giftCertificate.setLastUpdateDate(giftCertificateDTO.getLastUpdateDate());
 
         return giftCertificate;
     }
@@ -62,6 +49,8 @@ public final class EntityDTOGiftCertificateMapper {
         giftCertificateDTO.setDescription(giftCertificate.getDescription());
         giftCertificateDTO.setPrice(giftCertificate.getPrice());
         giftCertificateDTO.setDuration(giftCertificate.getDuration());
+        giftCertificateDTO.setCreateDate(giftCertificate.getCreateDate());
+        giftCertificateDTO.setLastUpdateDate(giftCertificate.getLastUpdateDate());
 
         List<Tag> tagList = giftCertificate.getTagList();
         if (tagList != null) {
@@ -69,18 +58,6 @@ public final class EntityDTOGiftCertificateMapper {
 
             tagList.forEach(tag -> tagNamesList.add(tag.getName()));
             giftCertificateDTO.setTagNames(tagNamesList);
-        }
-
-        Instant createDateLocalInstant = giftCertificate.getCreateDate();
-        if (createDateLocalInstant != null) {
-            LocalDateTime createDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getCreateDate(), ZoneOffset.UTC);
-            giftCertificateDTO.setCreateDate(createDateLocalDateTime);
-        }
-
-        Instant lastUpdateDateInstant = giftCertificate.getLastUpdateDate();
-        if (lastUpdateDateInstant != null) {
-            LocalDateTime lastUpdateDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getLastUpdateDate(), ZoneOffset.UTC);
-            giftCertificateDTO.setLastUpdateDate(lastUpdateDateLocalDateTime);
         }
 
         return giftCertificateDTO;

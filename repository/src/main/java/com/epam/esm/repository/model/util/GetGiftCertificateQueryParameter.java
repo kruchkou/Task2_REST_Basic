@@ -1,6 +1,7 @@
 package com.epam.esm.repository.model.util;
 
-import org.springframework.util.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class GetGiftCertificateQueryParameter {
 
@@ -14,10 +15,7 @@ public class GetGiftCertificateQueryParameter {
 
     }
 
-    public GetGiftCertificateQueryParameter(String tagName, String name, String description, String sortBy, String sortOrientation) {
-        if (!StringUtils.isEmpty(tagName)) {
-            setTagName(tagName);
-        }
+    public GetGiftCertificateQueryParameter(String name, String description, String sortBy, String sortOrientation, String tagName) {
         if (!StringUtils.isEmpty(name)) {
             setName(name);
         }
@@ -29,6 +27,9 @@ public class GetGiftCertificateQueryParameter {
         }
         if (!StringUtils.isEmpty(sortOrientation)) {
             setSortOrientation(sortOrientation);
+        }
+        if (!StringUtils.isEmpty(tagName)) {
+            setTagName(tagName);
         }
     }
 

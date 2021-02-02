@@ -2,11 +2,9 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
-import com.epam.esm.repository.dao.util.GetGiftCertificateSQLBuilder;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.repository.model.util.GiftCertificateSQL;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
@@ -114,12 +112,10 @@ class GiftCertificateServiceImplTest {
     @Test
     public void deleteCertificate() {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
 
         giftCertificateService.deleteCertificate(TEST_ID);
 
         verify(giftCertificateDAO, times(1)).deleteGiftCertificate(TEST_ID);
-        verify(tagDAO, times(1)).deleteTag(TEST_TAG_ID);
     }
 
     @Test
@@ -209,12 +205,11 @@ class GiftCertificateServiceImplTest {
     public void getCertificatesByQueryParameter() {
         final int CORRECT_SIZE = 3;
 
-        GiftCertificateSQL giftCertificateSQL = GetGiftCertificateSQLBuilder.getInstance().build(queryParameter);
-        given(giftCertificateDAO.getGiftCertificates(giftCertificateSQL)).willReturn(giftCertificateList);
+        given(giftCertificateDAO.getGiftCertificates(queryParameter)).willReturn(giftCertificateList);
 
         List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateService.getCertificates(queryParameter);
 
-        verify(giftCertificateDAO).getGiftCertificates(giftCertificateSQL);
+        verify(giftCertificateDAO).getGiftCertificates(queryParameter);
         assertEquals(CORRECT_SIZE, giftCertificateDTOList.size());
     }
 }

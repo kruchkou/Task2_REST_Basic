@@ -1,7 +1,7 @@
 package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.repository.model.util.GiftCertificateSQL;
+import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,11 +38,10 @@ public interface GiftCertificateDAO {
     /**
      * Connects to database and updates GiftCertificate.
      *
-     * @param giftCertificateSQL {@link GiftCertificateSQL} Data object containing SQL string and params for request
-     * @param id                 is GiftCertificate ID value.
+     * @param giftCertificate {@link GiftCertificate} Data object containing updated info
      * @return updated {@link GiftCertificate} entity
      */
-    GiftCertificate updateGiftCertificate(GiftCertificateSQL giftCertificateSQL, int id);
+    GiftCertificate updateGiftCertificate(GiftCertificate giftCertificate, int id);
 
     /**
      * Connects to database and add an new GiftCertificate.
@@ -70,9 +69,9 @@ public interface GiftCertificateDAO {
     /**
      * Connects to database and returns list of matching GiftCertificates
      *
-     * @param giftCertificateSQL {@link GiftCertificateSQL} Data object containing SQL string and params for request
+     * @param getGiftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} Data object containing params for request
      * @return List of matched {@link GiftCertificate} entities from database.
      */
-    List<GiftCertificate> getGiftCertificates(GiftCertificateSQL giftCertificateSQL);
+    List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
 
 }

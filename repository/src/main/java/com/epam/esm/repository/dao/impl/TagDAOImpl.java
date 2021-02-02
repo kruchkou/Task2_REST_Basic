@@ -1,12 +1,16 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.TagDAO;
-import com.epam.esm.repository.dao.util.mapper.TagMapper;
+import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.GiftCertificate_;
 import com.epam.esm.repository.model.entity.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.epam.esm.repository.model.entity.Tag_;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
@@ -17,63 +21,19 @@ import java.util.Optional;
  */
 @Repository
 public class TagDAOImpl implements TagDAO {
-    /**
-     * An object of {@link TagMapper}
-     */
-    private static final TagMapper tagMapper = TagMapper.getInstance();
 
     /**
-     * Query for database to create a tag with provided name
+     * Query for database to delete records from gift_tag table with provided gift ID
      */
-    private static final String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
+    private static final String GET_TAG_LIST_BY_GIFT_ID_NAMED_QUERY = "getTagListByGiftID";
 
     /**
-     * Query for database to delete a tag with provided id
+     * Gift ID parameter
      */
-    private static final String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
+    private static final String GIFT_ID_PARAM = "giftID";
 
-    /**
-     * Query for database to get the tag with provided id
-     */
-    private static final String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
-
-    /**
-     * Query for database to get all tags
-     */
-    private static final String GET_TAGS_SQL = "SELECT * FROM tag";
-
-    /**
-     * Query for database to get the tags that linked to a gift with provided id
-     */
-    private static final String SELECT_BY_GIFT_ID_SQL = "SELECT * FROM tag tags " +
-            "INNER JOIN gift_tag link ON tags.id = link.tag " +
-            "WHERE (link.gift = ?)";
-
-    /**
-     * Query for database to get the tags that linked to a gift with provided name
-     */
-    private static final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
-
-    /**
-     * Index of the first element from List.
-     */
-    private static final int FIRST_ELEMENT_INDEX = 0;
-
-    /**
-     * An object of {@link JdbcTemplate}
-     */
-    private final JdbcTemplate jdbcTemplate;
-
-
-    /**
-     * Constructor that requires dataSource
-     *
-     * @param dataSource is {@link DataSource} object that manages connections
-     */
-    @Autowired
-    public TagDAOImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Connects to database and add an new Tag.
@@ -83,9 +43,13 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public Tag createTag(String name) {
-        jdbcTemplate.update(CREATE_SQL, name);
+        Tag tag = new Tag();
+        tag.setName(name);
 
-        return getTagByName(name).get();
+        entityManager.persist(tag);
+        entityManager.detach(tag);
+
+        return tag;
     }
 
     /**
@@ -95,7 +59,9 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public void deleteTag(int id) {
-        jdbcTemplate.update(DELETE_SQL, id);
+        Tag tag = entityManager.find(Tag.class, id);
+
+        entityManager.remove(tag);
     }
 
     /**
@@ -106,12 +72,9 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public Optional<Tag> getTagByID(int id) {
-        final int FIRST_ELEMENT_INDEX = 0;
+        Tag tag = entityManager.find(Tag.class, id);
 
-        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID_SQL,
-                new Object[]{id}, tagMapper);
-
-        return tagList.isEmpty() ? Optional.empty() : Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
+        return Optional.ofNullable(tag);
     }
 
     /**
@@ -121,7 +84,13 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public List<Tag> getTags() {
-        return jdbcTemplate.query(GET_TAGS_SQL, tagMapper);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Tag> tagQuery = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> root = tagQuery.from(Tag.class);
+        tagQuery.select(root);
+
+        return entityManager.createQuery(tagQuery).getResultList();
     }
 
     /**
@@ -132,7 +101,10 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public List<Tag> getTagListByGiftCertificateID(int id) {
-        return jdbcTemplate.query(SELECT_BY_GIFT_ID_SQL, new Object[]{id}, tagMapper);
+        Query query = entityManager.createNamedQuery(GET_TAG_LIST_BY_GIFT_ID_NAMED_QUERY);
+        query.setParameter(GIFT_ID_PARAM, id);
+
+        return query.getResultList();
     }
 
     /**
@@ -143,9 +115,21 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public Optional<Tag> getTagByName(String name) {
-        List<Tag> tagList = jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL,
-                new Object[]{name}, tagMapper);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        return tagList.isEmpty() ? Optional.empty() : Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
+        CriteriaQuery<Tag> tagQuery = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> root = tagQuery.from(Tag.class);
+        tagQuery.select(root).where(criteriaBuilder.equal(root.get(Tag_.NAME), name));
+
+        List<Tag> tagList = entityManager.createQuery(tagQuery).getResultList();
+
+        Optional<Tag> tag;
+        if (tagList.isEmpty()) {
+            tag = Optional.empty();
+        } else {
+            tag = Optional.of(tagList.get(0));
+            //entityManager.detach(tag);
+        }
+        return tag;
     }
 }

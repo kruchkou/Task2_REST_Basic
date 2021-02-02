@@ -5,9 +5,7 @@ import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,10 +16,8 @@ class EntityDTOGiftCertificateMapperTest {
     private static final String TEST_DESCRIPTION = "test description";
     private static final Integer TEST_PRICE = 10;
     private static final Integer TEST_DURATION = 20;
-    private static final Instant TEST_CREATE_DATE_INSTANT = Instant.now();
-    private static final Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
-    private static final LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT, ZoneOffset.UTC);
-    private static final LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT, ZoneOffset.UTC);
+    private static final LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
+    private static final LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
 
@@ -35,8 +31,8 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificate.setDescription(TEST_DESCRIPTION);
         giftCertificate.setPrice(TEST_PRICE);
         giftCertificate.setDuration(TEST_DURATION);
-        giftCertificate.setCreateDate(TEST_CREATE_DATE_INSTANT);
-        giftCertificate.setLastUpdateDate(TEST_LAST_UPDATE_DATE_INSTANT);
+        giftCertificate.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
+        giftCertificate.setLastUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
 
         giftCertificateDTO.setId(TEST_ID);
         giftCertificateDTO.setName(TEST_NAME);
@@ -55,8 +51,8 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_DESCRIPTION, testedGiftCertificate.getDescription());
         assertEquals(TEST_PRICE, testedGiftCertificate.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificate.getDuration());
-        assertEquals(TEST_CREATE_DATE_INSTANT, testedGiftCertificate.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE_INSTANT, testedGiftCertificate.getLastUpdateDate());
+        assertEquals(TEST_CREATE_DATE_LOCAL_DATE_TIME, testedGiftCertificate.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificate.getLastUpdateDate());
     }
 
     @Test
