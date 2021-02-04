@@ -13,16 +13,16 @@ import java.time.LocalDateTime;
 public class Order {
 
     @Id
-    Integer id;
-    Integer price;
+    private Integer id;
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gift", nullable=false)
-    GiftCertificate gift;
+    private GiftCertificate gift;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user", nullable=false)
-    User user;
+    private User user;
 
-    LocalDateTime date;
+    private LocalDateTime date;
 }

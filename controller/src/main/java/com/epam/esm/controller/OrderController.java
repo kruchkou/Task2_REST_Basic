@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "v1/orders")
+@RequestMapping("v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -30,8 +30,7 @@ public class OrderController {
         return orderService.createOrder(userID, giftID);
     }
 
-
-    @GetMapping(params = "name")
+    @GetMapping(params = "user")
     public List<OrderDTO> getOrdersByUserID(@RequestParam(value = "user") int userID) {
         return orderService.getOrdersByUserID(userID);
     }

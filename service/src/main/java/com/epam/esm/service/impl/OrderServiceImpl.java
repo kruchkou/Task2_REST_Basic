@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Error code when User wasn't found by id
      */
-    private static final String ERROR_CODE_USER_BY_ID_NOT_FOUND_FAILED = "0403404%d";
+    private static final String ERROR_CODE_USER_BY_ID_NOT_FOUND_FAILED = "0422404%d";
 
     /**
      * Error message when GiftCertificate wasn't found by id
@@ -131,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
      * @param userID is User ID value
      * @param giftID is GiftCertificate ID value
      * @return Created {@link OrderDTO} object with Order data.
-     * @throws UserNotFoundException if no User with provided userID founded
+     * @throws UserNotFoundException            if no User with provided userID founded
      * @throws GiftCertificateNotFoundException if no GiftCertificate with provided giftID founded
      */
     @Transactional
@@ -167,7 +167,6 @@ public class OrderServiceImpl implements OrderService {
      *
      * @return List of {@link OrderDTO} objects with order data.
      */
-
     @Override
     public List<OrderDTO> getOrders() {
         List<Order> orderList = orderDAO.getOrders();

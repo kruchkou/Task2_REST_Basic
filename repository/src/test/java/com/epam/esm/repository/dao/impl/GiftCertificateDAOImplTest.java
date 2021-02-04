@@ -100,13 +100,11 @@ class GiftCertificateDAOImplTest {
         GiftCertificate giftCertificateForUpdate = new GiftCertificate();
 
         giftCertificateForUpdate.setPrice(NEW_TEST_PRICE);
-        giftCertificateForUpdate.setLastUpdateDate(LocalDateTime.now());
 
         GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(giftCertificateForUpdate, TEST_ID);
 
         assertEquals(NEW_TEST_PRICE, updatedGift.getPrice());
         assertNotEquals(prevLastUpdateDate, updatedGift.getLastUpdateDate());
-        assertEquals(giftCertificateForUpdate.getLastUpdateDate(), updatedGift.getLastUpdateDate());
     }
 
     @Test

@@ -1,8 +1,6 @@
 package com.epam.esm.service.util.mapper;
 
-import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
-import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.model.dto.OrderDTO;
 
 import java.util.ArrayList;

@@ -29,7 +29,13 @@ public class GetGiftCertificateCriteriaBuilder {
         return instance;
     }
 
-
+    /**
+     * Returns {@link CriteriaQuery} object with criteria applied
+     *
+     * @param criteriaBuilder {@link CriteriaBuilder} object
+     * @param giftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} object with required params
+     * @return {@link CriteriaQuery} object
+     */
     public CriteriaQuery<GiftCertificate> build(CriteriaBuilder criteriaBuilder,
                                                 GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
 

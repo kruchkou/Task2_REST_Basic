@@ -18,6 +18,6 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    List<Order> orderList;
+    private List<Order> orderList;
 
 }

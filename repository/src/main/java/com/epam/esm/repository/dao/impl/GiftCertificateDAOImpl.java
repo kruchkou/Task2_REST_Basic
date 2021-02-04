@@ -3,6 +3,7 @@ package com.epam.esm.repository.dao.impl;
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.util.GetGiftCertificateCriteriaBuilder;
 import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -82,22 +82,36 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     public GiftCertificate updateGiftCertificate(GiftCertificate giftCertificate, int id) {
         GiftCertificate oldGiftCertificate = entityManager.find(GiftCertificate.class, id);
 
-        for (Field field : giftCertificate.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            try {
-                if (field.get(giftCertificate) != null) {
-                    Field oldGiftField = GiftCertificate.class.getDeclaredField(field.getName());
-                    oldGiftField.setAccessible(true);
-
-                    oldGiftField.set(oldGiftCertificate, field.get(giftCertificate));
-                }
-            } catch (IllegalAccessException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+        Integer price = giftCertificate.getPrice();
+        if (price != null) {
+            oldGiftCertificate.setPrice(price);
         }
 
+        Integer duration = giftCertificate.getDuration();
+        if (duration != null) {
+            oldGiftCertificate.setDuration(duration);
+        }
+
+        String name = giftCertificate.getDescription();
+        if (name != null) {
+            oldGiftCertificate.setName(name);
+        }
+
+        String description = giftCertificate.getDescription();
+        if (description != null) {
+            oldGiftCertificate.setDescription(description);
+        }
+
+        List<Tag> tagList = giftCertificate.getTagList();
+        if (tagList != null) {
+            oldGiftCertificate.setTagList(tagList);
+        }
+
+        LocalDateTime currentLocalDateTime = LocalDateTime.now();
+
+        oldGiftCertificate.setLastUpdateDate(currentLocalDateTime);
+
         entityManager.merge(oldGiftCertificate);
-        entityManager.refresh(oldGiftCertificate);
         entityManager.detach(oldGiftCertificate);
 
         return oldGiftCertificate;
