@@ -6,6 +6,7 @@ import com.epam.esm.service.model.dto.GiftCertificateDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class is Mapper that links GiftCertificates Entities with DTOs.

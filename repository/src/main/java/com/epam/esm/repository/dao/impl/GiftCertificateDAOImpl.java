@@ -47,7 +47,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
 
     /**
-     * An object of {@link EntityManager}
+     * An object of {@link EntityManager} that is being injected.
      */
     @PersistenceContext
     private EntityManager entityManager;

@@ -37,6 +37,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private static final String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
 
     /**
+     * Error code when GiftCertificate wasn't found by id
+     */
+    private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
+
+    /**
      * Error message when data failed validation
      */
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
@@ -45,11 +50,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Error code when data failed validation
      */
     private static final String ERROR_CODE_GIFT_VALIDATION_FAILED = "0101";
-
-    /**
-     * Error code when GiftCertificate wasn't found by id
-     */
-    private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
 
     /**
      * An object of {@link GiftCertificateDAO}
@@ -178,11 +178,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public List<GiftCertificateDTO> getCertificates() {
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
 
-        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
-        giftCertificateList.forEach(giftCertificate ->
-                giftCertificateDTOList.add(loadTagsAndTransformToDTO(giftCertificate)));
-
-        return giftCertificateDTOList;
+        return EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
     }
 
     /**
@@ -199,15 +195,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateQueryParameter);
 
-        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
-        giftCertificateList.forEach(giftCertificate ->
-                giftCertificateDTOList.add(loadTagsAndTransformToDTO(giftCertificate)));
-
-        return giftCertificateDTOList;
-    }
-
-    private GiftCertificateDTO loadTagsAndTransformToDTO(GiftCertificate giftCertificate) {
-        return EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
+        return EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
     }
 
     private void createTagsIfNotFoundAndInsert(int giftID, List<String> tagNamesList) { //ВЫЗЫВАЕТСЯ ВНЕ ТРАНЗАКЦИИ!!

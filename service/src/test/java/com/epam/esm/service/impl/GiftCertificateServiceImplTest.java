@@ -52,13 +52,15 @@ class GiftCertificateServiceImplTest {
     private Tag testTag;
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO notFullyValuedGiftCertificateDTO;
-    private GiftCertificateDTO validGiftCertificateDTO;
+    private GiftCertificateDTO dtoWithoutID;
+    private GiftCertificateDTO testGiftCertificateDTO;
     private GetGiftCertificateQueryParameter emptyQueryParameter;
     private GetGiftCertificateQueryParameter queryParameter;
 
     private List<String> tagNamesList;
     private List<Tag> giftTagList;
     private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificateDTO> testGiftCertificateDTOList;
 
     @BeforeEach
     public void setUp() {
@@ -84,17 +86,27 @@ class GiftCertificateServiceImplTest {
         tagNamesList = new ArrayList<>();
         tagNamesList.add(TEST_TAG_NAME);
 
-        validGiftCertificateDTO = new GiftCertificateDTO();
-        validGiftCertificateDTO.setName(TEST_NAME);
-        validGiftCertificateDTO.setDescription(TEST_DESCRIPTION);
-        validGiftCertificateDTO.setPrice(TEST_PRICE);
-        validGiftCertificateDTO.setDuration(TEST_DURATION);
-        validGiftCertificateDTO.setTagNames(tagNamesList);
+        testGiftCertificateDTO = new GiftCertificateDTO();
+        testGiftCertificateDTO.setId(TEST_ID);
+        testGiftCertificateDTO.setName(TEST_NAME);
+        testGiftCertificateDTO.setDescription(TEST_DESCRIPTION);
+        testGiftCertificateDTO.setPrice(TEST_PRICE);
+        testGiftCertificateDTO.setDuration(TEST_DURATION);
+        testGiftCertificateDTO.setTagNames(tagNamesList);
+
+        dtoWithoutID = new GiftCertificateDTO();
+        dtoWithoutID.setName(TEST_NAME);
+        dtoWithoutID.setDescription(TEST_DESCRIPTION);
+        dtoWithoutID.setPrice(TEST_PRICE);
+        dtoWithoutID.setDuration(TEST_DURATION);
+        dtoWithoutID.setTagNames(tagNamesList);
 
         giftCertificateList = new ArrayList<>();
         giftCertificateList.add(giftCertificate);
         giftCertificateList.add(giftCertificate);
         giftCertificateList.add(giftCertificate);
+
+        testGiftCertificateDTOList = EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
 
         emptyQueryParameter = new GetGiftCertificateQueryParameter();
         queryParameter = new GetGiftCertificateQueryParameter();
@@ -130,8 +142,8 @@ class GiftCertificateServiceImplTest {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
         GiftCertificateDTO receivedCertificateDTO = giftCertificateService.getGiftCertificateByID(TEST_ID);
 
-        GiftCertificateDTO testedDTO = EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
-        assertEquals(testedDTO, receivedCertificateDTO);
+
+        assertEquals(testGiftCertificateDTO, receivedCertificateDTO);
     }
 
 
@@ -148,10 +160,9 @@ class GiftCertificateServiceImplTest {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
         given(giftCertificateDAO.updateGiftCertificate(any(), anyInt())).willReturn(giftCertificate);
         given(tagDAO.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
 
-        GiftCertificateDTO receivedDTO = giftCertificateService.updateCertificate(validGiftCertificateDTO, TEST_ID);
-        assertEquals(validGiftCertificateDTO, receivedDTO);
+        GiftCertificateDTO receivedDTO = giftCertificateService.updateCertificate(dtoWithoutID, TEST_ID);
+        assertEquals(testGiftCertificateDTO, receivedDTO);
     }
 
     @Test
@@ -165,10 +176,10 @@ class GiftCertificateServiceImplTest {
     @Test
     public void createGiftCertificate() {
         given(giftCertificateDAO.createGiftCertificate(any())).willReturn(giftCertificate);
+        given(giftCertificateDAO.getGiftCertificateByID(anyInt())).willReturn(Optional.of(giftCertificate));
         given(tagDAO.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
 
-        GiftCertificateDTO receivedDTO = giftCertificateService.createGiftCertificate(validGiftCertificateDTO);
+        GiftCertificateDTO receivedDTO = giftCertificateService.createGiftCertificate(dtoWithoutID);
 
         assertEquals(TEST_NAME, receivedDTO.getName());
         assertEquals(TEST_DESCRIPTION, receivedDTO.getDescription());
@@ -186,12 +197,10 @@ class GiftCertificateServiceImplTest {
     @Test
     public void getCertificates() {
         given(giftCertificateDAO.getGiftCertificates()).willReturn(giftCertificateList);
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
 
         List<GiftCertificateDTO> receivedDTOList = giftCertificateService.getCertificates();
-        List<GiftCertificateDTO> testDTOList = EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
 
-        assertIterableEquals(testDTOList, receivedDTOList);
+        assertIterableEquals(testGiftCertificateDTOList, receivedDTOList);
     }
 
     @Test

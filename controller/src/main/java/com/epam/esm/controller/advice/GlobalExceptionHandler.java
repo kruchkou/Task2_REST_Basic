@@ -20,6 +20,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
     private static final String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
     private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
+    private static final String USER_NOT_FOUND_LOCALE = "users.not_found";
+    private static final String ORDER_NOT_FOUND_LOCALE = "orders.not_found";
     private static final String TAG_ALREADY_EXISTS_LOCALE = "tags.already_exists";
 
     private final MessageSource messageSource;
@@ -75,6 +77,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String errorMessage = messageSource.getMessage(
                 TAG_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                USER_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleOrderNotFoundException(UserNotFoundException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                ORDER_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 

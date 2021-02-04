@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  * Interface provides methods to interact with GiftCertificate data from database.
- * Methods should connect to database and manipulate with data(save, edit, etc.).
+ * Methods should connect to database and manipulate with data(create, read, update, delete).
  */
 public interface GiftCertificateDAO {
 

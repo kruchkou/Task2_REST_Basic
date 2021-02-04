@@ -23,15 +23,19 @@ import java.util.Optional;
 public class TagDAOImpl implements TagDAO {
 
     /**
-     * Query for database to delete records from gift_tag table with provided gift ID
+     * Query for database to delete records from gift_tag table with provided gift ID.
      */
     private static final String GET_TAG_LIST_BY_GIFT_ID_NAMED_QUERY = "getTagListByGiftID";
 
     /**
-     * Gift ID parameter
+     * Gift ID parameter.
      */
     private static final String GIFT_ID_PARAM = "giftID";
 
+
+    /**
+     * An object of {@link EntityManager} that is being injected.
+     */
     @PersistenceContext
     private EntityManager entityManager;
 

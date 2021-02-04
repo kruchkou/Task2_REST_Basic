@@ -38,11 +38,11 @@ class TagServiceImplTest {
     private TagDAO tagDAO;
 
     private Tag tag;
-    private TagDTO tagDTO;
+    private TagDTO testTagDTO;
     private TagDTO emptyTagDTO;
 
     private List<Tag> tagList;
-
+    private List<TagDTO> testDTOList;
     @BeforeEach
     public void setUp() {
         tag = new Tag();
@@ -52,14 +52,14 @@ class TagServiceImplTest {
         tagList = new ArrayList<>();
         tagList.add(tag);
 
-        tag = new Tag();
-        tag.setId(TEST_ID);
-        tag.setName(TEST_NAME);
+        testDTOList = EntityDTOTagMapper.toDTO(tagList);
 
         emptyTagDTO = new TagDTO();
 
-        tagDTO = new TagDTO();
-        tagDTO.setName(TEST_NAME);
+        testTagDTO = new TagDTO();
+        testTagDTO.setName(TEST_NAME);
+        testTagDTO.setId(TEST_ID);
+
 
         tagService = new TagServiceImpl(tagDAO);
     }
@@ -78,7 +78,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    public void deleteCertificateShouldException() {
+    public void deleteTagShouldException() {
         given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.deleteTag(TEST_ID));
@@ -89,8 +89,7 @@ class TagServiceImplTest {
         given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
         TagDTO receivedTagDTO = tagService.getTagByID(TEST_ID);
 
-        TagDTO testedDTO = EntityDTOTagMapper.toDTO(tag);
-        assertEquals(testedDTO, receivedTagDTO);
+        assertEquals(testTagDTO, receivedTagDTO);
     }
 
 
@@ -105,7 +104,7 @@ class TagServiceImplTest {
     public void createTag() {
         given(tagDAO.createTag(any())).willReturn(tag);
 
-        TagDTO receivedDTO = tagService.createTag(tagDTO);
+        TagDTO receivedDTO = tagService.createTag(testTagDTO);
 
         assertEquals(TEST_NAME, receivedDTO.getName());
     }
@@ -121,17 +120,24 @@ class TagServiceImplTest {
         given(tagDAO.getTagByName(TEST_NAME)).willReturn(Optional.of(tag));
 
         assertThrows(TagAlreadyExistsException.class,
-                () -> tagService.createTag(tagDTO));
+                () -> tagService.createTag(testTagDTO));
     }
 
     @Test
-    public void getCertificates() {
+    public void getTags() {
         given(tagDAO.getTags()).willReturn(tagList);
 
         List<TagDTO> receivedDTOList = tagService.getTags();
-        List<TagDTO> testDTOList = EntityDTOTagMapper.toDTO(tagList);
 
         assertIterableEquals(testDTOList, receivedDTOList);
     }
 
+
+    @Test
+    void getTagByName() {
+        given(tagDAO.getTagByName(any())).willReturn(Optional.of(tag));
+
+        TagDTO receivedTagDTO = tagService.getTagByName(TEST_NAME);
+        assertEquals(testTagDTO,receivedTagDTO);
+    }
 }

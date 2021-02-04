@@ -44,14 +44,14 @@ public class TagServiceImpl implements TagService {
     private static final String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
 
     /**
-     * Error message when data failed validation
-     */
-    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
-
-    /**
      * Error message when Tag with provided name already exists
      */
     private static final String TAG_ALREADY_EXISTS_EXCEPTION = "Tag with provided name already exists";
+
+    /**
+     * Error message when data failed validation
+     */
+    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     /**
      * Error code when data failed validation
