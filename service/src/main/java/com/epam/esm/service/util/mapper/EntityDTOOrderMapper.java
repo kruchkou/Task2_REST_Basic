@@ -1,7 +1,11 @@
 package com.epam.esm.service.util.mapper;
 
+import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
+import com.epam.esm.repository.model.entity.User;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.model.dto.OrderDTO;
+import com.epam.esm.service.model.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,12 @@ public class EntityDTOOrderMapper {
         order.setPrice(orderDTO.getPrice());
         order.setDate(orderDTO.getDate());
 
+        User user = EntityDTOUserMapper.toEntity(orderDTO.getUser());
+        order.setUser(user);
+
+        List<GiftCertificate> giftCertificateList = EntityDTOGiftCertificateMapper.toEntity(orderDTO.getGiftList());
+        order.setGiftList(giftCertificateList);
+
         return order;
     }
 
@@ -37,8 +47,13 @@ public class EntityDTOOrderMapper {
         OrderDTO orderDTO = new OrderDTO();
 
         orderDTO.setId(order.getId());
-        orderDTO.setUserID(order.getUser().getId());
-        orderDTO.setGiftID(order.getGift().getId());
+
+        UserDTO userDTO = EntityDTOUserMapper.toDTO(order.getUser());
+        orderDTO.setUser(userDTO);
+
+        List<GiftCertificateDTO> giftCertificateDTOList = EntityDTOGiftCertificateMapper.toDTO(order.getGiftList());
+        orderDTO.setGiftList(giftCertificateDTOList);
+
         orderDTO.setPrice(order.getPrice());
         orderDTO.setDate(order.getDate());
 

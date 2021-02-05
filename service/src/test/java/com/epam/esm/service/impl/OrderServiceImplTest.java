@@ -9,8 +9,13 @@ import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.model.dto.OrderDTO;
+import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.util.CreateOrderParameter;
+import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
 import com.epam.esm.service.util.mapper.EntityDTOOrderMapper;
+import com.epam.esm.service.util.mapper.EntityDTOUserMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +39,8 @@ class OrderServiceImplTest {
 
     private static final Integer TEST_ID = 1;
     private static final int TEST_USER_ID = 2;
+    private static final int NOT_EXIST_USER_ID = 15;
+    private static final int NOT_EXIST_GIFT_ID = 15;
 
     private static final int TEST_GIFT_ID = 3;
     private static final int TEST_PRICE = 500;
@@ -51,34 +58,60 @@ class OrderServiceImplTest {
 
     private Order testOrder;
     private OrderDTO testOrderDTO;
+    private CreateOrderParameter createOrderParameter;
+    private CreateOrderParameter createOrderParameterWithNotExistUserID;
+    private CreateOrderParameter createOrderParameterWithNotExistGiftID;
     private OrderDTO testOrderDTOWithoutID;
-    private OrderDTO emptyOrderDTO;
     private User testUser;
+    private UserDTO userDTO;
     private GiftCertificate testGift;
-
+    private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificateDTO> giftCertificateDTOList;
     private List<Order> orderList;
     private List<OrderDTO> orderDTOList;
 
     @BeforeEach
     public void setUp() {
-        emptyOrderDTO = new OrderDTO();
+        List<Integer> giftIDList = new ArrayList<>();
+        giftIDList.add(TEST_GIFT_ID);
+
+        createOrderParameter = new CreateOrderParameter();
+        createOrderParameter.setUserID(TEST_USER_ID);
+        createOrderParameter.setGiftIDList(giftIDList);
+
+        createOrderParameterWithNotExistUserID = new CreateOrderParameter();
+        createOrderParameterWithNotExistUserID.setUserID(NOT_EXIST_USER_ID);
+        createOrderParameterWithNotExistUserID.setGiftIDList(giftIDList);
+
+        List<Integer> notExistGiftIDList = new ArrayList<>();
+        notExistGiftIDList.add(NOT_EXIST_GIFT_ID);
+        createOrderParameterWithNotExistGiftID = new CreateOrderParameter();
+        createOrderParameterWithNotExistGiftID.setUserID(TEST_USER_ID);
+        createOrderParameterWithNotExistGiftID.setGiftIDList(notExistGiftIDList);
 
         testUser = new User();
         testUser.setId(TEST_USER_ID);
 
         testGift = new GiftCertificate();
         testGift.setId(TEST_GIFT_ID);
+        testGift.setPrice(TEST_PRICE);
+
+        userDTO = EntityDTOUserMapper.toDTO(testUser);
+
+        giftCertificateList = new ArrayList<>();
+        giftCertificateList.add(testGift);
+        giftCertificateDTOList = EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
 
         testOrder = new Order();
         testOrder.setUser(testUser);
-        testOrder.setGift(testGift);
+        testOrder.setGiftList(giftCertificateList);
         testOrder.setId(TEST_ID);
         testOrder.setPrice(TEST_PRICE);
         testOrder.setDate(TEST_DATE);
 
         testOrderDTOWithoutID = new OrderDTO();
-        testOrderDTOWithoutID.setUserID(TEST_USER_ID);
-        testOrderDTOWithoutID.setGiftID(TEST_GIFT_ID);
+        testOrderDTOWithoutID.setUser(userDTO);
+        testOrderDTOWithoutID.setGiftList(giftCertificateDTOList);
         testOrderDTOWithoutID.setId(TEST_ID);
         testOrderDTOWithoutID.setPrice(TEST_PRICE);
         testOrderDTOWithoutID.setDate(TEST_DATE);
@@ -117,11 +150,11 @@ class OrderServiceImplTest {
         given(userDAO.getUser(TEST_USER_ID)).willReturn(Optional.of(testUser));
         given(giftCertificateDAO.getGiftCertificateByID(TEST_GIFT_ID)).willReturn(Optional.of(testGift));
 
-        OrderDTO receivedDTO = orderService.createOrder(TEST_USER_ID, TEST_GIFT_ID);
+        OrderDTO receivedDTO = orderService.createOrder(createOrderParameter);
 
         assertEquals(TEST_ID, receivedDTO.getId());
-        assertEquals(TEST_USER_ID, receivedDTO.getUserID());
-        assertEquals(TEST_GIFT_ID, receivedDTO.getGiftID());
+        assertEquals(userDTO, receivedDTO.getUser());
+        assertEquals(giftCertificateDTOList, receivedDTO.getGiftList());
         assertEquals(TEST_DATE, receivedDTO.getDate());
         assertEquals(TEST_PRICE, receivedDTO.getPrice());
     }
@@ -131,7 +164,7 @@ class OrderServiceImplTest {
         given(userDAO.getUser(anyInt())).willReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
-                () -> orderService.createOrder(TEST_USER_ID, TEST_GIFT_ID));
+                () -> orderService.createOrder(createOrderParameterWithNotExistUserID));
     }
 
     @Test
@@ -140,7 +173,7 @@ class OrderServiceImplTest {
         given(giftCertificateDAO.getGiftCertificateByID(anyInt())).willReturn(Optional.empty());
 
         assertThrows(GiftCertificateNotFoundException.class,
-                () -> orderService.createOrder(TEST_USER_ID, TEST_GIFT_ID));
+                () -> orderService.createOrder(createOrderParameterWithNotExistGiftID));
     }
 
     @Test

@@ -11,12 +11,14 @@ import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDTO;
+import com.epam.esm.service.model.util.CreateOrderParameter;
 import com.epam.esm.service.util.mapper.EntityDTOOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,34 +130,44 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Connects to database and add an new Order.
      *
-     * @param userID is User ID value
-     * @param giftID is GiftCertificate ID value
+     * @param createOrderParameter is {@link CreateOrderParameter} object with data provided
      * @return Created {@link OrderDTO} object with Order data.
      * @throws UserNotFoundException            if no User with provided userID founded
-     * @throws GiftCertificateNotFoundException if no GiftCertificate with provided giftID founded
+     * @throws GiftCertificateNotFoundException if GiftCertificate with provided giftID founded
      */
     @Transactional
-    public OrderDTO createOrder(int userID, int giftID) {
-        Optional<User> userOptional = userDAO.getUser(userID);
+    public OrderDTO createOrder(CreateOrderParameter createOrderParameter) {
+        Integer userID = createOrderParameter.getUserID();
+        Optional<User> userOptional = userDAO.getUser(createOrderParameter.getUserID());
 
         User user = userOptional.orElseThrow(() -> new UserNotFoundException(
                 String.format(NO_USER_WITH_ID_FOUND, userID),
                 String.format(ERROR_CODE_USER_BY_ID_NOT_FOUND_FAILED, userID),
                 String.format(USER_NOT_FOUND_BY_ID_PARAMETER, userID)));
 
-        Optional<GiftCertificate> giftOptional = giftCertificateDAO.getGiftCertificateByID(giftID);
+        List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
-        GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateNotFoundException(
-                String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, giftID),
-                String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, giftID),
-                String.format(GIFT_NOT_FOUND_BY_ID_PARAMETER, giftID)));
+        int avgPrice = 0;
+
+        for (Integer giftID : createOrderParameter.getGiftIDList()) {
+            Optional<GiftCertificate> giftOptional = giftCertificateDAO.getGiftCertificateByID(giftID);
+
+            GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateNotFoundException(
+                    String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, giftID),
+                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, giftID),
+                    String.format(GIFT_NOT_FOUND_BY_ID_PARAMETER, giftID)));
+
+            avgPrice += giftCertificate.getPrice();
+
+            giftCertificateList.add(giftCertificate);
+        }
 
         Order order = new Order();
         LocalDateTime currentLocalDateTime = LocalDateTime.now();
 
         order.setUser(user);
-        order.setGift(giftCertificate);
-        order.setPrice(giftCertificate.getPrice());
+        order.setGiftList(giftCertificateList);
+        order.setPrice(avgPrice);
         order.setDate(currentLocalDateTime);
 
         Order resultOrder = orderDAO.createOrder(order);

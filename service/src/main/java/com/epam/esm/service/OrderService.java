@@ -1,7 +1,10 @@
 package com.epam.esm.service;
 
+import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDTO;
 import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.util.CreateOrderParameter;
 
 import java.util.List;
 
@@ -30,11 +33,10 @@ public interface OrderService {
     /**
      * Connects to database and add an new Order.
      *
-     * @param userID is User ID value
-     * @param giftID is GiftCertificate ID value
+     * @param createOrderParameter is {@link CreateOrderParameter} object with data provided
      * @return Created {@link OrderDTO} object with Order data.
      */
-    OrderDTO createOrder(int userID, int giftID);
+    OrderDTO createOrder(CreateOrderParameter createOrderParameter);
 
     /**
      * Invokes DAO method to get List of all Orders from database.
