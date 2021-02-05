@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.controller.model.util.GiftCertificateModelAssembler;
-import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;

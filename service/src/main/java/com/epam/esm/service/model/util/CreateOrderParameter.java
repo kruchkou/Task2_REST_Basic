@@ -12,9 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateOrderParameter {
 
-    @NotNull(message = "{validation.user_id_null")
+    @NotNull(message = "{validation.user_id_null}")
     Integer userID;
-    @NotEmpty(message = "{validation.gift_id_list_empty")
+    @NotEmpty(message = "{validation.gift_id_list_empty}")
     List<@Valid Integer> gifts;
 
 }

@@ -97,10 +97,10 @@ public class RepositoryConfig {
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
 
-        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
-        //hibernateProperties.setProperty("hibernate.current_session_context_class", "thread");
+        hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
 
         return hibernateProperties;
     }
