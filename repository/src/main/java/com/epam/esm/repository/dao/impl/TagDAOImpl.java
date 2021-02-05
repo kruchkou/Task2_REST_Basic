@@ -51,7 +51,6 @@ public class TagDAOImpl implements TagDAO {
         tag.setName(name);
 
         entityManager.persist(tag);
-        entityManager.detach(tag);
 
         return tag;
     }
@@ -125,15 +124,6 @@ public class TagDAOImpl implements TagDAO {
         Root<Tag> root = tagQuery.from(Tag.class);
         tagQuery.select(root).where(criteriaBuilder.equal(root.get(Tag_.NAME), name));
 
-        List<Tag> tagList = entityManager.createQuery(tagQuery).getResultList();
-
-        Optional<Tag> tag;
-        if (tagList.isEmpty()) {
-            tag = Optional.empty();
-        } else {
-            tag = Optional.of(tagList.get(0));
-            //entityManager.detach(tag);
-        }
-        return tag;
+        return entityManager.createQuery(tagQuery).getResultStream().findFirst();
     }
 }

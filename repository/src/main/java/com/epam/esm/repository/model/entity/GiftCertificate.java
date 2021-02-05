@@ -13,14 +13,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @DynamicUpdate
-@NamedNativeQueries({
-        @NamedNativeQuery(
-                name = "deleteLinkWithTagsByGiftID",
-                query = "DELETE FROM gift_tag WHERE (gift = :giftID)"),
-        @NamedNativeQuery(
-                name = "insertIntoGiftTag",
-                query = "INSERT INTO gift_tag(gift, tag) VALUES (:giftID,:tagID)")
-})
 public class GiftCertificate {
 
     @Id
@@ -35,11 +27,17 @@ public class GiftCertificate {
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(
             name = "gift_tag",
-            joinColumns = @JoinColumn(name = "gift"),
-            inverseJoinColumns = @JoinColumn(name = "tag"))
+            joinColumns = {@JoinColumn(name = "gift")},
+            inverseJoinColumns = {@JoinColumn(name = "tag")})
     private List<Tag> tagList;
 
 }

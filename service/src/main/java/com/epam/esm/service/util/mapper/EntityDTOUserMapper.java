@@ -1,7 +1,9 @@
 package com.epam.esm.service.util.mapper;
 
+import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.entity.User;
+import com.epam.esm.service.model.dto.OrderDTO;
 import com.epam.esm.service.model.dto.TagDTO;
 import com.epam.esm.service.model.dto.UserDTO;
 
@@ -25,6 +27,8 @@ public final class EntityDTOUserMapper {
     public static User toEntity(UserDTO userDTO) {
         User user = new User();
 
+        //List<Order> orderList = EntityDTOOrderMapper.toEntity(userDTO.getOrderList());
+        //user.setOrderList(orderList);
         user.setId(userDTO.getId());
         user.setName(userDTO.getName());
 
@@ -40,6 +44,8 @@ public final class EntityDTOUserMapper {
     public static UserDTO toDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
+        //List<OrderDTO> orderDTOList = EntityDTOOrderMapper.toDTO(user.getOrderList());
+        //userDTO.setOrderList(orderDTOList);
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
 
@@ -55,7 +61,7 @@ public final class EntityDTOUserMapper {
     public static List<UserDTO> toDTO(List<User> userList) {
         List<UserDTO> userDTOList = new ArrayList<>();
 
-        userList.forEach(tag -> userDTOList.add(toDTO(tag)));
+        userList.forEach(user -> userDTOList.add(toDTO(user)));
 
         return userDTOList;
     }

@@ -64,7 +64,6 @@ public class OrderDAOImpl implements OrderDAO {
         order.setDate(currentLocalDateTime);
 
         entityManager.persist(order);
-        entityManager.detach(order);
 
         return order;
     }

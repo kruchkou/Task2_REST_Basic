@@ -77,17 +77,17 @@ class OrderServiceImplTest {
 
         createOrderParameter = new CreateOrderParameter();
         createOrderParameter.setUserID(TEST_USER_ID);
-        createOrderParameter.setGiftIDList(giftIDList);
+        createOrderParameter.setGifts(giftIDList);
 
         createOrderParameterWithNotExistUserID = new CreateOrderParameter();
         createOrderParameterWithNotExistUserID.setUserID(NOT_EXIST_USER_ID);
-        createOrderParameterWithNotExistUserID.setGiftIDList(giftIDList);
+        createOrderParameterWithNotExistUserID.setGifts(giftIDList);
 
         List<Integer> notExistGiftIDList = new ArrayList<>();
         notExistGiftIDList.add(NOT_EXIST_GIFT_ID);
         createOrderParameterWithNotExistGiftID = new CreateOrderParameter();
         createOrderParameterWithNotExistGiftID.setUserID(TEST_USER_ID);
-        createOrderParameterWithNotExistGiftID.setGiftIDList(notExistGiftIDList);
+        createOrderParameterWithNotExistGiftID.setGifts(notExistGiftIDList);
 
         testUser = new User();
         testUser.setId(TEST_USER_ID);

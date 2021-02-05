@@ -21,8 +21,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @PersistenceContext
     private EntityManager entityManager;
-
-
+    
     /**
      * Connects to database and returns all Users.
      *

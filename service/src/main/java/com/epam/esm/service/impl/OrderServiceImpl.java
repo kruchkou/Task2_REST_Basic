@@ -147,9 +147,9 @@ public class OrderServiceImpl implements OrderService {
 
         List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
-        int avgPrice = 0;
+        int orderPrice = 0;
 
-        for (Integer giftID : createOrderParameter.getGiftIDList()) {
+        for (Integer giftID : createOrderParameter.getGifts()) {
             Optional<GiftCertificate> giftOptional = giftCertificateDAO.getGiftCertificateByID(giftID);
 
             GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateNotFoundException(
@@ -157,7 +157,7 @@ public class OrderServiceImpl implements OrderService {
                     String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, giftID),
                     String.format(GIFT_NOT_FOUND_BY_ID_PARAMETER, giftID)));
 
-            avgPrice += giftCertificate.getPrice();
+            orderPrice += giftCertificate.getPrice();
 
             giftCertificateList.add(giftCertificate);
         }
@@ -167,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setUser(user);
         order.setGiftList(giftCertificateList);
-        order.setPrice(avgPrice);
+        order.setPrice(orderPrice);
         order.setDate(currentLocalDateTime);
 
         Order resultOrder = orderDAO.createOrder(order);

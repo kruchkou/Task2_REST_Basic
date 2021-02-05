@@ -20,22 +20,6 @@ public interface GiftCertificateDAO {
     void deleteGiftCertificate(int id);
 
     /**
-     * Connects to database and delete records from gift_tag table with provided gift ID
-     *
-     * @param id is GiftCertificate ID value.
-     */
-    void deleteLinkWithTagsByID(int id);
-
-    /**
-     * Connects to database and make record to gift_tag table that Gift with provided giftID have tag with provided
-     * tagID
-     *
-     * @param giftID is GiftCertificate ID value.
-     * @param tagID  is Tag ID value.
-     */
-    void insertGiftTag(int giftID, int tagID);
-
-    /**
      * Connects to database and updates GiftCertificate.
      *
      * @param giftCertificate {@link GiftCertificate} Data object containing updated info

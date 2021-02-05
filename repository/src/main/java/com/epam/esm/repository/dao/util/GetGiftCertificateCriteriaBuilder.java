@@ -14,19 +14,12 @@ import java.util.List;
 
 public class GetGiftCertificateCriteriaBuilder {
 
-    private static final GetGiftCertificateCriteriaBuilder instance = new GetGiftCertificateCriteriaBuilder();
+    /**
+     * Symbol for matching any symbol at LIKE sql requests
+     */
     private static final String ANY_SYMBOL = "%";
 
     private GetGiftCertificateCriteriaBuilder() {
-    }
-
-    /**
-     * Returns instance of the class (Singleton).
-     *
-     * @return Instance of {@link GetGiftCertificateCriteriaBuilder}.
-     */
-    public static GetGiftCertificateCriteriaBuilder getInstance() {
-        return instance;
     }
 
     /**
@@ -36,7 +29,7 @@ public class GetGiftCertificateCriteriaBuilder {
      * @param giftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} object with required params
      * @return {@link CriteriaQuery} object
      */
-    public CriteriaQuery<GiftCertificate> build(CriteriaBuilder criteriaBuilder,
+    public static CriteriaQuery<GiftCertificate> build(CriteriaBuilder criteriaBuilder,
                                                 GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
 
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
