@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.epam.esm.repository.dao")
-@Sql({"/data.sql","/schema.sql"})
+@Sql({"/data.sql", "/schema.sql"})
 public class TestConfig {
 
     @Bean(name = "dataSource")

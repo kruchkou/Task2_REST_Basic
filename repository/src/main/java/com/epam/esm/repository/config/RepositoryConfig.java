@@ -2,6 +2,7 @@ package com.epam.esm.repository.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,9 @@ import java.util.Properties;
 public class RepositoryConfig {
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+
         LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 
         lef.setDataSource(dataSource);
@@ -46,44 +49,11 @@ public class RepositoryConfig {
         return hibernateJpaVendorAdapter;
     }
 
-    @Bean(name = "dataSource")
-    @Profile("prod")
-    public DataSource prodDataSource() {
-
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://185.135.80.244:3306/gifts");
-        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setUsername("baker");
-        config.setPassword("BazaBaker1");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-        return new HikariDataSource(config);
-    }
-
-    @Bean(name = "dataSource")
-    @Profile("dev")
-    public DataSource devDataSource() {
-        HikariConfig config = new HikariConfig();
-
-        config.setJdbcUrl("jdbc:postgresql://185.135.80.244:3306/gifts");
-        config.setDriverClassName("org.postgresql.Driver");
-        config.setUsername("baker");
-        config.setPassword("BazaBaker1");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-        return new HikariDataSource(config);
-    }
-
     @Bean
     public PlatformTransactionManager hibernateTransactionManager(
             LocalContainerEntityManagerFactoryBean entityManagerFactory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-
         transactionManager.setEntityManagerFactory(entityManagerFactory.getObject());
 
         return transactionManager;
