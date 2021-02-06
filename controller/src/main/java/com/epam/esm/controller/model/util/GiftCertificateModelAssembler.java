@@ -1,6 +1,7 @@
 package com.epam.esm.controller.model.util;
 
 import com.epam.esm.controller.GiftCertificateController;
+import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import org.springframework.hateoas.EntityModel;
@@ -20,7 +21,7 @@ public class GiftCertificateModelAssembler implements RepresentationModelAssembl
                     linkTo(methodOn(GiftCertificateController.class).getGiftCertificateByID(
                             giftCertificateDTO.getId())).withSelfRel(),
                     linkTo(methodOn(GiftCertificateController.class).getGiftCertificateByAllParams(
-                            new GetGiftCertificateQueryParameter())).withRel("Gift certificates"),
+                            new FilteredGetGiftCertificateQueryParameter())).withRel("Gift certificates"),
                     linkTo(methodOn(GiftCertificateController.class).getTagListByGiftCertificateID(
                             giftCertificateDTO.getId())).withRel("Tags"));
         }

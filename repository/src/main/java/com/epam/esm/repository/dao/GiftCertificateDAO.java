@@ -1,6 +1,7 @@
 package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 
 import java.util.List;
@@ -57,5 +58,8 @@ public interface GiftCertificateDAO {
      * @return List of matched {@link GiftCertificate} entities from database.
      */
     List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
+
+
+    List<GiftCertificate> getGiftCertificates(FilteredGetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
 
 }

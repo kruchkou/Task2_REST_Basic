@@ -1,9 +1,11 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
+import com.epam.esm.repository.dao.util.FilteredGetGiftCertificateCriteriaBuilder;
 import com.epam.esm.repository.dao.util.GetGiftCertificateCriteriaBuilder;
 import com.epam.esm.repository.dao.util.GiftCertificateFieldUpdater;
 import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import org.springframework.stereotype.Repository;
 
@@ -120,6 +122,15 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     public List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> query = GetGiftCertificateCriteriaBuilder.build(criteriaBuilder,
+                getGiftCertificateQueryParameter);
+
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Override
+    public List<GiftCertificate> getGiftCertificates(FilteredGetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> query = FilteredGetGiftCertificateCriteriaBuilder.build(criteriaBuilder,
                 getGiftCertificateQueryParameter);
 
         return entityManager.createQuery(query).getResultList();
