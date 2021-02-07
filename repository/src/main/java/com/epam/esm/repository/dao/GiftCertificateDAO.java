@@ -54,12 +54,9 @@ public interface GiftCertificateDAO {
     /**
      * Connects to database and returns list of matching GiftCertificates
      *
-     * @param getGiftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} Data object containing params for request
+     * @param getGiftCertificateQueryParameter {@link FilteredGetGiftCertificateQueryParameter} Data object containing params for request
      * @return List of matched {@link GiftCertificate} entities from database.
      */
-    List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
-
-
     List<GiftCertificate> getGiftCertificates(FilteredGetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
 
 }

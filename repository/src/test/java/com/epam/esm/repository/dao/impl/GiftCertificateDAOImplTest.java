@@ -3,7 +3,7 @@ package com.epam.esm.repository.dao.impl;
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.config.TestConfig;
 import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,29 +22,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ContextConfiguration(classes = {TestConfig.class})
 class GiftCertificateDAOImplTest {
+
     private static final int TEST_ID = 1;
     private static final int NOT_EXIST_ID = 15;
     private static final String TEST_NAME = "Cert";
     private static final String TEST_DESC = "This is";
+    private static final String TEST_FIRST_TAG_NAME = "first";
+    private static final String TEST_SECOND_TAG_NAME = "second";
+    private static final String TEST_THIRD_TAG_NAME = "third";
     private static final int TEST_PRICE = 300;
     private static final int NEW_TEST_PRICE = 500;
     private static final int TEST_DURATION = 30;
-    private static final String FIRST_TEST_TAG_NAME = "first";
-    private static final String SECOND_TEST_TAG_NAME = "second";
-    private static final String THIRD_TEST_TAG_NAME = "third";
 
     private GiftCertificate giftCertificate;
-    GetGiftCertificateQueryParameter firstTagGiftParameter;
-    GetGiftCertificateQueryParameter secondTagGiftParameter;
-    GetGiftCertificateQueryParameter thirdTagGiftParameter;
-    GetGiftCertificateQueryParameter byNameGiftParameter;
-    GetGiftCertificateQueryParameter byDescGiftParameter;
+    private FilteredGetGiftCertificateQueryParameter firstTagGiftParameter;
+    private FilteredGetGiftCertificateQueryParameter secondTagGiftParameter;
+    private FilteredGetGiftCertificateQueryParameter thirdTagGiftParameter;
+    private FilteredGetGiftCertificateQueryParameter byNameGiftParameter;
+    private FilteredGetGiftCertificateQueryParameter byDescGiftParameter;
+    private static List<String> firstTagList;
+    private static List<String> secondTagList;
+    private static List<String> thirdTagList;
 
     @Autowired
     private GiftCertificateDAO giftCertificateDAO;
 
     @BeforeEach
     public void setUp() {
+        firstTagList = new ArrayList<>();
+        firstTagList.add(TEST_FIRST_TAG_NAME);
+
+        secondTagList =  new ArrayList<>();
+        secondTagList.add(TEST_SECOND_TAG_NAME);
+
+        thirdTagList =  new ArrayList<>();
+        thirdTagList.add(TEST_THIRD_TAG_NAME);
 
         giftCertificate = new GiftCertificate();
         giftCertificate.setName(TEST_NAME);
@@ -51,17 +64,17 @@ class GiftCertificateDAOImplTest {
         giftCertificate.setPrice(TEST_PRICE);
         giftCertificate.setDuration(TEST_DURATION);
 
-        firstTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null, null, FIRST_TEST_TAG_NAME);
-        secondTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null, null, SECOND_TEST_TAG_NAME);
-        thirdTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null, null, THIRD_TEST_TAG_NAME);
+        firstTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+                null, null, null, null, null, null, firstTagList);
+        secondTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+                null, null, null,null, null, null, secondTagList);
+        thirdTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+                null, null, null,null, null, null, thirdTagList);
 
-        byNameGiftParameter = new GetGiftCertificateQueryParameter(
-                TEST_NAME, null, null, null, null);
-        byDescGiftParameter = new GetGiftCertificateQueryParameter(
-                null, TEST_DESC, null, null, null);
+        byNameGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+                TEST_NAME, null, null, null, null,null,null);
+        byDescGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+                null, TEST_DESC, null, null, null,null,null);
 
     }
 
@@ -79,16 +92,6 @@ class GiftCertificateDAOImplTest {
         assertEquals(TEST_DESC, savedGift.getDescription());
         assertEquals(TEST_PRICE, savedGift.getPrice());
         assertEquals(TEST_DURATION, savedGift.getDuration());
-    }
-
-    @Test
-    @Transactional
-    public void deleteGiftCertificate() {
-        giftCertificateDAO.deleteGiftCertificate(TEST_ID);
-
-        Optional<GiftCertificate> giftCertificate = giftCertificateDAO.getGiftCertificateByID(TEST_ID);
-
-        assertFalse(giftCertificate.isPresent());
     }
 
     @Test

@@ -1,8 +1,7 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
-import com.epam.esm.repository.dao.util.FilteredGetGiftCertificateCriteriaBuilder;
-import com.epam.esm.repository.dao.util.GetGiftCertificateCriteriaBuilder;
+import com.epam.esm.repository.dao.util.GetGiftCertificateQueryHandler;
 import com.epam.esm.repository.dao.util.GiftCertificateFieldUpdater;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
@@ -114,26 +113,13 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     /**
      * Connects to database and returns list of matching GiftCertificates
      *
-     * @param getGiftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} Data object containing params
+     * @param getGiftCertificateQueryParameter {@link FilteredGetGiftCertificateQueryParameter} Data object containing params
      *                                         for request
      * @return List of matched {@link GiftCertificate} entities from database.
      */
     @Override
-    public List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GiftCertificate> query = GetGiftCertificateCriteriaBuilder.build(criteriaBuilder,
-                getGiftCertificateQueryParameter);
-
-        return entityManager.createQuery(query).getResultList();
-    }
-
-    @Override
     public List<GiftCertificate> getGiftCertificates(FilteredGetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GiftCertificate> query = FilteredGetGiftCertificateCriteriaBuilder.build(criteriaBuilder,
-                getGiftCertificateQueryParameter);
-
-        return entityManager.createQuery(query).getResultList();
+        return GetGiftCertificateQueryHandler.handle(entityManager, getGiftCertificateQueryParameter);
     }
 
 }
