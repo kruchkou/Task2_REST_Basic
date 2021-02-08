@@ -1,13 +1,17 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.model.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("v1/tags")
 public class TagController {
@@ -20,8 +24,8 @@ public class TagController {
     }
 
     @GetMapping
-    public List<TagDto> getTags() {
-        return tagService.getTags();
+    public List<TagDto> getTags(@Valid Page page) {
+        return tagService.getTags(page);
     }
 
     @PostMapping
@@ -36,14 +40,14 @@ public class TagController {
     }
 
     @GetMapping(params = "name")
-    public TagDto getTagsByName(@RequestParam(value = "name") String name) {
+    public TagDto getTagByName(@RequestParam(value = "name") String name) {
 
         return tagService.getTagByName(name);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployee(@PathVariable int id) {
+    public void deleteTag(@PathVariable int id) {
         tagService.deleteTag(id);
     }
 

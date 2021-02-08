@@ -1,5 +1,6 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
@@ -24,8 +25,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDto> getOrders() {
-        return orderService.getOrders();
+    public List<OrderDto> getOrders(@Valid Page page) {
+        return orderService.getOrders(page);
     }
 
     @PostMapping

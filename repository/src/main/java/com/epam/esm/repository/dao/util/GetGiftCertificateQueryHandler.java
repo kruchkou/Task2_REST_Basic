@@ -19,6 +19,9 @@ public class GetGiftCertificateQueryHandler {
     private static final String ANY_SYMBOL = "%";
 
     private static final String TAG_NAME_LIST_PARAMETER_NAME = "names";
+
+    private static final int PAGE_NUMBER_OFFSET = 1;
+
     /**
      * JPQL query to get Tag by name
      */
@@ -131,7 +134,11 @@ public class GetGiftCertificateQueryHandler {
             criteriaQuery.orderBy(order);
         }
 
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        Page pageObject = giftCertificateQueryParameter.getPage();
+        int size = pageObject.getSize();
+        int itemsOffset = (pageObject.getPage() - PAGE_NUMBER_OFFSET) * size;
+
+        return entityManager.createQuery(criteriaQuery).setFirstResult(itemsOffset).setMaxResults(size).getResultList();
     }
 
     private static Predicate filterToPredicate(

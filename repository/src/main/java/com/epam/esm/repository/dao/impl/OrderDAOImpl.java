@@ -24,6 +24,8 @@ public class OrderDAOImpl implements OrderDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final int PAGE_NUMBER_OFFSET = 1;
+
     /**
      * Connects to database and returns all Users.
      *
@@ -70,17 +72,19 @@ public class OrderDAOImpl implements OrderDAO {
 
     /**
      * Connects to database and returns all Orders.
-     *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link Order} entities from database.
      */
     @Override
-    public List<Order> getOrders() {
+    public List<Order> getOrders(int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Order> orderQuery = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = orderQuery.from(Order.class);
         orderQuery.select(root);
 
-        return entityManager.createQuery(orderQuery).getResultList();
+        int itemsOffset = (page - PAGE_NUMBER_OFFSET) * size;
+        return entityManager.createQuery(orderQuery).setFirstResult(itemsOffset).setMaxResults(size).getResultList();
     }
 }

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Repository
 public class TagDAOImpl implements TagDAO {
+
+    private static final int PAGE_NUMBER_OFFSET = 1;
 
     /**
      * An object of {@link EntityManager} that is being injected.
@@ -72,17 +76,20 @@ public class TagDAOImpl implements TagDAO {
     /**
      * Connects to database and returns all Tags.
      *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link Tag} entities from database.
      */
     @Override
-    public List<Tag> getTags() {
+    public List<Tag> getTags(int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Tag> tagQuery = criteriaBuilder.createQuery(Tag.class);
         Root<Tag> root = tagQuery.from(Tag.class);
         tagQuery.select(root);
 
-        return entityManager.createQuery(tagQuery).getResultList();
+        int itemsOffset = (page - PAGE_NUMBER_OFFSET) * size;
+        return entityManager.createQuery(tagQuery).setFirstResult(itemsOffset).setMaxResults(size).getResultList();
     }
 
     /**

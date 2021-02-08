@@ -46,9 +46,11 @@ public interface GiftCertificateDAO {
     /**
      * Connects to database and returns all GiftCertificates.
      *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link GiftCertificate} entities from database.
      */
-    List<GiftCertificate> getGiftCertificates();
+    List<GiftCertificate> getGiftCertificates(int page, int size);
 
     /**
      * Connects to database and returns list of matching GiftCertificates

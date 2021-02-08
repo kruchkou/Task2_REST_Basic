@@ -4,6 +4,7 @@ import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
 import com.epam.esm.service.exception.impl.DataValidationException;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -130,9 +132,9 @@ class TagServiceImplTest {
 
     @Test
     public void getTags() {
-        given(tagDAO.getTags()).willReturn(tagList);
+        given(tagDAO.getTags(anyInt(),anyInt())).willReturn(tagList);
 
-        List<TagDto> receivedDTOList = tagService.getTags();
+        List<TagDto> receivedDTOList = tagService.getTags(new Page());
 
         assertIterableEquals(testDTOList, receivedDTOList);
     }

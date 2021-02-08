@@ -11,6 +11,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,7 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    public List<GiftCertificateDto> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
+    public List<GiftCertificateDto> getGiftCertificateByAllParams(@Valid GetGiftCertificateQueryParameter parameter) {
         return giftCertificateService.getCertificates(parameter);
     }
 

@@ -24,6 +24,8 @@ import java.util.Optional;
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
+    private static final int PAGE_NUMBER_OFFSET = 1;
+
     /**
      * An object of {@link EntityManager} that is being injected.
      */
@@ -96,17 +98,19 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     /**
      * Connects to database and returns all GiftCertificates.
      *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link GiftCertificate} entities from database.
      */
     @Override
-    public List<GiftCertificate> getGiftCertificates() {
+    public List<GiftCertificate> getGiftCertificates(int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<GiftCertificate> giftQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = giftQuery.from(GiftCertificate.class);
         giftQuery.select(root);
-
-        return entityManager.createQuery(giftQuery).getResultList();
+        int itemsOffset = (page - PAGE_NUMBER_OFFSET) * size;
+        return entityManager.createQuery(giftQuery).setFirstResult(itemsOffset).setMaxResults(size).getResultList();
     }
 
     /**

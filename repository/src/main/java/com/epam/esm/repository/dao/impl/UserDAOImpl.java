@@ -21,21 +21,24 @@ public class UserDAOImpl implements UserDAO {
      */
     @PersistenceContext
     private EntityManager entityManager;
-    
+
+    private static final int PAGE_NUMBER_OFFSET = 1;
+
     /**
      * Connects to database and returns all Users.
      *
      * @return List of all {@link User} entities from database.
      */
     @Override
-    public List<User> getUsers() {
+    public List<User> getUsers(int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<User> userQuery = criteriaBuilder.createQuery(User.class);
         Root<User> root = userQuery.from(User.class);
         userQuery.select(root);
 
-        return entityManager.createQuery(userQuery).getResultList();
+        int itemsOffset = (page - PAGE_NUMBER_OFFSET) * size;
+        return entityManager.createQuery(userQuery).setFirstResult(itemsOffset).setMaxResults(size).getResultList();
     }
 
     /**

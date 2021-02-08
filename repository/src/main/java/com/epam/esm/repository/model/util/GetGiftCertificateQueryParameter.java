@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Data
@@ -19,6 +20,8 @@ public class GetGiftCertificateQueryParameter {
     private List<String> tagName;
     private SortBy sortBy;
     private SortOrientation sortOrientation;
+    @Valid
+    private Page page = new Page();
 
     public GetGiftCertificateQueryParameter(String name, String description, List<String> price,
                                             List<String> duration, String sortBy,
@@ -53,6 +56,14 @@ public class GetGiftCertificateQueryParameter {
     }
     public void setDuration(List<String> duration) {
         this.duration = FilterBuilder.build(duration);
+    }
+
+    public void setPage(int page) {
+        this.page.setPage(page);
+    }
+
+    public void setSize(int size) {
+        this.page.setSize(size);
     }
 
     public void setSortBy(String sortBy) {

@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
@@ -194,11 +195,12 @@ public class TagServiceImpl implements TagService {
     /**
      * Invokes DAO method to get List of all Tags from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link TagDto} objects with tag data.
      */
     @Override
-    public List<TagDto> getTags() {
-        List<Tag> tagList = tagDAO.getTags();
+    public List<TagDto> getTags(Page page) {
+        List<Tag> tagList = tagDAO.getTags(page.getPage(), page.getSize());
 
         return EntityDtoTagMapper.toDTO(tagList);
     }

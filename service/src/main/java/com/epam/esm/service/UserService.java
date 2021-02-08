@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.UserDto;
 
 import java.util.List;
@@ -21,8 +22,9 @@ public interface UserService {
     /**
      * Invokes DAO method to get List of all Users from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link UserDto} objects with user data.
      */
-    List<UserDto> getUsers();
+    List<UserDto> getUsers(Page page);
 
 }

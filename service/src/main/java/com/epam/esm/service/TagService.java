@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.TagDto;
 
 import java.util.List;
@@ -44,9 +45,10 @@ public interface TagService {
     /**
      * Invokes DAO method to get List of all Tags from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link TagDto} objects with tag data.
      */
-    List<TagDto> getTags();
+    List<TagDto> getTags(Page page);
 
     /**
      * Invokes DAO method to get List of all Tags that linked with GiftCertificate by it's id

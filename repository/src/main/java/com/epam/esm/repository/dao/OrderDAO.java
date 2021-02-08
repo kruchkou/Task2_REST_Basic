@@ -1,7 +1,6 @@
 package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.model.entity.Order;
-import com.epam.esm.repository.model.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +30,11 @@ public interface OrderDAO {
     /**
      * Connects to database and returns all Orders.
      *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link Order} entities from database.
      */
-    List<Order> getOrders();
+    List<Order> getOrders(int page, int size);
 
     /**
      * Connects to database and add an new Order.

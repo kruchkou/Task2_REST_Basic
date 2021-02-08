@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.User;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.UserDto;
 import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,9 +78,9 @@ class UserServiceImplTest {
 
     @Test
     public void getUsers() {
-        given(userDAO.getUsers()).willReturn(userList);
+        given(userDAO.getUsers(anyInt(),anyInt())).willReturn(userList);
 
-        List<UserDto> receivedDTOList = userService.getUsers();
+        List<UserDto> receivedDTOList = userService.getUsers(new Page());
         List<UserDto> testDTOList = EntityDtoUserMapper.toDTO(userList);
 
         assertIterableEquals(testDTOList, receivedDTOList);

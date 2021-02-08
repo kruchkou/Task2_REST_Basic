@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 
@@ -38,8 +39,9 @@ public interface OrderService {
     /**
      * Invokes DAO method to get List of all Orders from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link OrderDto} objects with order data.
      */
-    List<OrderDto> getOrders();
+    List<OrderDto> getOrders(Page page);
 
 }

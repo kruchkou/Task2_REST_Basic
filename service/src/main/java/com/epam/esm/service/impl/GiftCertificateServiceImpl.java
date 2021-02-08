@@ -5,10 +5,11 @@ import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParametersNotFoundException;
-import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
 import com.epam.esm.service.util.validator.GiftCertificateValidator;
@@ -186,11 +187,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     /**
      * Invokes DAO method to get List of all GiftCertificates from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
     @Override
-    public List<GiftCertificateDto> getCertificates() {
-        List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
+    public List<GiftCertificateDto> getCertificates(Page page) {
+        List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(
+                page.getPage(), page.getSize());
 
         return EntityDtoGiftCertificateMapper.toDTO(giftCertificateList);
     }
@@ -204,12 +207,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDto> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
         if (giftCertificateQueryParameter.isEmpty()) {
-            return getCertificates();
+            return getCertificates(giftCertificateQueryParameter.getPage());
         }
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateQueryParameter);
 
-        if(giftCertificateList.isEmpty()) {
+        if (giftCertificateList.isEmpty()) {
             throw new GiftCertificateByParametersNotFoundException(
                     NO_GIFT_CERTIFICATE_WITH_PARAMETERS_FOUND, ERROR_CODE_GIFT_NOT_FOUND_FAILED);
         }

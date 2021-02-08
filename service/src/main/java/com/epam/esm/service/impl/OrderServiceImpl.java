@@ -6,6 +6,7 @@ import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
@@ -132,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param createOrderParameter is {@link CreateOrderParameter} object with data provided
      * @return Created {@link OrderDto} object with Order data.
-     * @throws UserNotFoundException            if no User with provided userID founded
+     * @throws UserNotFoundException                       if no User with provided userID founded
      * @throws GiftCertificateByParameterNotFoundException if GiftCertificate with provided giftID founded
      */
     @Transactional
@@ -177,11 +178,12 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Invokes DAO method to get List of all Orders from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link OrderDto} objects with order data.
      */
     @Override
-    public List<OrderDto> getOrders() {
-        List<Order> orderList = orderDAO.getOrders();
+    public List<OrderDto> getOrders(Page page) {
+        List<Order> orderList = orderDAO.getOrders(page.getPage(), page.getSize());
 
         return EntityDtoOrderMapper.toDTO(orderList);
     }

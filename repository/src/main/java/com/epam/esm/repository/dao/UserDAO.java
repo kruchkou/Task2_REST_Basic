@@ -13,10 +13,11 @@ public interface UserDAO {
 
     /**
      * Connects to database and returns all Users.
-     *
+     * @param page is page number
+     * @param size is page size
      * @return List of all {@link User} entities from database.
      */
-    List<User> getUsers();
+    List<User> getUsers(int page, int size);
 
     /**
      * Connects to database and returns User by ID.

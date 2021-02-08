@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 
 import java.util.List;
@@ -45,9 +46,10 @@ public interface GiftCertificateService {
     /**
      * Invokes DAO method to get List of all GiftCertificates from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
-    List<GiftCertificateDto> getCertificates();
+    List<GiftCertificateDto> getCertificates(Page page);
 
     /**
      * Invokes DAO method to get List of all GiftCertificates that matches parameters

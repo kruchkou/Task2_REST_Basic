@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.User;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.UserDto;
@@ -71,11 +72,12 @@ public class UserServiceImpl implements UserService {
     /**
      * Invokes DAO method to get List of all Users from database.
      *
+     * @param page is {@link Page} object with page number and page size
      * @return List of {@link UserDto} objects with user data.
      */
     @Override
-    public List<UserDto> getUsers() {
-        List<User> userList = userDAO.getUsers();
+    public List<UserDto> getUsers(Page page) {
+        List<User> userList = userDAO.getUsers(page.getPage(), page.getSize());
 
         return EntityDtoUserMapper.toDTO(userList);
     }
