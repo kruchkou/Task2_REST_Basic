@@ -26,14 +26,14 @@ public class FilterBuilder {
 
         if (!matcher.matches()) {
             filter.setType(FilterType.EQUALS);
-            filter.setValue(Integer.parseInt(parameter));
+            filter.setValue(Integer.parseInt(parameter.toUpperCase()));
 
         } else {
             String filterTypeName = matcher.group(FILTER_TYPE_GROUP_INDEX).toUpperCase();
 
             filter.setType(FilterType.valueOf(filterTypeName));
 
-            String stringFilterValue = matcher.group(FILTER_VALUE_GROUP_INDEX);
+            String stringFilterValue = matcher.group(FILTER_VALUE_GROUP_INDEX).toUpperCase();;
             filter.setValue(Integer.parseInt(stringFilterValue));
         }
 

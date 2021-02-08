@@ -2,6 +2,7 @@ package com.epam.esm.repository.model.util;
 
 
 import com.epam.esm.repository.dao.util.FilterBuilder;
+import com.epam.esm.repository.dao.util.SortBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -15,18 +16,17 @@ public class GetGiftCertificateQueryParameter {
 
     private String name;
     private String description;
+    @Valid
     private List<Filter> price;
+    @Valid
     private List<Filter> duration;
     private List<String> tagName;
-    private SortBy sortBy;
-    private SortOrientation sortOrientation;
+    private Sort sort;
     @Valid
     private Page page = new Page();
 
     public GetGiftCertificateQueryParameter(String name, String description, List<String> price,
-                                            List<String> duration, String sortBy,
-                                            String sortOrientation,
-                                            List<String> tagName) {
+                                            List<String> duration, String sort, List<String> tagName) {
         if (!StringUtils.isEmpty(name)) {
             setName(name);
         }
@@ -39,21 +39,18 @@ public class GetGiftCertificateQueryParameter {
         if (duration != null && !duration.isEmpty()) {
             setDuration(duration);
         }
-        if (!StringUtils.isEmpty(sortBy)) {
-            setSortBy(sortBy);
-        }
-        if (!StringUtils.isEmpty(sortOrientation)) {
-            setSortOrientation(sortOrientation);
+        if (!StringUtils.isEmpty(sort)) {
+            setSort(sort);
         }
         if (tagName != null && !tagName.isEmpty()) {
             this.tagName = tagName;
         }
     }
 
-
     public void setPrice(List<String> price) {
         this.price = FilterBuilder.build(price);
     }
+
     public void setDuration(List<String> duration) {
         this.duration = FilterBuilder.build(duration);
     }
@@ -66,17 +63,13 @@ public class GetGiftCertificateQueryParameter {
         this.page.setSize(size);
     }
 
-    public void setSortBy(String sortBy) {
-        this.sortBy = SortBy.valueOf(sortBy.toUpperCase());
-    }
-
-    public void setSortOrientation(String sortOrientation) {
-        this.sortOrientation = SortOrientation.valueOf(sortOrientation.toUpperCase());
+    public void setSort(String sortBy) {
+        sort = SortBuilder.build(sortBy);
     }
 
     public boolean isEmpty() {
         return name == null && description == null && price == null && duration == null &&
-                tagName == null && sortBy == null && sortOrientation == null;
+                tagName == null && sort == null;
     }
 
 }

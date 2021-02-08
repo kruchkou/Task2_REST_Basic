@@ -9,7 +9,6 @@ import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
-import com.epam.esm.service.exception.impl.GiftCertificateByParametersNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
 import com.epam.esm.service.util.validator.GiftCertificateValidator;
@@ -211,11 +210,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateQueryParameter);
-
-        if (giftCertificateList.isEmpty()) {
-            throw new GiftCertificateByParametersNotFoundException(
-                    NO_GIFT_CERTIFICATE_WITH_PARAMETERS_FOUND, ERROR_CODE_GIFT_NOT_FOUND_FAILED);
-        }
 
         return EntityDtoGiftCertificateMapper.toDTO(giftCertificateList);
     }

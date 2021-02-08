@@ -47,11 +47,14 @@ class TagServiceImplTest {
     private Tag tag;
     private TagDto testTagDTO;
     private TagDto emptyTagDTO;
+    private Page page;
 
     private List<Tag> tagList;
     private List<TagDto> testDTOList;
     @BeforeEach
     public void setUp() {
+        page = new Page();
+
         tag = new Tag();
         tag.setId(TEST_ID);
         tag.setName(TEST_NAME);
@@ -134,7 +137,7 @@ class TagServiceImplTest {
     public void getTags() {
         given(tagDAO.getTags(anyInt(),anyInt())).willReturn(tagList);
 
-        List<TagDto> receivedDTOList = tagService.getTags(new Page());
+        List<TagDto> receivedDTOList = tagService.getTags(page);
 
         assertIterableEquals(testDTOList, receivedDTOList);
     }

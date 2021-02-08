@@ -5,6 +5,7 @@ import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
@@ -61,9 +62,12 @@ class GiftCertificateServiceImplTest {
     private List<Tag> giftTagList;
     private List<GiftCertificate> giftCertificateList;
     private List<GiftCertificateDto> testGiftCertificateDTOList;
+    private Page page;
 
     @BeforeEach
     public void setUp() {
+        page = new Page();
+
         testTag = new Tag();
         testTag.setId(TEST_TAG_ID);
         testTag.setName(TEST_TAG_NAME);
@@ -196,9 +200,9 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void getCertificates() {
-        given(giftCertificateDAO.getGiftCertificates()).willReturn(giftCertificateList);
+        given(giftCertificateDAO.getGiftCertificates(any())).willReturn(giftCertificateList);
 
-        List<GiftCertificateDto> receivedDTOList = giftCertificateService.getCertificates();
+        List<GiftCertificateDto> receivedDTOList = giftCertificateService.getCertificates(page);
 
         assertIterableEquals(testGiftCertificateDTOList, receivedDTOList);
     }
@@ -207,7 +211,7 @@ class GiftCertificateServiceImplTest {
     public void getCertificatesWithEmptyQueryParameter() {
         giftCertificateService.getCertificates(emptyQueryParameter);
 
-        verify(giftCertificateDAO).getGiftCertificates();
+        verify(giftCertificateDAO).getGiftCertificates(any());
     }
 
     @Test

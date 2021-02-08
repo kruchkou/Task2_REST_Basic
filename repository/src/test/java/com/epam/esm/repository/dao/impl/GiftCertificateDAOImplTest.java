@@ -4,6 +4,7 @@ import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.config.TestConfig;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.Page;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,15 +41,18 @@ class GiftCertificateDAOImplTest {
     private GetGiftCertificateQueryParameter thirdTagGiftParameter;
     private GetGiftCertificateQueryParameter byNameGiftParameter;
     private GetGiftCertificateQueryParameter byDescGiftParameter;
-    private static List<String> firstTagList;
-    private static List<String> secondTagList;
-    private static List<String> thirdTagList;
+    private List<String> firstTagList;
+    private List<String> secondTagList;
+    private List<String> thirdTagList;
+    private Page page;
 
     @Autowired
     private GiftCertificateDAO giftCertificateDAO;
 
     @BeforeEach
     public void setUp() {
+        page = new Page();
+
         firstTagList = new ArrayList<>();
         firstTagList.add(TEST_FIRST_TAG_NAME);
 
@@ -65,16 +69,16 @@ class GiftCertificateDAOImplTest {
         giftCertificate.setDuration(TEST_DURATION);
 
         firstTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null, null, null, null, firstTagList);
+                null, null, null, null,  null, firstTagList);
         secondTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null,null, null, null, secondTagList);
+                null, null, null,null, null, secondTagList);
         thirdTagGiftParameter = new GetGiftCertificateQueryParameter(
-                null, null, null,null, null, null, thirdTagList);
+                null, null, null,null, null, thirdTagList);
 
         byNameGiftParameter = new GetGiftCertificateQueryParameter(
-                TEST_NAME, null, null, null, null,null,null);
+                TEST_NAME, null, null, null,null,null);
         byDescGiftParameter = new GetGiftCertificateQueryParameter(
-                null, TEST_DESC, null, null, null,null,null);
+                null, TEST_DESC, null, null,null,null);
 
     }
 
@@ -122,7 +126,9 @@ class GiftCertificateDAOImplTest {
     @Test
     public void getCertificates() {
         final int EXIST_GIFT_QUANTITY = 2;
-        final List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
+
+        final List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(page.getPage(),
+                page.getSize());
 
         assertNotNull(giftCertificateList);
         assertEquals(EXIST_GIFT_QUANTITY, giftCertificateList.size());

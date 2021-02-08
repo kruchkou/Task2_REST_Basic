@@ -18,16 +18,15 @@ public class GetGiftCertificateQueryHandler {
      */
     private static final String ANY_SYMBOL = "%";
 
-    private static final String TAG_NAME_LIST_PARAMETER_NAME = "names";
-
     private static final int PAGE_NUMBER_OFFSET = 1;
 
+    private static final String TAG_NAME_LIST_PARAMETER_NAME = "names";
     /**
      * JPQL query to get Tag by name
      */
     private static final String SELECT_TAG_BY_NAME_JPQL =
             "from Tag tag where tag.name in (:" + TAG_NAME_LIST_PARAMETER_NAME + ")";
-
+    
     private GetGiftCertificateQueryHandler() {
     }
 
@@ -98,28 +97,26 @@ public class GetGiftCertificateQueryHandler {
 
         criteriaQuery.select(giftRoot).where(predicateList.toArray(new Predicate[0]));
 
-        SortBy sortBy = giftCertificateQueryParameter.getSortBy();
-        SortOrientation sortOrientation = giftCertificateQueryParameter.getSortOrientation();
+
+
         String columnNameToSort = null;
 
-        if (sortBy != null) {
-            if (sortOrientation == null) {
-                sortOrientation = SortOrientation.ASC;
+        Sort sort = giftCertificateQueryParameter.getSort();
+
+        if(sort != null) {
+            SortBy sortBy = sort.getSortBy();
+            SortOrientation sortOrientation = sort.getSortOrientation();
+
+            switch (sortBy) {
+                case NAME:
+                    columnNameToSort = GiftCertificate_.NAME;
+                    break;
+                case DATE:
+                    columnNameToSort = GiftCertificate_.LAST_UPDATE_DATE;
+                    break;
             }
 
-            if (sortBy == SortBy.NAME) {
-                columnNameToSort = GiftCertificate_.NAME;
-            } else if (sortBy == SortBy.DATE) {
-                columnNameToSort = GiftCertificate_.LAST_UPDATE_DATE;
-            }
-        }
-
-        if (sortOrientation != null) {
             Order order = null;
-
-            if (columnNameToSort == null) {
-                columnNameToSort = GiftCertificate_.NAME;
-            }
 
             switch (sortOrientation) {
                 case ASC:
@@ -130,7 +127,6 @@ public class GetGiftCertificateQueryHandler {
                     order = criteriaBuilder.desc(giftRoot.get(columnNameToSort));
                     break;
             }
-
             criteriaQuery.orderBy(order);
         }
 
