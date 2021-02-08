@@ -17,7 +17,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String RUNTIME_EXCEPTION_MESSAGE_LOCALE = "runtime_exception";
     private static final String ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_LOCALE = "illegal_argument_exception";
     private static final String DATA_VALIDATION_EXCEPTION_LOCALE = "data_validation_failed";
-    private static final String GIFT_NOT_FOUND_LOCALE = "gifts.not_found";
+    private static final String GIFT_BY_PARAM_NOT_FOUND_LOCALE = "gifts.by_param_not_found";
+    private static final String GIFT_BY_PARAMS_NOT_FOUND_LOCALE = "gifts.by_params_not_found";
     private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
     private static final String USER_NOT_FOUND_LOCALE = "users.not_found";
     private static final String ORDER_NOT_FOUND_LOCALE = "orders.not_found";
@@ -59,12 +60,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(GiftCertificateNotFoundException.class)
+    @ExceptionHandler(GiftCertificateByParameterNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleGiftCertificateNotFoundException(
-            GiftCertificateNotFoundException e, Locale locale) {
+            GiftCertificateByParameterNotFoundException e, Locale locale) {
 
         String errorMessage = messageSource.getMessage(
-                GIFT_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
+                GIFT_BY_PARAM_NOT_FOUND_LOCALE, new Object[]{e.getNotFoundParameter()}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GiftCertificateByParametersNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleGiftCertificateNotFoundException(
+            GiftCertificateByParametersNotFoundException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                GIFT_BY_PARAMS_NOT_FOUND_LOCALE, new Object[]{}, locale);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
 

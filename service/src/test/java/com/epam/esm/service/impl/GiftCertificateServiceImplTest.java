@@ -6,7 +6,7 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -134,7 +134,7 @@ class GiftCertificateServiceImplTest {
     public void deleteCertificateShouldException() {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class, () -> giftCertificateService.deleteCertificate(TEST_ID));
+        assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.deleteCertificate(TEST_ID));
     }
 
     @Test
@@ -151,7 +151,7 @@ class GiftCertificateServiceImplTest {
     public void getGiftCertificateByIDShouldException() {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class, () -> giftCertificateService.getGiftCertificateByID(TEST_ID));
+        assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.getGiftCertificateByID(TEST_ID));
     }
 
 
@@ -169,7 +169,7 @@ class GiftCertificateServiceImplTest {
     public void updateCertificateShouldException() {
         given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class,
+        assertThrows(GiftCertificateByParameterNotFoundException.class,
                 () -> giftCertificateService.updateCertificate(any(), TEST_ID));
     }
 

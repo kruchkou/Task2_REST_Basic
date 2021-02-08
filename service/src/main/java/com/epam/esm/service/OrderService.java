@@ -1,9 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
-import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDTO;
-import com.epam.esm.service.model.dto.UserDTO;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 
 import java.util.List;

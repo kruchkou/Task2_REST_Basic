@@ -1,8 +1,8 @@
 package com.epam.esm.service.exception.impl;
 
-import com.epam.esm.service.exception.NotFoundException;
+import com.epam.esm.service.exception.ByParameterNotFoundException;
 
-public class TagNotFoundException extends NotFoundException {
+public class TagNotFoundException extends ByParameterNotFoundException {
 
     public TagNotFoundException() {
         super();

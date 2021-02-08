@@ -1,8 +1,8 @@
 package com.epam.esm.service.exception.impl;
 
-import com.epam.esm.service.exception.NotFoundException;
+import com.epam.esm.service.exception.ByParameterNotFoundException;
 
-public class OrderNotFoundException extends NotFoundException {
+public class OrderNotFoundException extends ByParameterNotFoundException {
 
     public OrderNotFoundException() {
         super();

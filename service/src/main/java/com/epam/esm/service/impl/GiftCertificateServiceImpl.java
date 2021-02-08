@@ -6,8 +6,9 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.exception.impl.GiftCertificateByParametersNotFoundException;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
 import com.epam.esm.service.util.validator.GiftCertificateValidator;
@@ -39,7 +40,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     /**
      * Error code when GiftCertificate wasn't found by id
      */
-    private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
+    private static final String ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED = "0102404%d";
+
+    /**
+     * Error message when GiftCertificate wasn't found by parameters
+     */
+    private static final String NO_GIFT_CERTIFICATE_WITH_PARAMETERS_FOUND = "No certificate with parameters found";
+
+    /**
+     * Error code when GiftCertificate wasn't found by parameters
+     */
+    private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0142404";
 
     /**
      * Error message when data failed validation
@@ -77,15 +88,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Invokes DAO method to delete GiftCertificate with provided id.
      *
      * @param id is id of GiftCertificate to be deleted.
-     * @throws GiftCertificateNotFoundException if no GiftCertificate with provided id founded
+     * @throws GiftCertificateByParameterNotFoundException if no GiftCertificate with provided id founded
      */
     @Override
     @Transactional
     public void deleteCertificate(int id) {
         if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
-            throw new GiftCertificateNotFoundException(
+            throw new GiftCertificateByParameterNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                    String.format(ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED, id),
                     String.format(NOT_FOUND_BY_ID_PARAMETER, id));
         }
 
@@ -97,15 +108,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      *
      * @param id is id of GiftCertificate to be returned.
      * @return {@link GiftCertificateDTO} object with GiftCertificate data.
-     * @throws GiftCertificateNotFoundException if no GiftCertificate with provided id founded
+     * @throws GiftCertificateByParameterNotFoundException if no GiftCertificate with provided id founded
      */
     @Override
     public GiftCertificateDTO getGiftCertificateByID(int id) {
         Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
 
-        GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() -> new GiftCertificateNotFoundException(
+        GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() -> new GiftCertificateByParameterNotFoundException(
                 String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                String.format(ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED, id),
                 String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
         return EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
@@ -116,7 +127,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      *
      * @param giftCertificateDTO is {@link GiftCertificateDTO} object with GiftCertificate data.
      * @return {@link GiftCertificateDTO} object with updated data.
-     * @throws GiftCertificateNotFoundException if no GiftCertificate with provided id founded
+     * @throws GiftCertificateByParameterNotFoundException if no GiftCertificate with provided id founded
      */
     @Override
     @Transactional
@@ -124,9 +135,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
 
         if (!optionalGiftCertificate.isPresent()) {
-            throw new GiftCertificateNotFoundException(
+            throw new GiftCertificateByParameterNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                    String.format(ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED, id),
                     String.format(NOT_FOUND_BY_ID_PARAMETER, id));
         }
 
@@ -192,12 +203,18 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateQueryParameter);
+
+        if(giftCertificateList.isEmpty()) {
+            throw new GiftCertificateByParametersNotFoundException(
+                    NO_GIFT_CERTIFICATE_WITH_PARAMETERS_FOUND, ERROR_CODE_GIFT_NOT_FOUND_FAILED);
+        }
+
         return EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
     }
 
     private List<Tag> createTagsIfNotFoundAndReturnAll(List<String> tagNamesList) {
         List<Tag> tagList = new ArrayList<>();
-        
+
         for(String tagName : tagNamesList) {
             Optional<Tag> optionalTag = tagDAO.getTagByName(tagName);
 

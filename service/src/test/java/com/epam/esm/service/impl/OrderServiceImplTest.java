@@ -6,7 +6,7 @@ import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
@@ -172,7 +172,7 @@ class OrderServiceImplTest {
         given(userDAO.getUser(anyInt())).willReturn(Optional.of(testUser));
         given(giftCertificateDAO.getGiftCertificateByID(anyInt())).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class,
+        assertThrows(GiftCertificateByParameterNotFoundException.class,
                 () -> orderService.createOrder(createOrderParameterWithNotExistGiftID));
     }
 

@@ -64,7 +64,8 @@ public class GetGiftCertificateQueryParameter {
     }
 
     public boolean isEmpty() {
-        return name == null && description == null && tagName == null && sortBy == null && sortOrientation == null;
+        return name == null && description == null && price == null && duration == null &&
+                tagName == null && sortBy == null && sortOrientation == null;
     }
 
 }

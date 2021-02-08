@@ -7,7 +7,7 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.OrderService;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDTO;
@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
      * @param createOrderParameter is {@link CreateOrderParameter} object with data provided
      * @return Created {@link OrderDTO} object with Order data.
      * @throws UserNotFoundException            if no User with provided userID founded
-     * @throws GiftCertificateNotFoundException if GiftCertificate with provided giftID founded
+     * @throws GiftCertificateByParameterNotFoundException if GiftCertificate with provided giftID founded
      */
     @Transactional
     public OrderDTO createOrder(CreateOrderParameter createOrderParameter) {
@@ -152,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
         for (Integer giftID : createOrderParameter.getGifts()) {
             Optional<GiftCertificate> giftOptional = giftCertificateDAO.getGiftCertificateByID(giftID);
 
-            GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateNotFoundException(
+            GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateByParameterNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, giftID),
                     String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, giftID),
                     String.format(GIFT_NOT_FOUND_BY_ID_PARAMETER, giftID)));
