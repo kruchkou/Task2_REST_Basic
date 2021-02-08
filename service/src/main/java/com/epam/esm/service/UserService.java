@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.dto.UserDto;
 
 import java.util.List;
 
@@ -14,15 +14,15 @@ public interface UserService {
      * Invokes DAO method to get User with provided id.
      *
      * @param id is id of user to be returned.
-     * @return {@link UserDTO} object with user data.
+     * @return {@link UserDto} object with user data.
      */
-    UserDTO getUser(int id);
+    UserDto getUser(int id);
 
     /**
      * Invokes DAO method to get List of all Users from database.
      *
-     * @return List of {@link UserDTO} objects with user data.
+     * @return List of {@link UserDto} objects with user data.
      */
-    List<UserDTO> getUsers();
+    List<UserDto> getUsers();
 
 }

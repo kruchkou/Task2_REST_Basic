@@ -2,7 +2,7 @@ package com.epam.esm.controller.model.util;
 
 import com.epam.esm.controller.GiftCertificateController;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class GiftCertificateModelAssembler implements RepresentationModelAssembler<GiftCertificateDTO,
-        EntityModel<GiftCertificateDTO>> {
+public class GiftCertificateModelAssembler implements RepresentationModelAssembler<GiftCertificateDto,
+        EntityModel<GiftCertificateDto>> {
 
         @Override
-        public EntityModel<GiftCertificateDTO> toModel(GiftCertificateDTO giftCertificateDTO) {
+        public EntityModel<GiftCertificateDto> toModel(GiftCertificateDto giftCertificateDTO) {
             return EntityModel.of(giftCertificateDTO,
                     linkTo(methodOn(GiftCertificateController.class).getGiftCertificateByID(
                             giftCertificateDTO.getId())).withSelfRel(),

@@ -3,8 +3,8 @@ package com.epam.esm.service.impl;
 import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
-import com.epam.esm.service.model.dto.UserDTO;
-import com.epam.esm.service.util.mapper.EntityDTOUserMapper;
+import com.epam.esm.service.model.dto.UserDto;
+import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,9 +59,9 @@ class UserServiceImplTest {
     @Test
     public void getUserByID() {
         given(userDAO.getUser(TEST_ID)).willReturn(Optional.of(user));
-        UserDTO receivedUserDTO = userService.getUser(TEST_ID);
+        UserDto receivedUserDTO = userService.getUser(TEST_ID);
 
-        UserDTO testedDTO = EntityDTOUserMapper.toDTO(user);
+        UserDto testedDTO = EntityDtoUserMapper.toDTO(user);
         assertEquals(testedDTO, receivedUserDTO);
     }
 
@@ -77,8 +77,8 @@ class UserServiceImplTest {
     public void getUsers() {
         given(userDAO.getUsers()).willReturn(userList);
 
-        List<UserDTO> receivedDTOList = userService.getUsers();
-        List<UserDTO> testDTOList = EntityDTOUserMapper.toDTO(userList);
+        List<UserDto> receivedDTOList = userService.getUsers();
+        List<UserDto> testDTOList = EntityDtoUserMapper.toDTO(userList);
 
         assertIterableEquals(testDTOList, receivedDTOList);
     }

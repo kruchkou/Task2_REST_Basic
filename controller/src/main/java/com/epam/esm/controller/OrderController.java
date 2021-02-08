@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.service.OrderService;
-import com.epam.esm.service.model.dto.OrderDTO;
+import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +22,18 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDTO> getOrders() {
+    public List<OrderDto> getOrders() {
         return orderService.getOrders();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO newOrder(@Valid @RequestBody CreateOrderParameter createOrderParameter) {
+    public OrderDto newOrder(@Valid @RequestBody CreateOrderParameter createOrderParameter) {
         return orderService.createOrder(createOrderParameter);
     }
 
     @GetMapping(params = "user")
-    public List<OrderDTO> getOrdersByUserID(@RequestParam(value = "user") int userID) {
+    public List<OrderDto> getOrdersByUserID(@RequestParam(value = "user") int userID) {
         return orderService.getOrdersByUserID(userID);
     }
 

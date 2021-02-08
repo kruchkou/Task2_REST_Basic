@@ -4,8 +4,8 @@ import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
-import com.epam.esm.service.model.dto.UserDTO;
-import com.epam.esm.service.util.mapper.EntityDTOUserMapper;
+import com.epam.esm.service.model.dto.UserDto;
+import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +53,11 @@ public class UserServiceImpl implements UserService {
      * Invokes DAO method to get User with provided id.
      *
      * @param id is id of user to be returned.
-     * @return {@link UserDTO} object with user data.
+     * @return {@link UserDto} object with user data.
      * @throws UserNotFoundException if no User with provided id founded
      */
     @Override
-    public UserDTO getUser(int id) {
+    public UserDto getUser(int id) {
         Optional<User> optionalUser = userDAO.getUser(id);
 
         User user = optionalUser.orElseThrow(() -> new UserNotFoundException(
@@ -65,18 +65,18 @@ public class UserServiceImpl implements UserService {
                 String.format(ERROR_CODE_USER_BY_ID_NOT_FOUND_FAILED, id),
                 String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
-        return EntityDTOUserMapper.toDTO(user);
+        return EntityDtoUserMapper.toDTO(user);
     }
 
     /**
      * Invokes DAO method to get List of all Users from database.
      *
-     * @return List of {@link UserDTO} objects with user data.
+     * @return List of {@link UserDto} objects with user data.
      */
     @Override
-    public List<UserDTO> getUsers() {
+    public List<UserDto> getUsers() {
         List<User> userList = userDAO.getUsers();
 
-        return EntityDTOUserMapper.toDTO(userList);
+        return EntityDtoUserMapper.toDTO(userList);
     }
 }

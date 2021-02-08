@@ -1,13 +1,15 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
 import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
-import com.epam.esm.service.model.dto.TagDTO;
-import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
+import com.epam.esm.service.model.dto.TagDto;
+import com.epam.esm.service.util.mapper.EntityDtoTagMapper;
 import com.epam.esm.service.util.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,32 +75,48 @@ public class TagServiceImpl implements TagService {
      */
     private static final String ERROR_CODE_TAG_ALREADY_EXISTS = "0222";
 
+    /**
+     * Error message when GiftCertificate wasn't found by id
+     */
+    private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
 
+    /**
+     * Error code when GiftCertificate wasn't found by id
+     */
+    private static final String ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED = "0102404%d";
+    
     /**
      * An object of {@link TagDAO}
      */
     private final TagDAO tagDAO;
 
     /**
+     * An object of {@link TagDAO}
+     */
+    private final GiftCertificateDAO giftCertificateDAO;
+
+    /**
      * Public constructor that receives tagDAO
      *
      * @param tagDAO is {@link TagDAO} interface providing DAO methods.
+     * @param giftCertificateDAO is {@link GiftCertificateDAO} interface providing DAO methods.
      */
     @Autowired
-    public TagServiceImpl(TagDAO tagDAO) {
+    public TagServiceImpl(TagDAO tagDAO, GiftCertificateDAO giftCertificateDAO) {
         this.tagDAO = tagDAO;
+        this.giftCertificateDAO = giftCertificateDAO;
     }
 
     /**
      * Invokes DAO method to create Tag with provided data.
      *
-     * @param tagDTO is {@link TagDTO} object with Tag data.
-     * @return {@link TagDTO} object with created data.
+     * @param tagDTO is {@link TagDto} object with Tag data.
+     * @return {@link TagDto} object with created data.
      * @throws TagDataValidationException if data failed validation
      */
     @Override
     @Transactional
-    public TagDTO createTag(TagDTO tagDTO) {
+    public TagDto createTag(TagDto tagDTO) {
         if (!TagValidator.validateForCreate(tagDTO)) {
             throw new TagDataValidationException(DATA_VALIDATION_EXCEPTION, ERROR_CODE_TAG_VALIDATION_FAILED);
         }
@@ -113,7 +131,7 @@ public class TagServiceImpl implements TagService {
 
         Tag tag = tagDAO.createTag(tagName);
 
-        return EntityDTOTagMapper.toDTO(tag);
+        return EntityDtoTagMapper.toDTO(tag);
     }
 
     /**
@@ -139,11 +157,11 @@ public class TagServiceImpl implements TagService {
      * Invokes DAO method to get Tag with provided id.
      *
      * @param id is id of tag to be returned.
-     * @return {@link TagDTO} object with tag data.
+     * @return {@link TagDto} object with tag data.
      * @throws TagNotFoundException if no Tag with provided id founded
      */
     @Override
-    public TagDTO getTagByID(int id) {
+    public TagDto getTagByID(int id) {
         Optional<Tag> optionalTag = tagDAO.getTagByID(id);
 
         Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(
@@ -151,18 +169,18 @@ public class TagServiceImpl implements TagService {
                 String.format(ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED, id),
                 String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
-        return EntityDTOTagMapper.toDTO(tag);
+        return EntityDtoTagMapper.toDTO(tag);
     }
 
     /**
      * Invokes DAO method to get Tag with provided name.
      *
      * @param name is name of tag to be returned.
-     * @return {@link TagDTO} object with tag data.
+     * @return {@link TagDto} object with tag data.
      * @throws TagNotFoundException if no Tag with provided name founded
      */
     @Override
-    public TagDTO getTagByName(String name) {
+    public TagDto getTagByName(String name) {
         Optional<Tag> optionalTag = tagDAO.getTagByName(name);
 
         Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(
@@ -170,31 +188,37 @@ public class TagServiceImpl implements TagService {
                 ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED,
                 String.format(NOT_FOUND_BY_NAME_PARAMETER, name)));
 
-        return EntityDTOTagMapper.toDTO(tag);
+        return EntityDtoTagMapper.toDTO(tag);
     }
 
     /**
      * Invokes DAO method to get List of all Tags from database.
      *
-     * @return List of {@link TagDTO} objects with tag data.
+     * @return List of {@link TagDto} objects with tag data.
      */
     @Override
-    public List<TagDTO> getTags() {
+    public List<TagDto> getTags() {
         List<Tag> tagList = tagDAO.getTags();
 
-        return EntityDTOTagMapper.toDTO(tagList);
+        return EntityDtoTagMapper.toDTO(tagList);
     }
 
     /**
      * Invokes DAO method to get List of all Tags that linked with GiftCertificate by it's id
      *
      * @param id is id of GiftCertificate.
-     * @return List of {@link TagDTO} objects with tag data.
+     * @return List of {@link TagDto} objects with tag data.
      */
     @Override
-    public List<TagDTO> getTagListByGiftCertificateID(int id) {
+    public List<TagDto> getTagListByGiftCertificateID(int id) {
+        if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
+            throw new GiftCertificateByParameterNotFoundException(
+                    String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
+                    String.format(ERROR_CODE_GIFT_BY_ID_NOT_FOUND_FAILED, id),
+                    String.format(NOT_FOUND_BY_ID_PARAMETER, id));
+        }
         List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
 
-        return EntityDTOTagMapper.toDTO(tagList);
+        return EntityDtoTagMapper.toDTO(tagList);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class TagDTO {
+public class TagDto {
 
     private Integer id;
     private String name;

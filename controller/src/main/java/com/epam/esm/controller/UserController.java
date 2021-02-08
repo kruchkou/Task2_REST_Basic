@@ -1,9 +1,8 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.service.UserService;
-import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +19,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTO> getUsers() {
+    public List<UserDto> getUsers() {
         return userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public UserDTO getGiftCertificateByID(@PathVariable int id) {
+    public UserDto getGiftCertificateByID(@PathVariable int id) {
         return userService.getUser(id);
     }
 

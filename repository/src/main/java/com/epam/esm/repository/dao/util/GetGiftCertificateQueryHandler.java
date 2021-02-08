@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetGiftCertificateQueryHandler {
 
@@ -80,11 +81,12 @@ public class GetGiftCertificateQueryHandler {
 
         List<String> tagNameList = giftCertificateQueryParameter.getTagName();
         if (tagNameList != null) {
+            List<String> tagNamesWithoutDuplicates = tagNameList.stream().distinct().collect(Collectors.toList());
 
             List<Tag> tags = entityManager.createQuery(SELECT_TAG_BY_NAME_JPQL, Tag.class)
-                    .setParameter(TAG_NAME_LIST_PARAMETER_NAME, tagNameList).getResultList();
+                    .setParameter(TAG_NAME_LIST_PARAMETER_NAME, tagNamesWithoutDuplicates).getResultList();
 
-            if (tags.size() != tagNameList.size()) {
+            if (tags.size() != tagNamesWithoutDuplicates.size()) {
                 return new ArrayList<>();
             }
 

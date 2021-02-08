@@ -1,23 +1,23 @@
 package com.epam.esm.service.util.mapper;
 
 import com.epam.esm.repository.model.entity.User;
-import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EntityDTOUserMapperTest {
+class EntityDtoUserMapperTest {
 
     private static final Integer TEST_ID = 2;
     private static final String TEST_NAME = "Test User name";
     private User user;
-    private UserDTO userDTO;
+    private UserDto userDTO;
 
     @BeforeEach
     public void init() {
         user = new User();
-        userDTO = new UserDTO();
+        userDTO = new UserDto();
 
         user.setId(TEST_ID);
         user.setName(TEST_NAME);
@@ -28,7 +28,7 @@ class EntityDTOUserMapperTest {
 
     @Test
     public void shouldConvertToEntity() {
-        final User testUser = EntityDTOUserMapper.toEntity(userDTO);
+        final User testUser = EntityDtoUserMapper.toEntity(userDTO);
 
         assertEquals(TEST_ID, testUser.getId());
         assertEquals(TEST_NAME, testUser.getName());
@@ -36,7 +36,7 @@ class EntityDTOUserMapperTest {
 
     @Test
     public void shouldConvertToDTO() {
-        final UserDTO testUser = EntityDTOUserMapper.toDTO(user);
+        final UserDto testUser = EntityDtoUserMapper.toDTO(user);
 
         assertEquals(TEST_ID, testUser.getId());
         assertEquals(TEST_NAME, testUser.getName());

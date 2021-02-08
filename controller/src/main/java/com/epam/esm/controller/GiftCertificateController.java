@@ -4,8 +4,8 @@ import com.epam.esm.controller.model.util.GiftCertificateModelAssembler;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
-import com.epam.esm.service.model.dto.TagDTO;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
+import com.epam.esm.service.model.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -31,30 +31,30 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
-    public EntityModel<GiftCertificateDTO> getGiftCertificateByID(@PathVariable int id) {
-        GiftCertificateDTO giftCertificateDTO = giftCertificateService.getGiftCertificateByID(id);
+    public EntityModel<GiftCertificateDto> getGiftCertificateByID(@PathVariable int id) {
+        GiftCertificateDto giftCertificateDTO = giftCertificateService.getGiftCertificateByID(id);
         return giftCertificateModelAssembler.toModel(giftCertificateDTO);
     }
 
     @GetMapping("/{id}/tags")
-    public List<TagDTO> getTagListByGiftCertificateID(@PathVariable int id) {
+    public List<TagDto> getTagListByGiftCertificateID(@PathVariable int id) {
         return tagService.getTagListByGiftCertificateID(id);
     }
 
     @GetMapping
-    public List<GiftCertificateDTO> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
+    public List<GiftCertificateDto> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
         return giftCertificateService.getCertificates(parameter);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDTO createGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO) {
+    public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDTO) {
         return giftCertificateService.createGiftCertificate(giftCertificateDTO);
     }
 
     @PutMapping("/{id}")
-    public GiftCertificateDTO updateGiftCertificate(
-            @RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
+    public GiftCertificateDto updateGiftCertificate(
+            @RequestBody GiftCertificateDto giftCertificateDTO, @PathVariable int id) {
 
         return giftCertificateService.updateCertificate(giftCertificateDTO, id);
     }

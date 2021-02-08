@@ -2,27 +2,26 @@ package com.epam.esm.service.util.mapper;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class is Mapper that links GiftCertificates Entities with DTOs.
  */
-public final class EntityDTOGiftCertificateMapper {
+public final class EntityDtoGiftCertificateMapper {
 
-    private EntityDTOGiftCertificateMapper() {
+    private EntityDtoGiftCertificateMapper() {
     }
 
     /**
      * Transforms DTO to Entity
      *
-     * @param giftCertificateDTO is {@link GiftCertificateDTO} object with data to transform
+     * @param giftCertificateDTO is {@link GiftCertificateDto} object with data to transform
      * @return transformed to {@link GiftCertificate} entity.
      */
-    public static GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {
+    public static GiftCertificate toEntity(GiftCertificateDto giftCertificateDTO) {
         GiftCertificate giftCertificate = new GiftCertificate();
 
         giftCertificate.setId(giftCertificateDTO.getId());
@@ -40,10 +39,10 @@ public final class EntityDTOGiftCertificateMapper {
      * Transforms Entity to DTO
      *
      * @param giftCertificate is {@link GiftCertificate} object with data to transform
-     * @return transformed to {@link GiftCertificateDTO} data.
+     * @return transformed to {@link GiftCertificateDto} data.
      */
-    public static GiftCertificateDTO toDTO(GiftCertificate giftCertificate) {
-        GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
+    public static GiftCertificateDto toDTO(GiftCertificate giftCertificate) {
+        GiftCertificateDto giftCertificateDTO = new GiftCertificateDto();
 
         giftCertificateDTO.setId(giftCertificate.getId());
         giftCertificateDTO.setName(giftCertificate.getName());
@@ -58,7 +57,7 @@ public final class EntityDTOGiftCertificateMapper {
             List<String> tagNamesList = new ArrayList<>();
 
             tagList.forEach(tag -> tagNamesList.add(tag.getName()));
-            giftCertificateDTO.setTagNames(tagNamesList);
+            giftCertificateDTO.setTags(tagNamesList);
         }
 
         return giftCertificateDTO;
@@ -68,13 +67,13 @@ public final class EntityDTOGiftCertificateMapper {
      * Transforms List of Entities to List of DTOs
      *
      * @param giftCertificateList is List of {@link GiftCertificate} object with data to transform
-     * @return transformed to List of {@link GiftCertificateDTO} data.
+     * @return transformed to List of {@link GiftCertificateDto} data.
      */
-    public static List<GiftCertificateDTO> toDTO(List<GiftCertificate> giftCertificateList) {
-        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
+    public static List<GiftCertificateDto> toDTO(List<GiftCertificate> giftCertificateList) {
+        List<GiftCertificateDto> giftCertificateDTOList = new ArrayList<>();
 
         giftCertificateList.forEach(giftCertificate -> {
-            GiftCertificateDTO giftCertificateDTO = toDTO(giftCertificate);
+            GiftCertificateDto giftCertificateDTO = toDTO(giftCertificate);
             giftCertificateDTOList.add(giftCertificateDTO);
         });
 
@@ -84,10 +83,10 @@ public final class EntityDTOGiftCertificateMapper {
     /**
      * Transforms List of DTOs to List of Entities
      *
-     * @param giftCertificateDTOList is List of {@link GiftCertificateDTO} object with data to transform
+     * @param giftCertificateDTOList is List of {@link GiftCertificateDto} object with data to transform
      * @return transformed to List of {@link GiftCertificate} data.
      */
-    public static List<GiftCertificate> toEntity(List<GiftCertificateDTO> giftCertificateDTOList) {
+    public static List<GiftCertificate> toEntity(List<GiftCertificateDto> giftCertificateDTOList) {
         List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
         giftCertificateDTOList.forEach(giftCertificateDTO -> {

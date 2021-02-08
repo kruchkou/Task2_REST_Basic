@@ -13,7 +13,7 @@ import java.util.List;
 public class CreateOrderParameter {
 
     @NotNull(message = "{validation.user_id_null}")
-    Integer userID;
+    Integer user;
     @NotEmpty(message = "{validation.gift_id_list_empty}")
     List<@Valid Integer> gifts;
 

@@ -1,7 +1,7 @@
 package com.epam.esm.service.util.mapper;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EntityDTOGiftCertificateMapperTest {
+class EntityDtoGiftCertificateMapperTest {
 
     private static final Integer TEST_ID = 3;
     private static final String TEST_NAME = "test name";
@@ -19,12 +19,12 @@ class EntityDTOGiftCertificateMapperTest {
     private static final LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
     private static final LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
     private GiftCertificate giftCertificate;
-    private GiftCertificateDTO giftCertificateDTO;
+    private GiftCertificateDto giftCertificateDTO;
 
     @BeforeEach
     public void init() {
         giftCertificate = new GiftCertificate();
-        giftCertificateDTO = new GiftCertificateDTO();
+        giftCertificateDTO = new GiftCertificateDto();
 
         giftCertificate.setId(TEST_ID);
         giftCertificate.setName(TEST_NAME);
@@ -45,7 +45,7 @@ class EntityDTOGiftCertificateMapperTest {
 
     @Test
     public void shouldConvertToEntity() {
-        final GiftCertificate testedGiftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
+        final GiftCertificate testedGiftCertificate = EntityDtoGiftCertificateMapper.toEntity(giftCertificateDTO);
 
         assertEquals(TEST_NAME, testedGiftCertificate.getName());
         assertEquals(TEST_DESCRIPTION, testedGiftCertificate.getDescription());
@@ -57,7 +57,7 @@ class EntityDTOGiftCertificateMapperTest {
 
     @Test
     public void shouldConvertToDTO() {
-        final GiftCertificateDTO testedGiftCertificateDTO = EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
+        final GiftCertificateDto testedGiftCertificateDTO = EntityDtoGiftCertificateMapper.toDTO(giftCertificate);
 
         assertEquals(TEST_NAME, testedGiftCertificateDTO.getName());
         assertEquals(TEST_DESCRIPTION, testedGiftCertificateDTO.getDescription());

@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.model.dto.TagDTO;
+import com.epam.esm.service.model.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +20,23 @@ public class TagController {
     }
 
     @GetMapping
-    public List<TagDTO> getTags() {
+    public List<TagDto> getTags() {
         return tagService.getTags();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TagDTO newTag(@RequestBody TagDTO tagDTO) {
+    public TagDto newTag(@RequestBody TagDto tagDTO) {
         return tagService.createTag(tagDTO);
     }
 
     @GetMapping("/{id}")
-    public TagDTO getGiftCertificateByID(@PathVariable int id) {
+    public TagDto getGiftCertificateByID(@PathVariable int id) {
         return tagService.getTagByID(id);
     }
 
     @GetMapping(params = "name")
-    public TagDTO getTagsByName(@RequestParam(value = "name") String name) {
+    public TagDto getTagsByName(@RequestParam(value = "name") String name) {
 
         return tagService.getTagByName(name);
     }

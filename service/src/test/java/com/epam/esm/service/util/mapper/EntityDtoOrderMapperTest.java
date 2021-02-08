@@ -3,9 +3,8 @@ package com.epam.esm.service.util.mapper;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
-import com.epam.esm.service.model.dto.OrderDTO;
-import com.epam.esm.service.model.dto.UserDTO;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
+import com.epam.esm.service.model.dto.OrderDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EntityDTOOrderMapperTest {
+class EntityDtoOrderMapperTest {
 
     private static final Integer TEST_ID = 1;
     private static final int TEST_USER_ID = 2;
@@ -24,16 +23,15 @@ class EntityDTOOrderMapperTest {
     private static final LocalDateTime TEST_DATE = LocalDateTime.now();
 
     private Order testOrder;
-    private OrderDTO testOrderDTO;
-    private UserDTO userDTO;
+    private OrderDto testOrderDTO;
 
     private List<GiftCertificate> giftCertificateList;
-    private List<GiftCertificateDTO> giftCertificateDTOList;
+    private List<GiftCertificateDto> giftCertificateDTOList;
 
     @BeforeEach
     public void init() {
         testOrder = new Order();
-        testOrderDTO = new OrderDTO();
+        testOrderDTO = new OrderDto();
 
         User testUser = new User();
         testUser.setId(TEST_USER_ID);
@@ -50,19 +48,17 @@ class EntityDTOOrderMapperTest {
         testOrder.setPrice(TEST_PRICE);
         testOrder.setDate(TEST_DATE);
 
-        userDTO = EntityDTOUserMapper.toDTO(testUser);
-        giftCertificateDTOList = EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
+        giftCertificateDTOList = EntityDtoGiftCertificateMapper.toDTO(giftCertificateList);
 
         testOrderDTO.setId(TEST_ID);
-        testOrderDTO.setUser(userDTO);
-        testOrderDTO.setGiftList(giftCertificateDTOList);
+        testOrderDTO.setGifts(giftCertificateDTOList);
         testOrderDTO.setPrice(TEST_PRICE);
         testOrderDTO.setDate(TEST_DATE);
     }
 
     @Test
     public void shouldConvertToEntity() {
-        Order order = EntityDTOOrderMapper.toEntity(testOrderDTO);
+        Order order = EntityDtoOrderMapper.toEntity(testOrderDTO);
 
         assertEquals(TEST_ID, order.getId());
         assertEquals(TEST_PRICE, order.getPrice());
@@ -71,11 +67,10 @@ class EntityDTOOrderMapperTest {
 
     @Test
     public void shouldConvertToDTO() {
-        OrderDTO orderDTO = EntityDTOOrderMapper.toDTO(testOrder);
+        OrderDto orderDTO = EntityDtoOrderMapper.toDTO(testOrder);
 
         assertEquals(TEST_ID, orderDTO.getId());
-        assertEquals(userDTO, orderDTO.getUser());
-        assertEquals(giftCertificateDTOList, orderDTO.getGiftList());
+        assertEquals(giftCertificateDTOList, orderDTO.getGifts());
         assertEquals(TEST_PRICE, orderDTO.getPrice());
         assertEquals(TEST_DATE, orderDTO.getDate());
     }

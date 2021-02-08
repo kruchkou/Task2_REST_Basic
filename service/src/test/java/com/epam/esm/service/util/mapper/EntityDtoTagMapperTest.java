@@ -1,23 +1,23 @@
 package com.epam.esm.service.util.mapper;
 
 import com.epam.esm.repository.model.entity.Tag;
-import com.epam.esm.service.model.dto.TagDTO;
+import com.epam.esm.service.model.dto.TagDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EntityDTOTagMapperTest {
+class EntityDtoTagMapperTest {
 
     private static final Integer TEST_ID = 2;
     private static final String TEST_NAME = "Test Tag name";
     private Tag tag;
-    private TagDTO tagDTO;
+    private TagDto tagDTO;
 
     @BeforeEach
     public void init() {
         tag = new Tag();
-        tagDTO = new TagDTO();
+        tagDTO = new TagDto();
 
         tag.setId(TEST_ID);
         tag.setName(TEST_NAME);
@@ -28,7 +28,7 @@ class EntityDTOTagMapperTest {
 
     @Test
     public void shouldConvertToEntity() {
-        final Tag testTag = EntityDTOTagMapper.toEntity(tagDTO);
+        final Tag testTag = EntityDtoTagMapper.toEntity(tagDTO);
 
         assertEquals(TEST_ID, testTag.getId());
         assertEquals(TEST_NAME, testTag.getName());
@@ -36,7 +36,7 @@ class EntityDTOTagMapperTest {
 
     @Test
     public void shouldConvertToDTO() {
-        final TagDTO testTag = EntityDTOTagMapper.toDTO(tag);
+        final TagDto testTag = EntityDtoTagMapper.toDTO(tag);
 
         assertEquals(TEST_ID, testTag.getId());
         assertEquals(TEST_NAME, testTag.getName());

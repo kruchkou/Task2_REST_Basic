@@ -10,9 +10,9 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
-import com.epam.esm.service.model.dto.OrderDTO;
+import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
-import com.epam.esm.service.util.mapper.EntityDTOOrderMapper;
+import com.epam.esm.service.util.mapper.EntityDtoOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,21 +102,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getOrdersByUserID(int userID) {
+    public List<OrderDto> getOrdersByUserID(int userID) {
         List<Order> orderList = orderDAO.getOrdersByUserID(userID);
 
-        return EntityDTOOrderMapper.toDTO(orderList);
+        return EntityDtoOrderMapper.toDTO(orderList);
     }
 
     /**
      * Invokes DAO method to get Order with provided id.
      *
      * @param id is id of order to be returned.
-     * @return {@link OrderDTO} object with order data.
+     * @return {@link OrderDto} object with order data.
      * @throws OrderNotFoundException if no Order with provided id founded
      */
     @Override
-    public OrderDTO getOrder(int id) {
+    public OrderDto getOrder(int id) {
         Optional<Order> optionalOrder = orderDAO.getOrder(id);
 
         Order order = optionalOrder.orElseThrow(() -> new OrderNotFoundException(
@@ -124,21 +124,21 @@ public class OrderServiceImpl implements OrderService {
                 String.format(ERROR_CODE_ORDER_BY_ID_NOT_FOUND_FAILED, id),
                 String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
-        return EntityDTOOrderMapper.toDTO(order);
+        return EntityDtoOrderMapper.toDTO(order);
     }
 
     /**
      * Connects to database and add an new Order.
      *
      * @param createOrderParameter is {@link CreateOrderParameter} object with data provided
-     * @return Created {@link OrderDTO} object with Order data.
+     * @return Created {@link OrderDto} object with Order data.
      * @throws UserNotFoundException            if no User with provided userID founded
      * @throws GiftCertificateByParameterNotFoundException if GiftCertificate with provided giftID founded
      */
     @Transactional
-    public OrderDTO createOrder(CreateOrderParameter createOrderParameter) {
-        Integer userID = createOrderParameter.getUserID();
-        Optional<User> userOptional = userDAO.getUser(createOrderParameter.getUserID());
+    public OrderDto createOrder(CreateOrderParameter createOrderParameter) {
+        Integer userID = createOrderParameter.getUser();
+        Optional<User> userOptional = userDAO.getUser(createOrderParameter.getUser());
 
         User user = userOptional.orElseThrow(() -> new UserNotFoundException(
                 String.format(NO_USER_WITH_ID_FOUND, userID),
@@ -171,19 +171,19 @@ public class OrderServiceImpl implements OrderService {
         order.setDate(currentLocalDateTime);
 
         Order resultOrder = orderDAO.createOrder(order);
-        return EntityDTOOrderMapper.toDTO(resultOrder);
+        return EntityDtoOrderMapper.toDTO(resultOrder);
     }
 
     /**
      * Invokes DAO method to get List of all Orders from database.
      *
-     * @return List of {@link OrderDTO} objects with order data.
+     * @return List of {@link OrderDto} objects with order data.
      */
     @Override
-    public List<OrderDTO> getOrders() {
+    public List<OrderDto> getOrders() {
         List<Order> orderList = orderDAO.getOrders();
 
-        return EntityDTOOrderMapper.toDTO(orderList);
+        return EntityDtoOrderMapper.toDTO(orderList);
     }
 
 }

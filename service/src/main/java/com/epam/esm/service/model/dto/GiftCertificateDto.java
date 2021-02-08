@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class GiftCertificateDTO {
+public class GiftCertificateDto {
 
     private Integer id;
     private String name;
@@ -22,5 +22,5 @@ public class GiftCertificateDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastUpdateDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> tagNames;
+    private List<String> tags;
 }
