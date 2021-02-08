@@ -5,7 +5,7 @@ import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
@@ -190,7 +190,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void createGiftCertificateShouldException() {
-        assertThrows(GiftCertificateDataValidationException.class,
+        assertThrows(DataValidationException.class,
                 () -> giftCertificateService.createGiftCertificate(notFullyValuedGiftCertificateDTO));
     }
 

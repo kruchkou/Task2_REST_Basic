@@ -8,7 +8,7 @@ import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParametersNotFoundException;
-import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
 import com.epam.esm.service.util.validator.GiftCertificateValidator;
@@ -133,7 +133,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     public GiftCertificateDto updateCertificate(GiftCertificateDto giftCertificateDTO, int id) {
         if (!GiftCertificateValidator.validateForUpdate(giftCertificateDTO)) {
-            throw new GiftCertificateDataValidationException(
+            throw new DataValidationException(
                     DATA_VALIDATION_EXCEPTION, ERROR_CODE_GIFT_VALIDATION_FAILED);
         }
 
@@ -163,13 +163,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      *
      * @param giftCertificateDTO is {@link GiftCertificateDto} object with GiftCertificate data.
      * @return {@link GiftCertificateDto} object with created data.
-     * @throws GiftCertificateDataValidationException if data failed validation
+     * @throws DataValidationException if data failed validation
      */
     @Override
     @Transactional
     public GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDTO) {
         if (!GiftCertificateValidator.validateForCreate(giftCertificateDTO)) {
-            throw new GiftCertificateDataValidationException(
+            throw new DataValidationException(
                     DATA_VALIDATION_EXCEPTION, ERROR_CODE_GIFT_VALIDATION_FAILED);
         }
 

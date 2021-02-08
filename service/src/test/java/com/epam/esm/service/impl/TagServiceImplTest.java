@@ -6,7 +6,7 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
-import com.epam.esm.service.exception.impl.TagDataValidationException;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
 import com.epam.esm.service.model.dto.TagDto;
 import com.epam.esm.service.util.mapper.EntityDtoTagMapper;
@@ -116,7 +116,7 @@ class TagServiceImplTest {
 
     @Test
     public void createTagShouldValidationException() {
-        assertThrows(TagDataValidationException.class,
+        assertThrows(DataValidationException.class,
                 () -> tagService.createTag(emptyTagDTO));
     }
 

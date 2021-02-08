@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import java.util.Locale;
 
 @RestControllerAdvice
@@ -40,19 +41,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(GiftCertificateDataValidationException.class)
-    public ResponseEntity<ExceptionResponse> handleGiftCertificateDataValidationException(
-            GiftCertificateDataValidationException e, Locale locale) {
-
-        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
-
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(TagDataValidationException.class)
-    public ResponseEntity<ExceptionResponse> handleTagDataValidationException(
-            TagDataValidationException e, Locale locale) {
+    @ExceptionHandler(DataValidationException.class)
+    public ResponseEntity<ExceptionResponse> handleDataValidationException(
+            DataValidationException e, Locale locale) {
 
         String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
@@ -128,6 +119,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
+
+
     //@ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
 
@@ -136,4 +129,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

@@ -6,7 +6,7 @@ import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
-import com.epam.esm.service.exception.impl.TagDataValidationException;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
 import com.epam.esm.service.model.dto.TagDto;
 import com.epam.esm.service.util.mapper.EntityDtoTagMapper;
@@ -112,13 +112,13 @@ public class TagServiceImpl implements TagService {
      *
      * @param tagDTO is {@link TagDto} object with Tag data.
      * @return {@link TagDto} object with created data.
-     * @throws TagDataValidationException if data failed validation
+     * @throws DataValidationException if data failed validation
      */
     @Override
     @Transactional
     public TagDto createTag(TagDto tagDTO) {
         if (!TagValidator.validateForCreate(tagDTO)) {
-            throw new TagDataValidationException(DATA_VALIDATION_EXCEPTION, ERROR_CODE_TAG_VALIDATION_FAILED);
+            throw new DataValidationException(DATA_VALIDATION_EXCEPTION, ERROR_CODE_TAG_VALIDATION_FAILED);
         }
 
         String tagName = tagDTO.getName();
