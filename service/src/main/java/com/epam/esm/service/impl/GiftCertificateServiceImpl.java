@@ -4,7 +4,6 @@ import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
-import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
@@ -188,16 +187,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     public List<GiftCertificateDTO> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
-        if (giftCertificateQueryParameter.isEmpty()) {
-            return getCertificates();
-        }
-
-        List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateQueryParameter);
-        return EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
-    }
-
-    @Override
-    public List<GiftCertificateDTO> getCertificates(FilteredGetGiftCertificateQueryParameter giftCertificateQueryParameter) {
         if (giftCertificateQueryParameter.isEmpty()) {
             return getCertificates();
         }

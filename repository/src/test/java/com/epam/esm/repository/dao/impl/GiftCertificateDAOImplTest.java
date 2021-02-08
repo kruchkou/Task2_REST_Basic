@@ -3,7 +3,7 @@ package com.epam.esm.repository.dao.impl;
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.config.TestConfig;
 import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +35,11 @@ class GiftCertificateDAOImplTest {
     private static final int TEST_DURATION = 30;
 
     private GiftCertificate giftCertificate;
-    private FilteredGetGiftCertificateQueryParameter firstTagGiftParameter;
-    private FilteredGetGiftCertificateQueryParameter secondTagGiftParameter;
-    private FilteredGetGiftCertificateQueryParameter thirdTagGiftParameter;
-    private FilteredGetGiftCertificateQueryParameter byNameGiftParameter;
-    private FilteredGetGiftCertificateQueryParameter byDescGiftParameter;
+    private GetGiftCertificateQueryParameter firstTagGiftParameter;
+    private GetGiftCertificateQueryParameter secondTagGiftParameter;
+    private GetGiftCertificateQueryParameter thirdTagGiftParameter;
+    private GetGiftCertificateQueryParameter byNameGiftParameter;
+    private GetGiftCertificateQueryParameter byDescGiftParameter;
     private static List<String> firstTagList;
     private static List<String> secondTagList;
     private static List<String> thirdTagList;
@@ -64,16 +64,16 @@ class GiftCertificateDAOImplTest {
         giftCertificate.setPrice(TEST_PRICE);
         giftCertificate.setDuration(TEST_DURATION);
 
-        firstTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+        firstTagGiftParameter = new GetGiftCertificateQueryParameter(
                 null, null, null, null, null, null, firstTagList);
-        secondTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+        secondTagGiftParameter = new GetGiftCertificateQueryParameter(
                 null, null, null,null, null, null, secondTagList);
-        thirdTagGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+        thirdTagGiftParameter = new GetGiftCertificateQueryParameter(
                 null, null, null,null, null, null, thirdTagList);
 
-        byNameGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+        byNameGiftParameter = new GetGiftCertificateQueryParameter(
                 TEST_NAME, null, null, null, null,null,null);
-        byDescGiftParameter = new FilteredGetGiftCertificateQueryParameter(
+        byDescGiftParameter = new GetGiftCertificateQueryParameter(
                 null, TEST_DESC, null, null, null,null,null);
 
     }

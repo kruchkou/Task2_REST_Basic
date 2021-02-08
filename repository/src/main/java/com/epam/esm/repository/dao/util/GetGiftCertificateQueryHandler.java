@@ -16,11 +16,6 @@ public class GetGiftCertificateQueryHandler {
      * Symbol for matching any symbol at LIKE sql requests
      */
     private static final String ANY_SYMBOL = "%";
-    /**
-     * JPQL query to get GiftCertificate by ID
-     */
-    private static final String SELECT_GIFT_BY_TAG_NAME_JPQL = "SELECT DISTINCT gift FROM GiftCertificate gift" +
-            "LEFT JOIN FETCH gift.tagList where gift.id = :id";
 
     private static final String TAG_NAME_LIST_PARAMETER_NAME = "names";
     /**
@@ -40,7 +35,7 @@ public class GetGiftCertificateQueryHandler {
      * @return {@link CriteriaQuery} object
      */
     public static List<GiftCertificate> handle(EntityManager entityManager,
-                                               FilteredGetGiftCertificateQueryParameter giftCertificateQueryParameter) {
+                                               GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 

@@ -112,7 +112,7 @@ class GiftCertificateServiceImplTest {
         queryParameter = new GetGiftCertificateQueryParameter();
 
         queryParameter.setName(TEST_NEW_NAME);
-        queryParameter.setTagName(TEST_TAG_NAME);
+        queryParameter.setTagName(tagNamesList);
 
         giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDAO, tagDAO);
     }

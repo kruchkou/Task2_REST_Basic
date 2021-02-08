@@ -1,6 +1,5 @@
 package com.epam.esm.service;
 
-import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 
@@ -57,8 +56,5 @@ public interface GiftCertificateService {
      * @return List of {@link GiftCertificateDTO} objects with GiftCertificate data.
      */
     List<GiftCertificateDTO> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter);
-
-
-    List<GiftCertificateDTO> getCertificates(FilteredGetGiftCertificateQueryParameter giftCertificateQueryParameter);
 
 }

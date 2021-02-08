@@ -11,11 +11,6 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Audited
-@NamedNativeQuery(
-        name = "getTagListByGiftID",
-        query = "SELECT * From tag tags join gift_tag link on tags.id = link.tag " +
-                "WHERE link.gift = :giftID",
-        resultClass = Tag.class)
 public class Tag {
 
     @Id

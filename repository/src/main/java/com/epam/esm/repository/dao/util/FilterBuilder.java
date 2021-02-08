@@ -1,4 +1,7 @@
-package com.epam.esm.repository.model.util;
+package com.epam.esm.repository.dao.util;
+
+import com.epam.esm.repository.model.util.Filter;
+import com.epam.esm.repository.model.util.FilterType;
 
 import java.util.List;
 import java.util.regex.Matcher;

@@ -23,17 +23,6 @@ import java.util.Optional;
 public class TagDAOImpl implements TagDAO {
 
     /**
-     * Query for database to delete records from gift_tag table with provided gift ID.
-     */
-    private static final String GET_TAG_LIST_BY_GIFT_ID_NAMED_QUERY = "getTagListByGiftID";
-
-    /**
-     * Gift ID parameter.
-     */
-    private static final String GIFT_ID_PARAM = "giftID";
-
-
-    /**
      * An object of {@link EntityManager} that is being injected.
      */
     @PersistenceContext
@@ -104,10 +93,16 @@ public class TagDAOImpl implements TagDAO {
      */
     @Override
     public List<Tag> getTagListByGiftCertificateID(int id) {
-        Query query = entityManager.createNamedQuery(GET_TAG_LIST_BY_GIFT_ID_NAMED_QUERY);
-        query.setParameter(GIFT_ID_PARAM, id);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> tagQuery = criteriaBuilder.createQuery(Tag.class);
 
-        return query.getResultList();
+        Root<GiftCertificate> giftRoot = tagQuery.from(GiftCertificate.class);
+        ListJoin<GiftCertificate, Tag> tagList = giftRoot.joinList(GiftCertificate_.TAG_LIST);
+        tagQuery
+                .select(tagList)
+                .where(criteriaBuilder.equal(giftRoot.get(GiftCertificate_.ID), id));
+
+        return entityManager.createQuery(tagQuery).getResultList();
     }
 
     /**
@@ -126,4 +121,5 @@ public class TagDAOImpl implements TagDAO {
 
         return entityManager.createQuery(tagQuery).getResultStream().findFirst();
     }
+
 }

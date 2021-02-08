@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.controller.model.util.GiftCertificateModelAssembler;
-import com.epam.esm.repository.model.util.FilteredGetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
@@ -42,13 +41,8 @@ public class GiftCertificateController {
         return tagService.getTagListByGiftCertificateID(id);
     }
 
-//    @GetMapping
-//    public List<GiftCertificateDTO> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
-//        return giftCertificateService.getCertificates(parameter);
-//    }
-
     @GetMapping
-    public List<GiftCertificateDTO> getGiftCertificateByAllParams(FilteredGetGiftCertificateQueryParameter parameter) {
+    public List<GiftCertificateDTO> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
         return giftCertificateService.getCertificates(parameter);
     }
 

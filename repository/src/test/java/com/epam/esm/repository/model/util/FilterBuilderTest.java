@@ -1,5 +1,6 @@
 package com.epam.esm.repository.model.util;
 
+import com.epam.esm.repository.dao.util.FilterBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
