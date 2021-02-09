@@ -6,13 +6,13 @@ import com.epam.esm.service.model.dto.UserDto;
 import java.util.List;
 
 /**
- * Interface provides methods to interact with UserDAO.
- * Methods should transforms received information into DAO-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with UserDao.
+ * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
  */
 public interface UserService {
 
     /**
-     * Invokes DAO method to get User with provided id.
+     * Invokes Dao method to get User with provided id.
      *
      * @param id is id of user to be returned.
      * @return {@link UserDto} object with user data.
@@ -20,7 +20,7 @@ public interface UserService {
     UserDto getUser(int id);
 
     /**
-     * Invokes DAO method to get List of all Users from database.
+     * Invokes Dao method to get List of all Users from database.
      *
      * @param page is {@link Page} object with page number and page size
      * @return List of {@link UserDto} objects with user data.

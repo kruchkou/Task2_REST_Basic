@@ -1,6 +1,7 @@
 package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
  * Interface provides methods to interact with GiftCertificate data from database.
  * Methods should connect to database and manipulate with data(create, read, update, delete).
  */
-public interface GiftCertificateDAO {
+public interface GiftCertificateDao {
 
     /**
      * Connects to database and deletes GiftCertificate with provided ID
@@ -59,5 +60,13 @@ public interface GiftCertificateDAO {
      * @return List of matched {@link GiftCertificate} entities from database.
      */
     List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter);
+
+    /**
+     * Connects to database and returns list of GiftCertificates linked to Order in order_gift table
+     *
+     * @param id is Order
+     * @return List of matched {@link Order} entities from database.
+     */
+    public List<GiftCertificate> getGiftCertificateListByOrderID(int id);
 
 }

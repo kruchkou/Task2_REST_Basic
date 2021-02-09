@@ -9,7 +9,7 @@ import java.util.Optional;
  * Interface provides methods to interact with Tag data from database.
  * Methods should connect to database and manipulate with data(create, read, delete).
  */
-public interface TagDAO {
+public interface TagDao {
 
     /**
      * Connects to database and deletes Tag with provided ID.

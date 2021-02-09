@@ -7,6 +7,9 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -15,14 +18,18 @@ public class GiftCertificateModelAssembler implements RepresentationModelAssembl
         EntityModel<GiftCertificateDto>> {
 
         @Override
-        public EntityModel<GiftCertificateDto> toModel(GiftCertificateDto giftCertificateDTO) {
-            return EntityModel.of(giftCertificateDTO,
+        public EntityModel<GiftCertificateDto> toModel(GiftCertificateDto giftCertificateDto) {
+            return EntityModel.of(giftCertificateDto,
                     linkTo(methodOn(GiftCertificateController.class).getGiftCertificateByID(
-                            giftCertificateDTO.getId())).withSelfRel(),
+                            giftCertificateDto.getId())).withSelfRel(),
                     linkTo(methodOn(GiftCertificateController.class).getGiftCertificateByAllParams(
                             new GetGiftCertificateQueryParameter())).withRel("Gift certificates"),
                     linkTo(methodOn(GiftCertificateController.class).getTagListByGiftCertificateID(
-                            giftCertificateDTO.getId())).withRel("Tags"));
+                            giftCertificateDto.getId())).withRel("Tags"));
         }
+
+    public List<EntityModel<GiftCertificateDto>> toModel(List<GiftCertificateDto> giftCertificateDto) {
+        return giftCertificateDto.stream().map(this::toModel).collect(Collectors.toList());
+    }
 
 }

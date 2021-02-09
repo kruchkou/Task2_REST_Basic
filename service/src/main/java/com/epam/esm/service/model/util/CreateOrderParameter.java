@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -11,7 +13,9 @@ import java.util.List;
 public class CreateOrderParameter {
 
     @Min(1)
+    @NotNull
     Integer user;
+    @NotEmpty
     List<@Min(1) Integer> gifts;
 
 }

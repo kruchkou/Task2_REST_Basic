@@ -23,15 +23,15 @@ class EntityDtoOrderMapperTest {
     private static final LocalDateTime TEST_DATE = LocalDateTime.now();
 
     private Order testOrder;
-    private OrderDto testOrderDTO;
+    private OrderDto testOrderDto;
 
     private List<GiftCertificate> giftCertificateList;
-    private List<GiftCertificateDto> giftCertificateDTOList;
+    private List<GiftCertificateDto> giftCertificateDtoList;
 
     @BeforeEach
     public void init() {
         testOrder = new Order();
-        testOrderDTO = new OrderDto();
+        testOrderDto = new OrderDto();
 
         User testUser = new User();
         testUser.setId(TEST_USER_ID);
@@ -48,17 +48,17 @@ class EntityDtoOrderMapperTest {
         testOrder.setPrice(TEST_PRICE);
         testOrder.setDate(TEST_DATE);
 
-        giftCertificateDTOList = EntityDtoGiftCertificateMapper.toDTO(giftCertificateList);
+        giftCertificateDtoList = EntityDtoGiftCertificateMapper.toDto(giftCertificateList);
 
-        testOrderDTO.setId(TEST_ID);
-        testOrderDTO.setGifts(giftCertificateDTOList);
-        testOrderDTO.setPrice(TEST_PRICE);
-        testOrderDTO.setDate(TEST_DATE);
+        testOrderDto.setId(TEST_ID);
+        testOrderDto.setGifts(giftCertificateDtoList);
+        testOrderDto.setPrice(TEST_PRICE);
+        testOrderDto.setDate(TEST_DATE);
     }
 
     @Test
     public void shouldConvertToEntity() {
-        Order order = EntityDtoOrderMapper.toEntity(testOrderDTO);
+        Order order = EntityDtoOrderMapper.toEntity(testOrderDto);
 
         assertEquals(TEST_ID, order.getId());
         assertEquals(TEST_PRICE, order.getPrice());
@@ -66,12 +66,12 @@ class EntityDtoOrderMapperTest {
     }
 
     @Test
-    public void shouldConvertToDTO() {
-        OrderDto orderDTO = EntityDtoOrderMapper.toDTO(testOrder);
+    public void shouldConvertToDto() {
+        OrderDto orderDto = EntityDtoOrderMapper.toDto(testOrder);
 
-        assertEquals(TEST_ID, orderDTO.getId());
-        assertEquals(giftCertificateDTOList, orderDTO.getGifts());
-        assertEquals(TEST_PRICE, orderDTO.getPrice());
-        assertEquals(TEST_DATE, orderDTO.getDate());
+        assertEquals(TEST_ID, orderDto.getId());
+        assertEquals(giftCertificateDtoList, orderDto.getGifts());
+        assertEquals(TEST_PRICE, orderDto.getPrice());
+        assertEquals(TEST_DATE, orderDto.getDate());
     }
 }

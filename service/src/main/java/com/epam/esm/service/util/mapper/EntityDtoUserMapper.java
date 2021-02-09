@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class is Mapper that links Tag Entities with DTOs.
+ * Class is Mapper that links Tag Entities with Dtos.
  */
 public final class EntityDtoUserMapper {
 
@@ -19,37 +19,37 @@ public final class EntityDtoUserMapper {
     }
 
     /**
-     * Transforms DTO to Entity
+     * Transforms Dto to Entity
      *
-     * @param userDTO is {@link UserDto} object with data to transform
+     * @param userDto is {@link UserDto} object with data to transform
      * @return transformed to {@link User} entity.
      */
-    public static User toEntity(UserDto userDTO) {
+    public static User toEntity(UserDto userDto) {
         User user = new User();
 
-        user.setId(userDTO.getId());
-        user.setName(userDTO.getName());
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
 
         return user;
     }
 
     /**
-     * Transforms Entity to DTO
+     * Transforms Entity to Dto
      *
      * @param user is {@link User} object with data to transform
      * @return transformed to {@link UserDto} data.
      */
-    public static UserDto toDTO(User user) {
-        UserDto userDTO = new UserDto();
+    public static UserDto toDto(User user) {
+        UserDto userDto = new UserDto();
 
-        List<UserOrderDto> orderDTOList = toUserOrder(user.getOrderList());
+        List<UserOrderDto> orderDtoList = toUserOrder(user.getOrderList());
 
-        userDTO.setOrderList(orderDTOList);
+        userDto.setOrderList(orderDtoList);
 
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
 
-        return userDTO;
+        return userDto;
     }
 
     private static List<UserOrderDto> toUserOrder(List<Order> orders) {
@@ -64,8 +64,8 @@ public final class EntityDtoUserMapper {
 
         userOrder.setId(order.getId());
 
-        List<GiftCertificateDto> giftCertificateDTOList = EntityDtoGiftCertificateMapper.toDTO(order.getGiftList());
-        userOrder.setGifts(giftCertificateDTOList);
+        List<GiftCertificateDto> giftCertificateDtoList = EntityDtoGiftCertificateMapper.toDto(order.getGiftList());
+        userOrder.setGifts(giftCertificateDtoList);
 
         userOrder.setPrice(order.getPrice());
         userOrder.setDate(order.getDate());
@@ -74,29 +74,29 @@ public final class EntityDtoUserMapper {
     }
 
     /**
-     * Transforms List of Entities to List of DTOs
+     * Transforms List of Entities to List of Dtos
      *
      * @param userList is List of {@link User} object with data to transform
      * @return transformed to List of {@link UserDto} data.
      */
-    public static List<UserDto> toDTO(List<User> userList) {
-        List<UserDto> userDTOList = new ArrayList<>();
+    public static List<UserDto> toDto(List<User> userList) {
+        List<UserDto> userDtoList = new ArrayList<>();
 
-        userList.forEach(user -> userDTOList.add(toDTO(user)));
+        userList.forEach(user -> userDtoList.add(toDto(user)));
 
-        return userDTOList;
+        return userDtoList;
     }
 
     /**
-     * Transforms List of DTOs to List of Entities
+     * Transforms List of Dtos to List of Entities
      *
-     * @param userDTOList is List of {@link UserDto} object with data to transform
+     * @param userDtoList is List of {@link UserDto} object with data to transform
      * @return transformed to List of {@link User} data.
      */
-    public static List<User> toEntity(List<UserDto> userDTOList) {
+    public static List<User> toEntity(List<UserDto> userDtoList) {
         List<User> userList = new ArrayList<>();
 
-        userDTOList.forEach(tagDTO -> userList.add(toEntity(tagDTO)));
+        userDtoList.forEach(tagDto -> userList.add(toEntity(tagDto)));
 
         return userList;
     }

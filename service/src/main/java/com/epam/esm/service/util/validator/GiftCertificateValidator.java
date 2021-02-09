@@ -16,53 +16,53 @@ public final class GiftCertificateValidator {
     /**
      * Validates data for creation
      *
-     * @param giftCertificateDTO is {@link GiftCertificateDto} object with data to create new GiftCertificate
+     * @param giftCertificateDto is {@link GiftCertificateDto} object with data to create new GiftCertificate
      * @return true if data is OK, false if data failed validation
      */
-    public static boolean validateForCreate(GiftCertificateDto giftCertificateDTO) {
-        String name = giftCertificateDTO.getName();
-        if (name == null || !validateName(giftCertificateDTO.getName())) {
+    public static boolean validateForCreate(GiftCertificateDto giftCertificateDto) {
+        String name = giftCertificateDto.getName();
+        if (name == null || !validateName(giftCertificateDto.getName())) {
             return false;
         }
 
-        String description = giftCertificateDTO.getDescription();
-        if (description == null || !validateDesc(giftCertificateDTO.getDescription())) {
+        String description = giftCertificateDto.getDescription();
+        if (description == null || !validateDesc(giftCertificateDto.getDescription())) {
             return false;
         }
 
-        Integer price = giftCertificateDTO.getPrice();
-        if (price == null || !validatePrice(giftCertificateDTO.getPrice())) {
+        Integer price = giftCertificateDto.getPrice();
+        if (price == null || !validatePrice(giftCertificateDto.getPrice())) {
             return false;
         }
 
-        Integer duration = giftCertificateDTO.getDuration();
-        if (duration == null || !validateDuration(giftCertificateDTO.getDuration())) {
+        Integer duration = giftCertificateDto.getDuration();
+        if (duration == null || !validateDuration(giftCertificateDto.getDuration())) {
             return false;
         }
-        return validateTagList(giftCertificateDTO.getTags());
+        return validateTagList(giftCertificateDto.getTags());
     }
 
-    public static boolean validateForUpdate(GiftCertificateDto giftCertificateDTO) {
-        String name = giftCertificateDTO.getName();
-        if (name != null && !validateName(giftCertificateDTO.getName())) {
+    public static boolean validateForUpdate(GiftCertificateDto giftCertificateDto) {
+        String name = giftCertificateDto.getName();
+        if (name != null && !validateName(giftCertificateDto.getName())) {
             return false;
         }
 
-        String description = giftCertificateDTO.getDescription();
-        if (description != null && !validateDesc(giftCertificateDTO.getDescription())) {
+        String description = giftCertificateDto.getDescription();
+        if (description != null && !validateDesc(giftCertificateDto.getDescription())) {
             return false;
         }
 
-        Integer price = giftCertificateDTO.getPrice();
-        if (price != null && !validatePrice(giftCertificateDTO.getPrice())) {
+        Integer price = giftCertificateDto.getPrice();
+        if (price != null && !validatePrice(giftCertificateDto.getPrice())) {
             return false;
         }
 
-        Integer duration = giftCertificateDTO.getDuration();
-        if (duration != null && !validateDuration(giftCertificateDTO.getDuration())) {
+        Integer duration = giftCertificateDto.getDuration();
+        if (duration != null && !validateDuration(giftCertificateDto.getDuration())) {
             return false;
         }
-        return validateTagList(giftCertificateDTO.getTags());
+        return validateTagList(giftCertificateDto.getTags());
     }
 
     /**

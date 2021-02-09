@@ -7,8 +7,8 @@ import com.epam.esm.service.model.util.CreateOrderParameter;
 import java.util.List;
 
 /**
- * Interface provides methods to interact with OrderDAO.
- * Methods should transforms received information into DAO-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with OrderDao.
+ * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
  */
 public interface OrderService {
 
@@ -37,7 +37,7 @@ public interface OrderService {
     OrderDto createOrder(CreateOrderParameter createOrderParameter);
 
     /**
-     * Invokes DAO method to get List of all Orders from database.
+     * Invokes Dao method to get List of all Orders from database.
      *
      * @param page is {@link Page} object with page number and page size
      * @return List of {@link OrderDto} objects with order data.

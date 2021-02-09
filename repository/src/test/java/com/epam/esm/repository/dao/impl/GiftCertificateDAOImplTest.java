@@ -1,6 +1,6 @@
 package com.epam.esm.repository.dao.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDAO;
+import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.dao.config.TestConfig;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ContextConfiguration(classes = {TestConfig.class})
-class GiftCertificateDAOImplTest {
+class GiftCertificateDaoImplTest {
 
     private static final int TEST_ID = 1;
     private static final int NOT_EXIST_ID = 15;
@@ -47,7 +47,7 @@ class GiftCertificateDAOImplTest {
     private Page page;
 
     @Autowired
-    private GiftCertificateDAO giftCertificateDAO;
+    private GiftCertificateDao giftCertificateDao;
 
     @BeforeEach
     public void setUp() {
@@ -89,7 +89,7 @@ class GiftCertificateDAOImplTest {
     @Test
     @Transactional
     public void createGiftCertificate() {
-        GiftCertificate savedGift = giftCertificateDAO.createGiftCertificate(giftCertificate);
+        GiftCertificate savedGift = giftCertificateDao.createGiftCertificate(giftCertificate);
 
         assertNotNull(savedGift);
         assertEquals(TEST_NAME, savedGift.getName());
@@ -101,14 +101,14 @@ class GiftCertificateDAOImplTest {
     @Test
     @Transactional
     public void updateGiftCertificate() {
-        GiftCertificate gift = giftCertificateDAO.getGiftCertificateByID(TEST_ID).get();
+        GiftCertificate gift = giftCertificateDao.getGiftCertificateByID(TEST_ID).get();
         LocalDateTime prevLastUpdateDate = gift.getLastUpdateDate();
 
         GiftCertificate giftCertificateForUpdate = new GiftCertificate();
 
         giftCertificateForUpdate.setPrice(NEW_TEST_PRICE);
 
-        GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(giftCertificateForUpdate, TEST_ID);
+        GiftCertificate updatedGift = giftCertificateDao.updateGiftCertificate(giftCertificateForUpdate, TEST_ID);
 
         assertEquals(NEW_TEST_PRICE, updatedGift.getPrice());
         assertNotEquals(prevLastUpdateDate, updatedGift.getLastUpdateDate());
@@ -116,8 +116,8 @@ class GiftCertificateDAOImplTest {
 
     @Test
     public void getCertificateByID() {
-        Optional<GiftCertificate> existGiftCertificate = giftCertificateDAO.getGiftCertificateByID(TEST_ID);
-        Optional<GiftCertificate> notExistGiftCertificate = giftCertificateDAO.getGiftCertificateByID(NOT_EXIST_ID);
+        Optional<GiftCertificate> existGiftCertificate = giftCertificateDao.getGiftCertificateByID(TEST_ID);
+        Optional<GiftCertificate> notExistGiftCertificate = giftCertificateDao.getGiftCertificateByID(NOT_EXIST_ID);
 
         assertTrue(existGiftCertificate.isPresent());
         assertFalse(notExistGiftCertificate.isPresent());
@@ -127,7 +127,7 @@ class GiftCertificateDAOImplTest {
     public void getCertificates() {
         final int EXIST_GIFT_QUANTITY = 2;
 
-        final List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(page.getPage(),
+        final List<GiftCertificate> giftCertificateList = giftCertificateDao.getGiftCertificates(page.getPage(),
                 page.getSize());
 
         assertNotNull(giftCertificateList);
@@ -140,9 +140,9 @@ class GiftCertificateDAOImplTest {
         final int GIFTS_QUANTITY_WITH_SECOND_TAG = 2;
         final int GIFTS_QUANTITY_WITH_THIRD_TAG = 0;
 
-        List<GiftCertificate> firstGiftCertificateList = giftCertificateDAO.getGiftCertificates(firstTagGiftParameter);
-        List<GiftCertificate> secondGiftCertificateList = giftCertificateDAO.getGiftCertificates(secondTagGiftParameter);
-        List<GiftCertificate> thirdGiftCertificateList = giftCertificateDAO.getGiftCertificates(thirdTagGiftParameter);
+        List<GiftCertificate> firstGiftCertificateList = giftCertificateDao.getGiftCertificates(firstTagGiftParameter);
+        List<GiftCertificate> secondGiftCertificateList = giftCertificateDao.getGiftCertificates(secondTagGiftParameter);
+        List<GiftCertificate> thirdGiftCertificateList = giftCertificateDao.getGiftCertificates(thirdTagGiftParameter);
 
         assertEquals(GIFTS_QUANTITY_WITH_FIRST_TAG, firstGiftCertificateList.size());
         assertEquals(GIFTS_QUANTITY_WITH_SECOND_TAG, secondGiftCertificateList.size());
@@ -154,8 +154,8 @@ class GiftCertificateDAOImplTest {
         final int GIFT_QUANTITY_WITH_SEARCH_NAME = 2;
         final int GIFT_QUANTITY_WITH_DESC_NAME = 1;
 
-        List<GiftCertificate> giftCertificateListByName = giftCertificateDAO.getGiftCertificates(byNameGiftParameter);
-        List<GiftCertificate> giftCertificateListByDesc = giftCertificateDAO.getGiftCertificates(byDescGiftParameter);
+        List<GiftCertificate> giftCertificateListByName = giftCertificateDao.getGiftCertificates(byNameGiftParameter);
+        List<GiftCertificate> giftCertificateListByDesc = giftCertificateDao.getGiftCertificates(byDescGiftParameter);
 
         assertEquals(GIFT_QUANTITY_WITH_SEARCH_NAME, giftCertificateListByName.size());
         assertEquals(GIFT_QUANTITY_WITH_DESC_NAME, giftCertificateListByDesc.size());

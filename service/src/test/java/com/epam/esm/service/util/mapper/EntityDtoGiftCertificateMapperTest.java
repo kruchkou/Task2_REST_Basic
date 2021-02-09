@@ -19,12 +19,12 @@ class EntityDtoGiftCertificateMapperTest {
     private static final LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
     private static final LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.now();
     private GiftCertificate giftCertificate;
-    private GiftCertificateDto giftCertificateDTO;
+    private GiftCertificateDto giftCertificateDto;
 
     @BeforeEach
     public void init() {
         giftCertificate = new GiftCertificate();
-        giftCertificateDTO = new GiftCertificateDto();
+        giftCertificateDto = new GiftCertificateDto();
 
         giftCertificate.setId(TEST_ID);
         giftCertificate.setName(TEST_NAME);
@@ -34,18 +34,18 @@ class EntityDtoGiftCertificateMapperTest {
         giftCertificate.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
         giftCertificate.setLastUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
 
-        giftCertificateDTO.setId(TEST_ID);
-        giftCertificateDTO.setName(TEST_NAME);
-        giftCertificateDTO.setDescription(TEST_DESCRIPTION);
-        giftCertificateDTO.setPrice(TEST_PRICE);
-        giftCertificateDTO.setDuration(TEST_DURATION);
-        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
-        giftCertificateDTO.setLastUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
+        giftCertificateDto.setId(TEST_ID);
+        giftCertificateDto.setName(TEST_NAME);
+        giftCertificateDto.setDescription(TEST_DESCRIPTION);
+        giftCertificateDto.setPrice(TEST_PRICE);
+        giftCertificateDto.setDuration(TEST_DURATION);
+        giftCertificateDto.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
+        giftCertificateDto.setLastUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
     }
 
     @Test
     public void shouldConvertToEntity() {
-        final GiftCertificate testedGiftCertificate = EntityDtoGiftCertificateMapper.toEntity(giftCertificateDTO);
+        final GiftCertificate testedGiftCertificate = EntityDtoGiftCertificateMapper.toEntity(giftCertificateDto);
 
         assertEquals(TEST_NAME, testedGiftCertificate.getName());
         assertEquals(TEST_DESCRIPTION, testedGiftCertificate.getDescription());
@@ -56,14 +56,14 @@ class EntityDtoGiftCertificateMapperTest {
     }
 
     @Test
-    public void shouldConvertToDTO() {
-        final GiftCertificateDto testedGiftCertificateDTO = EntityDtoGiftCertificateMapper.toDTO(giftCertificate);
+    public void shouldConvertToDto() {
+        final GiftCertificateDto testedGiftCertificateDto = EntityDtoGiftCertificateMapper.toDto(giftCertificate);
 
-        assertEquals(TEST_NAME, testedGiftCertificateDTO.getName());
-        assertEquals(TEST_DESCRIPTION, testedGiftCertificateDTO.getDescription());
-        assertEquals(TEST_PRICE, testedGiftCertificateDTO.getPrice());
-        assertEquals(TEST_DURATION, testedGiftCertificateDTO.getDuration());
-        assertEquals(TEST_CREATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getLastUpdateDate());
+        assertEquals(TEST_NAME, testedGiftCertificateDto.getName());
+        assertEquals(TEST_DESCRIPTION, testedGiftCertificateDto.getDescription());
+        assertEquals(TEST_PRICE, testedGiftCertificateDto.getPrice());
+        assertEquals(TEST_DURATION, testedGiftCertificateDto.getDuration());
+        assertEquals(TEST_CREATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDto.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDto.getLastUpdateDate());
     }
 }

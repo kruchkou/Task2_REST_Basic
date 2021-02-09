@@ -1,9 +1,8 @@
 package com.epam.esm.repository.dao.impl;
 
-import com.epam.esm.repository.dao.OrderDAO;
+import com.epam.esm.repository.dao.OrderDao;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.Order_;
-import com.epam.esm.repository.model.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class OrderDAOImpl implements OrderDAO {
+public class OrderDaoImpl implements OrderDao {
 
     /**
      * An object of {@link EntityManager} that is being injected.

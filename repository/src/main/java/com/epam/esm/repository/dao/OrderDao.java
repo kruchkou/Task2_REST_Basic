@@ -9,7 +9,7 @@ import java.util.Optional;
  * Interface provides methods to interact with Order data from database.
  * Methods should connect to database and manipulate with data(create, read).
  */
-public interface OrderDAO {
+public interface OrderDao {
 
     /**
      * Connects to database and returns all Users.

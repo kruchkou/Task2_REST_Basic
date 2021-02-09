@@ -1,9 +1,9 @@
 package com.epam.esm.repository.dao.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDAO;
+import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.dao.util.GetGiftCertificateQueryHandler;
 import com.epam.esm.repository.dao.util.GiftCertificateFieldUpdater;
-import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.*;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ import java.util.Optional;
  * Methods connect to database using {@link DataSource} and manipulate with data(save, edit, etc.).
  */
 @Repository
-public class GiftCertificateDAOImpl implements GiftCertificateDAO {
+public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private static final int PAGE_NUMBER_OFFSET = 1;
 
@@ -123,6 +124,26 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     public List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
         return GetGiftCertificateQueryHandler.handle(entityManager, getGiftCertificateQueryParameter);
+    }
+
+    /**
+     * Connects to database and returns list of GiftCertificates linked to Order in order_gift table
+     *
+     * @param id is Order
+     * @return List of matched {@link Order} entities from database.
+     */
+    @Override
+    public List<GiftCertificate> getGiftCertificateListByOrderID(int id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> giftCertificateQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+
+        Root<Order> giftRoot = giftCertificateQuery.from(Order.class);
+        ListJoin<Order, GiftCertificate> giftCertificateList = giftRoot.joinList(Order_.GIFT_LIST);
+        giftCertificateQuery
+                .select(giftCertificateList)
+                .where(criteriaBuilder.equal(giftRoot.get(Order_.ID), id));
+
+        return entityManager.createQuery(giftCertificateQuery).getResultList();
     }
 
 }

@@ -12,31 +12,31 @@ class EntityDtoTagMapperTest {
     private static final Integer TEST_ID = 2;
     private static final String TEST_NAME = "Test Tag name";
     private Tag tag;
-    private TagDto tagDTO;
+    private TagDto tagDto;
 
     @BeforeEach
     public void init() {
         tag = new Tag();
-        tagDTO = new TagDto();
+        tagDto = new TagDto();
 
         tag.setId(TEST_ID);
         tag.setName(TEST_NAME);
 
-        tagDTO.setId(TEST_ID);
-        tagDTO.setName(TEST_NAME);
+        tagDto.setId(TEST_ID);
+        tagDto.setName(TEST_NAME);
     }
 
     @Test
     public void shouldConvertToEntity() {
-        final Tag testTag = EntityDtoTagMapper.toEntity(tagDTO);
+        final Tag testTag = EntityDtoTagMapper.toEntity(tagDto);
 
         assertEquals(TEST_ID, testTag.getId());
         assertEquals(TEST_NAME, testTag.getName());
     }
 
     @Test
-    public void shouldConvertToDTO() {
-        final TagDto testTag = EntityDtoTagMapper.toDTO(tag);
+    public void shouldConvertToDto() {
+        final TagDto testTag = EntityDtoTagMapper.toDto(tag);
 
         assertEquals(TEST_ID, testTag.getId());
         assertEquals(TEST_NAME, testTag.getName());

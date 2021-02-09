@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class is Mapper that links GiftCertificates Entities with DTOs.
+ * Class is Mapper that links GiftCertificates Entities with Dtos.
  */
 public final class EntityDtoGiftCertificateMapper {
 
@@ -16,81 +16,81 @@ public final class EntityDtoGiftCertificateMapper {
     }
 
     /**
-     * Transforms DTO to Entity
+     * Transforms Dto to Entity
      *
-     * @param giftCertificateDTO is {@link GiftCertificateDto} object with data to transform
+     * @param giftCertificateDto is {@link GiftCertificateDto} object with data to transform
      * @return transformed to {@link GiftCertificate} entity.
      */
-    public static GiftCertificate toEntity(GiftCertificateDto giftCertificateDTO) {
+    public static GiftCertificate toEntity(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = new GiftCertificate();
 
-        giftCertificate.setId(giftCertificateDTO.getId());
-        giftCertificate.setName(giftCertificateDTO.getName());
-        giftCertificate.setDescription(giftCertificateDTO.getDescription());
-        giftCertificate.setPrice(giftCertificateDTO.getPrice());
-        giftCertificate.setDuration(giftCertificateDTO.getDuration());
-        giftCertificate.setCreateDate(giftCertificateDTO.getCreateDate());
-        giftCertificate.setLastUpdateDate(giftCertificateDTO.getLastUpdateDate());
+        giftCertificate.setId(giftCertificateDto.getId());
+        giftCertificate.setName(giftCertificateDto.getName());
+        giftCertificate.setDescription(giftCertificateDto.getDescription());
+        giftCertificate.setPrice(giftCertificateDto.getPrice());
+        giftCertificate.setDuration(giftCertificateDto.getDuration());
+        giftCertificate.setCreateDate(giftCertificateDto.getCreateDate());
+        giftCertificate.setLastUpdateDate(giftCertificateDto.getLastUpdateDate());
 
         return giftCertificate;
     }
 
     /**
-     * Transforms Entity to DTO
+     * Transforms Entity to Dto
      *
      * @param giftCertificate is {@link GiftCertificate} object with data to transform
      * @return transformed to {@link GiftCertificateDto} data.
      */
-    public static GiftCertificateDto toDTO(GiftCertificate giftCertificate) {
-        GiftCertificateDto giftCertificateDTO = new GiftCertificateDto();
+    public static GiftCertificateDto toDto(GiftCertificate giftCertificate) {
+        GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
 
-        giftCertificateDTO.setId(giftCertificate.getId());
-        giftCertificateDTO.setName(giftCertificate.getName());
-        giftCertificateDTO.setDescription(giftCertificate.getDescription());
-        giftCertificateDTO.setPrice(giftCertificate.getPrice());
-        giftCertificateDTO.setDuration(giftCertificate.getDuration());
-        giftCertificateDTO.setCreateDate(giftCertificate.getCreateDate());
-        giftCertificateDTO.setLastUpdateDate(giftCertificate.getLastUpdateDate());
+        giftCertificateDto.setId(giftCertificate.getId());
+        giftCertificateDto.setName(giftCertificate.getName());
+        giftCertificateDto.setDescription(giftCertificate.getDescription());
+        giftCertificateDto.setPrice(giftCertificate.getPrice());
+        giftCertificateDto.setDuration(giftCertificate.getDuration());
+        giftCertificateDto.setCreateDate(giftCertificate.getCreateDate());
+        giftCertificateDto.setLastUpdateDate(giftCertificate.getLastUpdateDate());
 
         List<Tag> tagList = giftCertificate.getTagList();
         if (tagList != null) {
             List<String> tagNamesList = new ArrayList<>();
 
             tagList.forEach(tag -> tagNamesList.add(tag.getName()));
-            giftCertificateDTO.setTags(tagNamesList);
+            giftCertificateDto.setTags(tagNamesList);
         }
 
-        return giftCertificateDTO;
+        return giftCertificateDto;
     }
 
     /**
-     * Transforms List of Entities to List of DTOs
+     * Transforms List of Entities to List of Dtos
      *
      * @param giftCertificateList is List of {@link GiftCertificate} object with data to transform
      * @return transformed to List of {@link GiftCertificateDto} data.
      */
-    public static List<GiftCertificateDto> toDTO(List<GiftCertificate> giftCertificateList) {
-        List<GiftCertificateDto> giftCertificateDTOList = new ArrayList<>();
+    public static List<GiftCertificateDto> toDto(List<GiftCertificate> giftCertificateList) {
+        List<GiftCertificateDto> giftCertificateDtoList = new ArrayList<>();
 
         giftCertificateList.forEach(giftCertificate -> {
-            GiftCertificateDto giftCertificateDTO = toDTO(giftCertificate);
-            giftCertificateDTOList.add(giftCertificateDTO);
+            GiftCertificateDto giftCertificateDto = toDto(giftCertificate);
+            giftCertificateDtoList.add(giftCertificateDto);
         });
 
-        return giftCertificateDTOList;
+        return giftCertificateDtoList;
     }
 
     /**
-     * Transforms List of DTOs to List of Entities
+     * Transforms List of Dtos to List of Entities
      *
-     * @param giftCertificateDTOList is List of {@link GiftCertificateDto} object with data to transform
+     * @param giftCertificateDtoList is List of {@link GiftCertificateDto} object with data to transform
      * @return transformed to List of {@link GiftCertificate} data.
      */
-    public static List<GiftCertificate> toEntity(List<GiftCertificateDto> giftCertificateDTOList) {
+    public static List<GiftCertificate> toEntity(List<GiftCertificateDto> giftCertificateDtoList) {
         List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
-        giftCertificateDTOList.forEach(giftCertificateDTO -> {
-            GiftCertificate giftCertificate = toEntity(giftCertificateDTO);
+        giftCertificateDtoList.forEach(giftCertificateDto -> {
+            GiftCertificate giftCertificate = toEntity(giftCertificateDto);
             giftCertificateList.add(giftCertificate);
         });
 

@@ -10,7 +10,7 @@ import java.util.Optional;
  * Interface provides methods to interact with User data from database.
  * Methods should connect to database and manipulate with data(read)
  */
-public interface UserDAO {
+public interface UserDao {
 
     /**
      * Connects to database and returns all Users.

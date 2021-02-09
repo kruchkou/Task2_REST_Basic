@@ -16,45 +16,45 @@ public class EntityDtoOrderMapper {
     }
 
     /**
-     * Transforms DTO to Entity
+     * Transforms Dto to Entity
      *
-     * @param orderDTO is {@link OrderDto} object with data to transform
+     * @param orderDto is {@link OrderDto} object with data to transform
      * @return transformed to {@link Order} entity.
      */
-    public static Order toEntity(OrderDto orderDTO) {
+    public static Order toEntity(OrderDto orderDto) {
         Order order = new Order();
 
-        order.setId(orderDTO.getId());
-        order.setPrice(orderDTO.getPrice());
-        order.setDate(orderDTO.getDate());
+        order.setId(orderDto.getId());
+        order.setPrice(orderDto.getPrice());
+        order.setDate(orderDto.getDate());
 
-        List<GiftCertificate> giftCertificateList = EntityDtoGiftCertificateMapper.toEntity(orderDTO.getGifts());
+        List<GiftCertificate> giftCertificateList = EntityDtoGiftCertificateMapper.toEntity(orderDto.getGifts());
         order.setGiftList(giftCertificateList);
 
         return order;
     }
 
     /**
-     * Transforms Entity to DTO
+     * Transforms Entity to Dto
      *
      * @param order is {@link Order} object with data to transform
      * @return transformed to {@link OrderDto} data.
      */
-    public static OrderDto toDTO(Order order) {
-        OrderDto orderDTO = new OrderDto();
+    public static OrderDto toDto(Order order) {
+        OrderDto orderDto = new OrderDto();
 
-        orderDTO.setId(order.getId());
+        orderDto.setId(order.getId());
 
         UserInOrderDto userInOrder = toUserInOrder(order.getUser());
-        orderDTO.setUser(userInOrder);
+        orderDto.setUser(userInOrder);
 
-        List<GiftCertificateDto> giftCertificateDTOList = EntityDtoGiftCertificateMapper.toDTO(order.getGiftList());
-        orderDTO.setGifts(giftCertificateDTOList);
+        List<GiftCertificateDto> giftCertificateDtoList = EntityDtoGiftCertificateMapper.toDto(order.getGiftList());
+        orderDto.setGifts(giftCertificateDtoList);
 
-        orderDTO.setPrice(order.getPrice());
-        orderDTO.setDate(order.getDate());
+        orderDto.setPrice(order.getPrice());
+        orderDto.setDate(order.getDate());
 
-        return orderDTO;
+        return orderDto;
     }
 
     private static UserInOrderDto toUserInOrder(User user) {
@@ -67,29 +67,29 @@ public class EntityDtoOrderMapper {
     }
 
     /**
-     * Transforms List of Entities to List of DTOs
+     * Transforms List of Entities to List of Dtos
      *
      * @param orderList is List of {@link Order} object with data to transform
      * @return transformed to List of {@link OrderDto} data.
      */
-    public static List<OrderDto> toDTO(List<Order> orderList) {
-        List<OrderDto> orderDTOList = new ArrayList<>();
+    public static List<OrderDto> toDto(List<Order> orderList) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
 
-        orderList.forEach(tag -> orderDTOList.add(toDTO(tag)));
+        orderList.forEach(tag -> orderDtoList.add(toDto(tag)));
 
-        return orderDTOList;
+        return orderDtoList;
     }
 
     /**
-     * Transforms List of DTOs to List of Entities
+     * Transforms List of Dtos to List of Entities
      *
-     * @param orderDTOList is List of {@link OrderDto} object with data to transform
+     * @param orderDtoList is List of {@link OrderDto} object with data to transform
      * @return transformed to List of {@link Order} data.
      */
-    public static List<Order> toEntity(List<OrderDto> orderDTOList) {
+    public static List<Order> toEntity(List<OrderDto> orderDtoList) {
         List<Order> orderList = new ArrayList<>();
 
-        orderDTOList.forEach(tagDTO -> orderList.add(toEntity(tagDTO)));
+        orderDtoList.forEach(tagDto -> orderList.add(toEntity(tagDto)));
 
         return orderList;
     }

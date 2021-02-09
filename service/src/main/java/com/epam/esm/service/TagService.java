@@ -7,28 +7,28 @@ import com.epam.esm.service.model.dto.TagDto;
 import java.util.List;
 
 /**
- * Interface provides methods to interact with TagDAO.
- * Methods should transforms received information into DAO-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with TagDao.
+ * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
  */
 public interface TagService {
 
     /**
-     * Invokes DAO method to create Tag with provided data.
+     * Invokes Dao method to create Tag with provided data.
      *
-     * @param tagDTO is {@link TagDto} object with Tag data.
+     * @param tagDto is {@link TagDto} object with Tag data.
      * @return {@link TagDto} object with created data.
      */
-    TagDto createTag(TagDto tagDTO);
+    TagDto createTag(TagDto tagDto);
 
     /**
-     * Invokes DAO method to delete Tag with provided id.
+     * Invokes Dao method to delete Tag with provided id.
      *
      * @param id is id of tag to be deleted.
      */
     void deleteTag(int id);
 
     /**
-     * Invokes DAO method to get Tag with provided id.
+     * Invokes Dao method to get Tag with provided id.
      *
      * @param id is id of tag to be returned.
      * @return {@link TagDto} object with tag data.
@@ -36,7 +36,7 @@ public interface TagService {
     TagDto getTagByID(int id);
 
     /**
-     * Invokes DAO method to get Tag with provided name.
+     * Invokes Dao method to get Tag with provided name.
      *
      * @param name is name of tag to be returned.
      * @return {@link TagDto} object with tag data.
@@ -44,7 +44,7 @@ public interface TagService {
     TagDto getTagByName(String name);
 
     /**
-     * Invokes DAO method to get List of all Tags from database.
+     * Invokes Dao method to get List of all Tags from database.
      *
      * @param page is {@link Page} object with page number and page size
      * @return List of {@link TagDto} objects with tag data.
@@ -52,7 +52,7 @@ public interface TagService {
     List<TagDto> getTags(Page page);
 
     /**
-     * Invokes DAO method to get List of all Tags that linked with GiftCertificate by it's id
+     * Invokes Dao method to get List of all Tags that linked with GiftCertificate by it's id
      *
      * @param id is id of GiftCertificate.
      * @return List of {@link TagDto} objects with tag data.
@@ -60,7 +60,7 @@ public interface TagService {
     List<TagDto> getTagListByGiftCertificateID(int id);
 
     /**
-     * Invokes DAO method to get the most widely used tag of a user with the highest cost of all orders
+     * Invokes Dao method to get the most widely used tag of a user with the highest cost of all orders
      *
      * @return {@link Tag} object with tag data.
      */

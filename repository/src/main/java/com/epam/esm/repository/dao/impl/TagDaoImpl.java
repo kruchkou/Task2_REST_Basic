@@ -1,6 +1,6 @@
 package com.epam.esm.repository.dao.impl;
 
-import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.model.entity.*;
 import com.epam.esm.repository.model.entity.Order;
 import org.springframework.stereotype.Repository;
@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of {@link TagDAO}. Provides methods to interact with Tags data from database.
+ * Implementation of {@link TagDao}. Provides methods to interact with Tags data from database.
  * Methods connect to database using {@link DataSource} and manipulate with data(save, edit, etc.).
  */
 @Repository
-public class TagDAOImpl implements TagDAO {
+public class TagDaoImpl implements TagDao {
 
     private static final int PAGE_NUMBER_OFFSET = 1;
 

@@ -12,31 +12,31 @@ class EntityDtoUserMapperTest {
     private static final Integer TEST_ID = 2;
     private static final String TEST_NAME = "Test User name";
     private User user;
-    private UserDto userDTO;
+    private UserDto userDto;
 
     @BeforeEach
     public void init() {
         user = new User();
-        userDTO = new UserDto();
+        userDto = new UserDto();
 
         user.setId(TEST_ID);
         user.setName(TEST_NAME);
 
-        userDTO.setId(TEST_ID);
-        userDTO.setName(TEST_NAME);
+        userDto.setId(TEST_ID);
+        userDto.setName(TEST_NAME);
     }
 
     @Test
     public void shouldConvertToEntity() {
-        final User testUser = EntityDtoUserMapper.toEntity(userDTO);
+        final User testUser = EntityDtoUserMapper.toEntity(userDto);
 
         assertEquals(TEST_ID, testUser.getId());
         assertEquals(TEST_NAME, testUser.getName());
     }
 
     @Test
-    public void shouldConvertToDTO() {
-        final UserDto testUser = EntityDtoUserMapper.toDTO(user);
+    public void shouldConvertToDto() {
+        final UserDto testUser = EntityDtoUserMapper.toDto(user);
 
         assertEquals(TEST_ID, testUser.getId());
         assertEquals(TEST_NAME, testUser.getName());

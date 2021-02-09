@@ -13,11 +13,11 @@ public final class TagValidator {
     /**
      * Validates data for creation
      *
-     * @param tagDTO is {@link TagDto} object with data to create new Tag
+     * @param tagDto is {@link TagDto} object with data to create new Tag
      * @return true if data is OK, false if data failed validation
      */
-    public static boolean validateForCreate(TagDto tagDTO) {
-        return validateName(tagDTO.getName());
+    public static boolean validateForCreate(TagDto tagDto) {
+        return validateName(tagDto.getName());
     }
 
     /**

@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class GetGiftCertificateQueryParameter {
 
-
+    @Size(min = 1, max = 45)
     private String name;
+    @Size(min = 1,max = 200)
     private String description;
     @Valid
     private List<Filter> price;

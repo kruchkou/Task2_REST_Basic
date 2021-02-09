@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.UserDAO;
+import com.epam.esm.repository.dao.UserDao;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
@@ -33,7 +33,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Mock
-    private UserDAO userDAO;
+    private UserDao userDao;
 
     private User user;
 
@@ -52,7 +52,7 @@ class UserServiceImplTest {
         user.setId(TEST_ID);
         user.setName(TEST_NAME);
 
-        userService = new UserServiceImpl(userDAO);
+        userService = new UserServiceImpl(userDao);
     }
 
     @AfterEach
@@ -61,29 +61,29 @@ class UserServiceImplTest {
 
     @Test
     public void getUserByID() {
-        given(userDAO.getUser(TEST_ID)).willReturn(Optional.of(user));
-        UserDto receivedUserDTO = userService.getUser(TEST_ID);
+        given(userDao.getUser(TEST_ID)).willReturn(Optional.of(user));
+        UserDto receivedUserDto = userService.getUser(TEST_ID);
 
-        UserDto testedDTO = EntityDtoUserMapper.toDTO(user);
-        assertEquals(testedDTO, receivedUserDTO);
+        UserDto testedDto = EntityDtoUserMapper.toDto(user);
+        assertEquals(testedDto, receivedUserDto);
     }
 
 
     @Test
     public void getUserByIDShouldException() {
-        given(userDAO.getUser(TEST_ID)).willReturn(Optional.empty());
+        given(userDao.getUser(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.getUser(TEST_ID));
     }
 
     @Test
     public void getUsers() {
-        given(userDAO.getUsers(anyInt(),anyInt())).willReturn(userList);
+        given(userDao.getUsers(anyInt(),anyInt())).willReturn(userList);
 
-        List<UserDto> receivedDTOList = userService.getUsers(new Page());
-        List<UserDto> testDTOList = EntityDtoUserMapper.toDTO(userList);
+        List<UserDto> receivedDtoList = userService.getUsers(new Page());
+        List<UserDto> testDtoList = EntityDtoUserMapper.toDto(userList);
 
-        assertIterableEquals(testDTOList, receivedDTOList);
+        assertIterableEquals(testDtoList, receivedDtoList);
     }
 
 }

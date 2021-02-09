@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -13,9 +15,13 @@ import java.util.Objects;
 public class GiftCertificateDto {
 
     private Integer id;
+    @Size(min = 1, max = 45)
     private String name;
+    @Size(min = 1, max = 200)
     private String description;
+    @Min(1)
     private Integer price;
+    @Min(1)
     private Integer duration;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createDate;

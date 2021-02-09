@@ -1,6 +1,6 @@
 package com.epam.esm.repository.dao.impl;
 
-import com.epam.esm.repository.dao.UserDAO;
+import com.epam.esm.repository.dao.UserDao;
 import com.epam.esm.repository.model.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
 
     /**
      * JPQL query to get User with highest cost of all orders
@@ -61,7 +61,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     /**
-     * Invokes DAO method to get user with the highest cost of all orders
+     * Invokes Dao method to get user with the highest cost of all orders
      *
      * @return {@link User} object with user data.
      */

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -109,7 +110,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    //@ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
 
         String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
@@ -120,6 +121,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return handleBindException(e);
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Object> handleBindException(BindException e) {
         List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
 
         List<ExceptionResponse> exceptionResponseList = new ArrayList<>();
@@ -132,4 +138,5 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponseList, HttpStatus.BAD_REQUEST);
     }
+
 }

@@ -1,9 +1,11 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.controller.util.assembler.TagModelAssembler;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.model.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,32 +19,34 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
+    private final TagModelAssembler tagModelAssembler;
 
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, TagModelAssembler tagModelAssembler) {
         this.tagService = tagService;
+        this.tagModelAssembler = tagModelAssembler;
     }
 
     @GetMapping
-    public List<TagDto> getTags(@Valid Page page) {
-        return tagService.getTags(page);
+    public List<EntityModel<TagDto>> getTags(@Valid Page page) {
+        return tagModelAssembler.toModel(tagService.getTags(page));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TagDto newTag(@RequestBody TagDto tagDTO) {
-        return tagService.createTag(tagDTO);
+    public EntityModel<TagDto> newTag(@RequestBody TagDto tagDto) {
+        return tagModelAssembler.toModel(tagService.createTag(tagDto));
     }
 
     @GetMapping("/{id}")
-    public TagDto getGiftCertificateByID(@PathVariable int id) {
-        return tagService.getTagByID(id);
+    public EntityModel<TagDto> getTagByID(@PathVariable int id) {
+        return tagModelAssembler.toModel(tagService.getTagByID(id));
     }
 
     @GetMapping(params = "name")
-    public TagDto getTagByName(String name) {
+    public EntityModel<TagDto> getTagByName(String name) {
 
-        return tagService.getTagByName(name);
+        return tagModelAssembler.toModel(tagService.getTagByName(name));
     }
 
     @DeleteMapping("/{id}")
@@ -52,7 +56,7 @@ public class TagController {
     }
 
     @GetMapping("/getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders")
-    public TagDto getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
-        return tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders();
+    public EntityModel<TagDto> getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
+        return tagModelAssembler.toModel(tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders());
     }
 }
