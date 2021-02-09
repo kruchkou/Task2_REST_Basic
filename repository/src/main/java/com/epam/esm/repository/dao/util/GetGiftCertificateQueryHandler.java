@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GetGiftCertificateQueryHandler {
+public final class GetGiftCertificateQueryHandler {
 
     /**
      * Symbol for matching any symbol at LIKE sql requests

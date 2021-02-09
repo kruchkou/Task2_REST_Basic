@@ -82,10 +82,6 @@ class GiftCertificateDaoImplTest {
 
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
     @Transactional
     public void createGiftCertificate() {

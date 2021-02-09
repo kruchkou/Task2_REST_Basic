@@ -5,7 +5,7 @@ import com.epam.esm.repository.model.entity.Tag;
 
 import java.util.List;
 
-public class GiftCertificateFieldUpdater {
+public final class GiftCertificateFieldUpdater {
 
     private GiftCertificateFieldUpdater() {
     }

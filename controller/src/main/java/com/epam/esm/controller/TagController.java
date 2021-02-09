@@ -55,8 +55,4 @@ public class TagController {
         tagService.deleteTag(id);
     }
 
-    @GetMapping("/getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders")
-    public EntityModel<TagDto> getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
-        return tagModelAssembler.toModel(tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders());
-    }
 }

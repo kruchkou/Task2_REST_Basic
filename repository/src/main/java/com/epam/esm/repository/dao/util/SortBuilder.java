@@ -5,7 +5,7 @@ import com.epam.esm.repository.model.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SortBuilder {
+public final class SortBuilder {
 
     public static Sort build(String parameter) {
         String PARAMETER_VALUE_REGEX = "([\\w]*):([\\w]*)";

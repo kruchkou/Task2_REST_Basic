@@ -124,10 +124,6 @@ class GiftCertificateServiceImplTest {
         giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDao, tagDao, orderDao);
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
     public void deleteCertificate() {
         given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));

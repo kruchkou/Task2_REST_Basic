@@ -2,11 +2,14 @@ package com.epam.esm.controller;
 
 import com.epam.esm.controller.util.assembler.GiftCertificateModelAssembler;
 import com.epam.esm.controller.util.assembler.OrderModelAssembler;
+import com.epam.esm.controller.util.assembler.TagModelAssembler;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
+import com.epam.esm.service.TagService;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.model.dto.OrderDto;
+import com.epam.esm.service.model.dto.TagDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -23,17 +26,23 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final TagService tagService;
     private final GiftCertificateService giftCertificateService;
     private final OrderModelAssembler orderModelAssembler;
+    private final TagModelAssembler tagModelAssembler;
     private final GiftCertificateModelAssembler giftCertificateModelAssembler;
 
     @Autowired
-    public OrderController(OrderService orderService, GiftCertificateService giftCertificateService,
-                           OrderModelAssembler orderModelAssembler,
+    public OrderController(OrderService orderService, TagService tagService,
+                           GiftCertificateService giftCertificateService, OrderModelAssembler orderModelAssembler,
+                           TagModelAssembler tagModelAssembler,
                            GiftCertificateModelAssembler giftCertificateModelAssembler) {
+
         this.orderService = orderService;
+        this.tagService = tagService;
         this.giftCertificateService = giftCertificateService;
         this.orderModelAssembler = orderModelAssembler;
+        this.tagModelAssembler = tagModelAssembler;
         this.giftCertificateModelAssembler = giftCertificateModelAssembler;
     }
 
@@ -63,5 +72,9 @@ public class OrderController {
         return orderModelAssembler.toModel(orderService.getOrder(id));
     }
 
+    @GetMapping("highestCost/user/mostUsedTag")
+    public EntityModel<TagDto> getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
+        return tagModelAssembler.toModel(tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders());
+    }
 
 }

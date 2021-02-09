@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDto {
 
-    Integer id;
-    UserInOrderDto user;
-    List<GiftCertificateDto> gifts;
-    Integer price;
+    private Integer id;
+    private UserInOrderDto user;
+    private List<GiftCertificateDto> gifts;
+    private Integer price;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime date;
 

@@ -77,10 +77,6 @@ class TagServiceImplTest {
         tagService = new TagServiceImpl(tagDao, giftCertificateDao, userDao);
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
     public void deleteTag() {
         given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
@@ -147,7 +143,7 @@ class TagServiceImplTest {
 
 
     @Test
-    void getTagByName() {
+    public void getTagByName() {
         given(tagDao.getTagByName(any())).willReturn(Optional.of(tag));
 
         TagDto receivedTagDto = tagService.getTagByName(TEST_NAME);
@@ -155,7 +151,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void getTagsByGiftCertificateID() {
+    public void getTagsByGiftCertificateID() {
         given(tagDao.getTagListByGiftCertificateID(TEST_ID)).willReturn(tagList);
         given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(new GiftCertificate()));
 
@@ -164,7 +160,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void getTagsByGiftCertificateShouldGiftNotFoundException() {
+    public void getTagsByGiftCertificateShouldGiftNotFoundException() {
         assertThrows(GiftCertificateByParameterNotFoundException.class, () ->
                 tagService.getTagListByGiftCertificateID(TEST_ID));
     }

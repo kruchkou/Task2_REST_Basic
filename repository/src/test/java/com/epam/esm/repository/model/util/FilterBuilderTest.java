@@ -18,7 +18,7 @@ class FilterBuilderTest {
     private static final String RANDOM_PARAMETER_INPUT = "asg1252gd";
 
     @Test
-    void successBuild() {
+    public void successBuild() {
         Filter goodLowerFilter = FilterBuilder.build(GOOD_LOWER_PARAMETER_INPUT);
         Filter goodHighFilter = FilterBuilder.build(GOOD_HIGH_PARAMETER_INPUT);
         Filter goodRandomHeightFilter = FilterBuilder.build(GOOD_RANDOM_HEIGHT_PARAMETER_INPUT);
@@ -36,7 +36,7 @@ class FilterBuilderTest {
     }
 
     @Test
-    void buildShouldThrowException() {
+    public void buildShouldThrowException() {
         assertThrows(RuntimeException.class, () -> FilterBuilder.build(WRONG_VALUE_INPUT));
         assertThrows(RuntimeException.class, () -> FilterBuilder.build(WRONG_PARAMETER_INPUT));
         assertThrows(RuntimeException.class, () -> FilterBuilder.build(RANDOM_PARAMETER_INPUT));

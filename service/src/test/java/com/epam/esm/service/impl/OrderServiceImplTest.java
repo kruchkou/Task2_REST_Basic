@@ -117,10 +117,6 @@ class OrderServiceImplTest {
         orderDtoList.add(testOrderDto);
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
     public void getOrderByID() {
         given(orderDao.getOrder(TEST_ID)).willReturn(Optional.of(testOrder));

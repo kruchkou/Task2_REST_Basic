@@ -14,8 +14,8 @@ public class CreateOrderParameter {
 
     @Min(1)
     @NotNull
-    Integer user;
+    private Integer user;
     @NotEmpty
-    List<@Min(1) Integer> gifts;
+    private List<@Min(1) Integer> gifts;
 
 }

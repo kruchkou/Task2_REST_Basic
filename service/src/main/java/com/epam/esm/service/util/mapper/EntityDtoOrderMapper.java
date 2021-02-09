@@ -10,7 +10,7 @@ import com.epam.esm.service.model.dto.UserInOrderDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityDtoOrderMapper {
+public final class EntityDtoOrderMapper {
     
     private EntityDtoOrderMapper() {
     }

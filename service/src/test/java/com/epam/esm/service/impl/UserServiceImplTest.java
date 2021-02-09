@@ -55,10 +55,6 @@ class UserServiceImplTest {
         userService = new UserServiceImpl(userDao);
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
     public void getUserByID() {
         given(userDao.getUser(TEST_ID)).willReturn(Optional.of(user));
