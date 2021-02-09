@@ -18,7 +18,7 @@ public class UserDaoImpl implements UserDao {
     /**
      * JPQL query to get User with highest cost of all orders
      */
-    private static final String SELECT_USER_ID_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL =
+    private static final String SELECT_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL =
             "SELECT orders.user FROM Order orders " +
                     "GROUP BY orders.user ORDER BY SUM(orders.price) DESC";
 
@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
      * @return {@link User} object with user data.
      */
     public User getUserWithHighestCostOfAllOrders() {
-        return (User) entityManager.createQuery(SELECT_USER_ID_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL)
+        return (User) entityManager.createQuery(SELECT_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL)
                 .setMaxResults(1).getSingleResult();
     }
 

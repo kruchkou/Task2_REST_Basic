@@ -71,6 +71,7 @@ public class OrderDaoImpl implements OrderDao {
 
     /**
      * Connects to database and returns all Orders.
+     *
      * @param page is page number
      * @param size is page size
      * @return List of all {@link Order} entities from database.
