@@ -72,7 +72,7 @@ public class OrderController {
         return orderModelAssembler.toModel(orderService.getOrder(id));
     }
 
-    @GetMapping("highestCost/user/mostUsedTag")
+    @GetMapping("highest-cost/user/most-used-tag")
     public EntityModel<TagDto> getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
         return tagModelAssembler.toModel(tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders());
     }
