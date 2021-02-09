@@ -1,8 +1,8 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.TagDao;
-import com.epam.esm.repository.model.entity.*;
 import com.epam.esm.repository.model.entity.Order;
+import com.epam.esm.repository.model.entity.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

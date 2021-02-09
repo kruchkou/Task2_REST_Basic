@@ -1,6 +1,5 @@
 package com.epam.esm.repository.dao;
 
-import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.entity.User;
 
 import java.util.List;

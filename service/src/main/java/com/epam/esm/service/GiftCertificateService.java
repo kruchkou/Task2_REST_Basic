@@ -3,7 +3,6 @@ package com.epam.esm.service;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
-import com.epam.esm.service.model.dto.TagDto;
 
 import java.util.List;
 

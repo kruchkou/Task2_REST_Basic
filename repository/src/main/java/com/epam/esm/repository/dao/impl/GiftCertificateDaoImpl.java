@@ -3,7 +3,9 @@ package com.epam.esm.repository.dao.impl;
 import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.dao.util.GetGiftCertificateQueryHandler;
 import com.epam.esm.repository.dao.util.GiftCertificateFieldUpdater;
-import com.epam.esm.repository.model.entity.*;
+import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Order;
+import com.epam.esm.repository.model.entity.Order_;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import org.springframework.stereotype.Repository;
 
