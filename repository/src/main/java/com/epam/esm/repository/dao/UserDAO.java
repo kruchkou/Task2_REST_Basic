@@ -1,5 +1,6 @@
 package com.epam.esm.repository.dao;
 
+import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.entity.User;
 
 import java.util.List;
@@ -27,4 +28,10 @@ public interface UserDAO {
      */
     Optional<User> getUser(int id);
 
+    /**
+     * Connects to database and returns user with highest cost of all orders
+     *
+     * @return {@link User} entity from database.
+     */
+     User getUserWithHighestCostOfAllOrders();
 }

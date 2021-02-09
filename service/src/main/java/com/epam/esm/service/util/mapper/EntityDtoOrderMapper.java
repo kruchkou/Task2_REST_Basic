@@ -5,7 +5,7 @@ import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.model.dto.OrderDto;
-import com.epam.esm.service.model.util.UserInOrder;
+import com.epam.esm.service.model.dto.UserInOrderDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class EntityDtoOrderMapper {
 
         orderDTO.setId(order.getId());
 
-        UserInOrder userInOrder = toUserInOrder(order.getUser());
+        UserInOrderDto userInOrder = toUserInOrder(order.getUser());
         orderDTO.setUser(userInOrder);
 
         List<GiftCertificateDto> giftCertificateDTOList = EntityDtoGiftCertificateMapper.toDTO(order.getGiftList());
@@ -57,8 +57,8 @@ public class EntityDtoOrderMapper {
         return orderDTO;
     }
 
-    private static UserInOrder toUserInOrder(User user) {
-        UserInOrder userInOrder = new UserInOrder();
+    private static UserInOrderDto toUserInOrder(User user) {
+        UserInOrderDto userInOrder = new UserInOrderDto();
 
         userInOrder.setId(user.getId());
         userInOrder.setName(user.getName());

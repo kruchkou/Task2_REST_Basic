@@ -4,7 +4,7 @@ import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.model.dto.UserDto;
-import com.epam.esm.service.model.util.UserOrder;
+import com.epam.esm.service.model.dto.UserOrderDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public final class EntityDtoUserMapper {
     public static UserDto toDTO(User user) {
         UserDto userDTO = new UserDto();
 
-        List<UserOrder> orderDTOList = toUserOrder(user.getOrderList());
+        List<UserOrderDto> orderDTOList = toUserOrder(user.getOrderList());
 
         userDTO.setOrderList(orderDTOList);
 
@@ -52,15 +52,15 @@ public final class EntityDtoUserMapper {
         return userDTO;
     }
 
-    private static List<UserOrder> toUserOrder(List<Order> orders) {
+    private static List<UserOrderDto> toUserOrder(List<Order> orders) {
         if(orders != null) {
             return orders.stream().map(EntityDtoUserMapper::toUserOrder).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
 
-    private static UserOrder toUserOrder(Order order) {
-        UserOrder userOrder = new UserOrder();
+    private static UserOrderDto toUserOrder(Order order) {
+        UserOrderDto userOrder = new UserOrderDto();
 
         userOrder.setId(order.getId());
 

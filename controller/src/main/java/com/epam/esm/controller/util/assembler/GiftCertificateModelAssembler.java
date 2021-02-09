@@ -1,4 +1,4 @@
-package com.epam.esm.controller.model.util;
+package com.epam.esm.controller.util.assembler;
 
 import com.epam.esm.controller.GiftCertificateController;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;

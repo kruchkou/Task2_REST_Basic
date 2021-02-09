@@ -1,19 +1,22 @@
 package com.epam.esm.controller.advice;
 
-import com.epam.esm.controller.model.util.ExceptionResponse;
+import com.epam.esm.controller.model.ExceptionResponse;
 import com.epam.esm.service.exception.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     private static final String RUNTIME_EXCEPTION_MESSAGE_LOCALE = "runtime_exception";
     private static final String ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_LOCALE = "illegal_argument_exception";
@@ -106,8 +109,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-
-
     //@ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
 
@@ -117,4 +118,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
+
+        List<ExceptionResponse> exceptionResponseList = new ArrayList<>();
+
+        fieldErrorList.forEach(fieldError -> {
+            String message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
+
+            exceptionResponseList.add(new ExceptionResponse(message));
+        });
+
+        return new ResponseEntity<>(exceptionResponseList, HttpStatus.BAD_REQUEST);
+    }
 }

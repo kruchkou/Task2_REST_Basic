@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.TagDto;
 
@@ -57,5 +58,12 @@ public interface TagService {
      * @return List of {@link TagDto} objects with tag data.
      */
     List<TagDto> getTagListByGiftCertificateID(int id);
+
+    /**
+     * Invokes DAO method to get the most widely used tag of a user with the highest cost of all orders
+     *
+     * @return {@link Tag} object with tag data.
+     */
+    TagDto getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders();
 
 }

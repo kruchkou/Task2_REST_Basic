@@ -2,7 +2,9 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
@@ -97,15 +99,21 @@ public class TagServiceImpl implements TagService {
     private final GiftCertificateDAO giftCertificateDAO;
 
     /**
+     * An object of {@link UserDAO}
+     */
+    private final UserDAO userDAO;
+
+    /**
      * Public constructor that receives tagDAO
-     *
-     * @param tagDAO is {@link TagDAO} interface providing DAO methods.
+     *  @param tagDAO is {@link TagDAO} interface providing DAO methods.
      * @param giftCertificateDAO is {@link GiftCertificateDAO} interface providing DAO methods.
+     * @param userDAO is {@link UserDAO} interface providing DAO methods.
      */
     @Autowired
-    public TagServiceImpl(TagDAO tagDAO, GiftCertificateDAO giftCertificateDAO) {
+    public TagServiceImpl(TagDAO tagDAO, GiftCertificateDAO giftCertificateDAO, UserDAO userDAO) {
         this.tagDAO = tagDAO;
         this.giftCertificateDAO = giftCertificateDAO;
+        this.userDAO = userDAO;
     }
 
     /**
@@ -222,5 +230,19 @@ public class TagServiceImpl implements TagService {
         List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
 
         return EntityDtoTagMapper.toDTO(tagList);
+    }
+
+    /**
+     * Invokes DAO method to get the most widely used tag of a user with the highest cost of all orders
+     *
+     * @return {@link Tag} object with tag data.
+     */
+    @Override
+    public TagDto getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
+        User user = userDAO.getUserWithHighestCostOfAllOrders();
+
+        Tag tag  = tagDAO.getMostWidelyUsedTagFromUser(user.getId());
+
+        return EntityDtoTagMapper.toDTO(tag);
     }
 }

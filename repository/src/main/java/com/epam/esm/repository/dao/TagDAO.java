@@ -60,4 +60,5 @@ public interface TagDAO {
      */
     List<Tag> getTagListByGiftCertificateID(int id);
 
+    Tag getMostWidelyUsedTagFromUser(int userID);
 }

@@ -1,18 +1,13 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.TagDAO;
-import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.repository.model.entity.GiftCertificate_;
-import com.epam.esm.repository.model.entity.Tag;
-import com.epam.esm.repository.model.entity.Tag_;
+import com.epam.esm.repository.model.entity.*;
+import com.epam.esm.repository.model.entity.Order;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ListJoin;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
@@ -127,6 +122,25 @@ public class TagDAOImpl implements TagDAO {
         tagQuery.select(root).where(criteriaBuilder.equal(root.get(Tag_.NAME), name));
 
         return entityManager.createQuery(tagQuery).getResultStream().findFirst();
+    }
+
+    public Tag getMostWidelyUsedTagFromUser(int userID) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> tagQuery = criteriaBuilder.createQuery(Tag.class);
+
+        Root<User> userRoot = tagQuery.from(User.class);
+        ListJoin<User, Order> orderList = userRoot.joinList(User_.ORDER_LIST);
+        ListJoin<Order, GiftCertificate> giftList = orderList.joinList(Order_.GIFT_LIST);
+        ListJoin<GiftCertificate, Tag> tagList = giftList.joinList(GiftCertificate_.TAG_LIST);
+
+        Expression orderID = tagList.get(Order_.ID);
+        tagQuery
+                .select(tagList)
+                .where(criteriaBuilder.equal(userRoot.get(User_.ID), userID))
+                .groupBy(orderID)
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(orderID)));
+
+        return entityManager.createQuery(tagQuery).setMaxResults(1).getSingleResult();
     }
 
 }

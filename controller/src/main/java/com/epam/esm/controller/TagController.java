@@ -40,7 +40,7 @@ public class TagController {
     }
 
     @GetMapping(params = "name")
-    public TagDto getTagByName(@RequestParam(value = "name") String name) {
+    public TagDto getTagByName(String name) {
 
         return tagService.getTagByName(name);
     }
@@ -51,4 +51,8 @@ public class TagController {
         tagService.deleteTag(id);
     }
 
+    @GetMapping("/getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders")
+    public TagDto getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders() {
+        return tagService.getMostWidelyUsedTagFromUserWithHighestCostOfAllOrders();
+    }
 }

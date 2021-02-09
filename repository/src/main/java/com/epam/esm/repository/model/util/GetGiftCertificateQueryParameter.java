@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GetGiftCertificateQueryParameter {
 
+
     private String name;
     private String description;
     @Valid

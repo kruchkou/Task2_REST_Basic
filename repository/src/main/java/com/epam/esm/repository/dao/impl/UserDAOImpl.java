@@ -1,7 +1,6 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.UserDAO;
-import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +14,13 @@ import java.util.Optional;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+
+    /**
+     * JPQL query to get User with highest cost of all orders
+     */
+    private static final String SELECT_USER_ID_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL =
+            "SELECT orders.user FROM Order orders " +
+                    "GROUP BY orders.user ORDER BY SUM(orders.price) DESC";
 
     /**
      * An object of {@link EntityManager} that is being injected.
@@ -53,4 +59,15 @@ public class UserDAOImpl implements UserDAO {
 
         return Optional.ofNullable(user);
     }
+
+    /**
+     * Invokes DAO method to get user with the highest cost of all orders
+     *
+     * @return {@link User} object with user data.
+     */
+    public User getUserWithHighestCostOfAllOrders() {
+        return (User) entityManager.createQuery(SELECT_USER_ID_WITH_HIGHEST_COST_OF_ALL_ORDERS_JPQL)
+                .setMaxResults(1).getSingleResult();
+    }
+
 }

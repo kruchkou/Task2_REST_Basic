@@ -12,7 +12,7 @@ import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
-import com.epam.esm.service.model.util.UserInOrder;
+import com.epam.esm.service.model.dto.UserInOrderDto;
 import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
 import com.epam.esm.service.util.mapper.EntityDtoOrderMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -61,7 +61,7 @@ class OrderServiceImplTest {
     private CreateOrderParameter createOrderParameterWithNotExistUserID;
     private CreateOrderParameter createOrderParameterWithNotExistGiftID;
     private User testUser;
-    private UserInOrder userDto;
+    private UserInOrderDto userDto;
     private GiftCertificate testGift;
     private List<GiftCertificate> giftCertificateList;
     private List<GiftCertificateDto> giftCertificateDTOList;
@@ -94,7 +94,7 @@ class OrderServiceImplTest {
         testGift.setId(TEST_GIFT_ID);
         testGift.setPrice(TEST_PRICE);
 
-        userDto = new UserInOrder();
+        userDto = new UserInOrderDto();
         userDto.setId(TEST_USER_ID);
 
         giftCertificateList = new ArrayList<>();

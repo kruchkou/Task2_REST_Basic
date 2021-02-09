@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
 import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.UserDAO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.Page;
@@ -43,6 +44,8 @@ class TagServiceImplTest {
     private TagDAO tagDAO;
     @Mock
     private GiftCertificateDAO giftCertificateDAO;
+    @Mock
+    private UserDAO userDAO;
 
     private Tag tag;
     private TagDto testTagDTO;
@@ -71,7 +74,7 @@ class TagServiceImplTest {
         testTagDTO.setId(TEST_ID);
 
 
-        tagService = new TagServiceImpl(tagDAO, giftCertificateDAO);
+        tagService = new TagServiceImpl(tagDAO, giftCertificateDAO, userDAO);
     }
 
     @AfterEach

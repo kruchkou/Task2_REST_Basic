@@ -3,18 +3,15 @@ package com.epam.esm.service.model.util;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class CreateOrderParameter {
 
-    @NotNull(message = "{validation.user_id_null}")
+    @Min(1)
     Integer user;
-    @NotEmpty(message = "{validation.gift_id_list_empty}")
-    List<@Valid Integer> gifts;
+    List<@Min(1) Integer> gifts;
 
 }

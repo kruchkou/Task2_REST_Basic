@@ -1,4 +1,4 @@
-package com.epam.esm.controller.model.util;
+package com.epam.esm.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

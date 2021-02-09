@@ -1,4 +1,4 @@
-package com.epam.esm.service.model.util;
+package com.epam.esm.service.model.dto;
 
 import com.epam.esm.service.model.dto.GiftCertificateDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class UserOrder {
+public class UserOrderDto {
 
     Integer id;
     List<GiftCertificateDto> gifts;
