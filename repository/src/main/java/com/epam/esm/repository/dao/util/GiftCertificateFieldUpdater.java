@@ -2,13 +2,12 @@ package com.epam.esm.repository.dao.util;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public final class GiftCertificateFieldUpdater {
-
-    private GiftCertificateFieldUpdater() {
-    }
+@Component
+public class GiftCertificateFieldUpdater {
 
     /**
      * Set field values to giftToUpdate from non-null dataFrom fields
@@ -16,7 +15,7 @@ public final class GiftCertificateFieldUpdater {
      * @param giftToUpdate {@link GiftCertificate} object that is needed to be updated
      * @param dataFrom {@link GiftCertificate} that contains data to update
      */
-    public static void updateFields(GiftCertificate giftToUpdate, GiftCertificate dataFrom) {
+    public void updateFields(GiftCertificate giftToUpdate, GiftCertificate dataFrom) {
 
         Integer price = dataFrom.getPrice();
         if (price != null) {

@@ -7,9 +7,9 @@ import com.epam.esm.repository.model.util.SortOrientation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class SortBuilder {
+public final class SortFactory {
 
-    public static Sort build(String parameter) {
+    public static Sort createSort(String parameter) {
         String PARAMETER_VALUE_REGEX = "([\\w]*):([\\w]*)";
         int SORT_BY_GROUP_INDEX = 1;
         int SORT_ORIENTATION_GROUP_INDEX = 2;

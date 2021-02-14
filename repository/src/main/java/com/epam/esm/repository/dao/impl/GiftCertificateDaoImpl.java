@@ -7,6 +7,7 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.Order_;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -36,6 +37,28 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private EntityManager entityManager;
 
     /**
+     * An object of {@link GetGiftCertificateQueryHandler}
+     */
+    private final GetGiftCertificateQueryHandler getGiftCertificateQueryHandler;
+
+    /**
+     * An object of {@link GiftCertificateFieldUpdater}
+     */
+    private final GiftCertificateFieldUpdater giftCertificateFieldUpdater;
+
+    /**
+     * Public constructor
+     * @param getGiftCertificateQueryHandler is {@link GetGiftCertificateQueryHandler} object
+     * @param giftCertificateFieldUpdater is {@link GiftCertificateFieldUpdater} object
+     */
+    @Autowired
+    public GiftCertificateDaoImpl(GetGiftCertificateQueryHandler getGiftCertificateQueryHandler,
+                                  GiftCertificateFieldUpdater giftCertificateFieldUpdater) {
+        this.getGiftCertificateQueryHandler = getGiftCertificateQueryHandler;
+        this.giftCertificateFieldUpdater = giftCertificateFieldUpdater;
+    }
+
+    /**
      * Connects to database and add an new GiftCertificate.
      *
      * @param giftCertificate {@link GiftCertificate} giftCertificate is entity with data for creating GiftCertificate.
@@ -63,7 +86,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     public GiftCertificate updateGiftCertificate(GiftCertificate giftCertificate, int id) {
         GiftCertificate oldGiftCertificate = entityManager.find(GiftCertificate.class, id);
 
-        GiftCertificateFieldUpdater.updateFields(oldGiftCertificate, giftCertificate);
+        giftCertificateFieldUpdater.updateFields(oldGiftCertificate, giftCertificate);
 
         LocalDateTime currentLocalDateTime = LocalDateTime.now();
         oldGiftCertificate.setLastUpdateDate(currentLocalDateTime);
@@ -125,7 +148,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      */
     @Override
     public List<GiftCertificate> getGiftCertificates(GetGiftCertificateQueryParameter getGiftCertificateQueryParameter) {
-        return GetGiftCertificateQueryHandler.handle(entityManager, getGiftCertificateQueryParameter);
+        return getGiftCertificateQueryHandler.handle(entityManager, getGiftCertificateQueryParameter);
     }
 
     /**

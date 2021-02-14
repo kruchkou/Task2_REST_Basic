@@ -4,6 +4,7 @@ import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.GiftCertificate_;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class GetGiftCertificateQueryHandler {
+@Component
+public class GetGiftCertificateQueryHandler {
 
     /**
      * Symbol for matching any symbol at LIKE sql requests
@@ -31,13 +33,13 @@ public final class GetGiftCertificateQueryHandler {
     }
 
     /**
-     * Returns {@link CriteriaQuery} object with criteria applied
+     * Returns List of {@link GiftCertificate} objects filtered by received parameters.
      *
      * @param entityManager                 {@link EntityManager} object
      * @param giftCertificateQueryParameter {@link GetGiftCertificateQueryParameter} object with required params
-     * @return {@link CriteriaQuery} object
+     * @return List of {@link GiftCertificate} objects
      */
-    public static List<GiftCertificate> handle(EntityManager entityManager,
+    public List<GiftCertificate> handle(EntityManager entityManager,
                                                GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

@@ -21,7 +21,7 @@ public class TagModelAssembler implements RepresentationModelAssembler<TagDto,
     public EntityModel<TagDto> toModel(TagDto tagDto) {
         return EntityModel.of(tagDto,
                 linkTo(methodOn(TagController.class).getTagByID(tagDto.getId())).withSelfRel(),
-                linkTo(methodOn(TagController.class).getTags(new Page())).withRel("Tags"));
+                linkTo(methodOn(TagController.class).getTags(Page.def())).withRel("Tags"));
     }
 
     public List<EntityModel<TagDto>> toModel(List<TagDto> tagDto) {

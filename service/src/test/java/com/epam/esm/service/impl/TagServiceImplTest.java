@@ -55,7 +55,7 @@ class TagServiceImplTest {
     private List<TagDto> testDtoList;
     @BeforeEach
     public void setUp() {
-        page = new Page();
+        page = Page.def();
 
         tag = new Tag();
         tag.setId(TEST_ID);

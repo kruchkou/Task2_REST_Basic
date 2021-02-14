@@ -74,7 +74,7 @@ class UserServiceImplTest {
     public void getUsers() {
         given(userDao.getUsers(anyInt(),anyInt())).willReturn(userList);
 
-        List<UserDto> receivedDtoList = userService.getUsers(new Page());
+        List<UserDto> receivedDtoList = userService.getUsers(Page.def());
         List<UserDto> testDtoList = EntityDtoUserMapper.toDto(userList);
 
         assertIterableEquals(testDtoList, receivedDtoList);

@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
 
-    Integer id;
-    String name;
-    List<UserOrderDto> orderList;
+    private Integer id;
+    private String name;
+    private List<UserOrderDto> orderList;
 }

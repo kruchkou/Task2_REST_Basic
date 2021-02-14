@@ -50,7 +50,7 @@ class GiftCertificateDaoImplTest {
 
     @BeforeEach
     public void setUp() {
-        page = new Page();
+        page = Page.def();
 
         firstTagList = new ArrayList<>();
         firstTagList.add(TEST_FIRST_TAG_NAME);

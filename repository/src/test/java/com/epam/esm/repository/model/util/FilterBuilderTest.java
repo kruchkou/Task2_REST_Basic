@@ -1,6 +1,6 @@
 package com.epam.esm.repository.model.util;
 
-import com.epam.esm.repository.dao.util.FilterBuilder;
+import com.epam.esm.repository.dao.util.FilterFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,10 +19,10 @@ class FilterBuilderTest {
 
     @Test
     public void successBuild() {
-        Filter goodLowerFilter = FilterBuilder.build(GOOD_LOWER_PARAMETER_INPUT);
-        Filter goodHighFilter = FilterBuilder.build(GOOD_HIGH_PARAMETER_INPUT);
-        Filter goodRandomHeightFilter = FilterBuilder.build(GOOD_RANDOM_HEIGHT_PARAMETER_INPUT);
-        Filter onlyValueFilter = FilterBuilder.build(ONLY_VALUE_PARAMETER_INPUT);
+        Filter goodLowerFilter = FilterFactory.createFilter(GOOD_LOWER_PARAMETER_INPUT);
+        Filter goodHighFilter = FilterFactory.createFilter(GOOD_HIGH_PARAMETER_INPUT);
+        Filter goodRandomHeightFilter = FilterFactory.createFilter(GOOD_RANDOM_HEIGHT_PARAMETER_INPUT);
+        Filter onlyValueFilter = FilterFactory.createFilter(ONLY_VALUE_PARAMETER_INPUT);
 
         assertEquals(FilterType.LTE,goodLowerFilter.getType());
         assertEquals(FilterType.LT,goodHighFilter.getType());
@@ -37,8 +37,8 @@ class FilterBuilderTest {
 
     @Test
     public void buildShouldThrowException() {
-        assertThrows(RuntimeException.class, () -> FilterBuilder.build(WRONG_VALUE_INPUT));
-        assertThrows(RuntimeException.class, () -> FilterBuilder.build(WRONG_PARAMETER_INPUT));
-        assertThrows(RuntimeException.class, () -> FilterBuilder.build(RANDOM_PARAMETER_INPUT));
+        assertThrows(RuntimeException.class, () -> FilterFactory.createFilter(WRONG_VALUE_INPUT));
+        assertThrows(RuntimeException.class, () -> FilterFactory.createFilter(WRONG_PARAMETER_INPUT));
+        assertThrows(RuntimeException.class, () -> FilterFactory.createFilter(RANDOM_PARAMETER_INPUT));
     }
 }

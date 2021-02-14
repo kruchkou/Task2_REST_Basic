@@ -1,8 +1,8 @@
 package com.epam.esm.repository.model.util;
 
 
-import com.epam.esm.repository.dao.util.FilterBuilder;
-import com.epam.esm.repository.dao.util.SortBuilder;
+import com.epam.esm.repository.dao.util.FilterFactory;
+import com.epam.esm.repository.dao.util.SortFactory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -17,16 +17,20 @@ public class GetGiftCertificateQueryParameter {
 
     @Size(min = 1, max = 45)
     private String name;
+
     @Size(min = 1,max = 200)
     private String description;
+
     @Valid
     private List<Filter> price;
+
     @Valid
     private List<Filter> duration;
     private List<String> tagName;
     private Sort sort;
+
     @Valid
-    private Page page = new Page();
+    private Page page = Page.def();
 
     public GetGiftCertificateQueryParameter(String name, String description, List<String> price,
                                             List<String> duration, String sort, List<String> tagName) {
@@ -51,11 +55,11 @@ public class GetGiftCertificateQueryParameter {
     }
 
     public void setPrice(List<String> price) {
-        this.price = FilterBuilder.build(price);
+        this.price = FilterFactory.createFilter(price);
     }
 
     public void setDuration(List<String> duration) {
-        this.duration = FilterBuilder.build(duration);
+        this.duration = FilterFactory.createFilter(duration);
     }
 
     public void setPage(int page) {
@@ -67,7 +71,7 @@ public class GetGiftCertificateQueryParameter {
     }
 
     public void setSort(String sortBy) {
-        sort = SortBuilder.build(sortBy);
+        sort = SortFactory.createSort(sortBy);
     }
 
     public boolean isEmpty() {

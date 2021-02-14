@@ -25,7 +25,6 @@ public class Order {
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
-
     @Column(nullable = false)
     private Integer price;
 
@@ -44,6 +43,5 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "gift", nullable = false))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<GiftCertificate> giftList;
-
 
 }

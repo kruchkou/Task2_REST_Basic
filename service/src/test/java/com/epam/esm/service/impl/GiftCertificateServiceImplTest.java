@@ -68,7 +68,7 @@ class GiftCertificateServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        page = new Page();
+        page = Page.def();
 
         testTag = new Tag();
         testTag.setId(TEST_TAG_ID);
