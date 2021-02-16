@@ -8,12 +8,15 @@ import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.OrderService;
+import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.OrderNotFoundException;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 import com.epam.esm.service.util.mapper.EntityDtoOrderMapper;
+import com.epam.esm.service.util.validator.GiftCertificateValidator;
+import com.epam.esm.service.util.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +77,16 @@ public class OrderServiceImpl implements OrderService {
      * Error code when GiftCertificate wasn't found by id
      */
     private static final String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
+
+    /**
+     * Error message when data failed validation
+     */
+    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
+
+    /**
+     * Error code when data failed validation
+     */
+    private static final String ERROR_CODE_ORDER_VALIDATION_FAILED = "0401";
 
     /**
      * An object of {@link OrderDao}
@@ -138,6 +151,11 @@ public class OrderServiceImpl implements OrderService {
      */
     @Transactional
     public OrderDto createOrder(CreateOrderParameter createOrderParameter) {
+        if (!OrderValidator.validateCreateOrder(createOrderParameter)) {
+            throw new DataValidationException(
+                    DATA_VALIDATION_EXCEPTION, ERROR_CODE_ORDER_VALIDATION_FAILED);
+        }
+
         Integer userID = createOrderParameter.getUser();
         Optional<User> userOptional = userDao.getUser(createOrderParameter.getUser());
 

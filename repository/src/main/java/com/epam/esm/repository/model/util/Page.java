@@ -10,10 +10,10 @@ import javax.validation.constraints.Min;
 public class Page {
 
     @Min(1)
-    private int page;
+    private int page = 1;
 
     @Min(1)
-    private int size;
+    private int size = 20;
 
     public static Page def() {
         Page page = new Page();
