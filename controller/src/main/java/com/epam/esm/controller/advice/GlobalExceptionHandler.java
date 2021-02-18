@@ -2,10 +2,12 @@ package com.epam.esm.controller.advice;
 
 import com.epam.esm.controller.model.ExceptionResponse;
 import com.epam.esm.service.exception.impl.*;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -119,24 +121,46 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<ExceptionResponse> handleJsonMappingException(JsonMappingException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e,
+                                                                                   Locale locale) {
+
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return handleBindException(e);
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+                                                                        Locale locale) {
+        return handleBindException(e, locale);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<Object> handleNumberFormatException(NumberFormatException e, Locale locale) {
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<Object> handleBindException(BindException e) {
-        List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
+    public ResponseEntity<Object> handleBindException(BindException e, Locale locale) {
 
-        List<ExceptionResponse> exceptionResponseList = new ArrayList<>();
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
-        fieldErrorList.forEach(fieldError -> {
-            String message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
-
-            exceptionResponseList.add(new ExceptionResponse(message));
-        });
-
-        return new ResponseEntity<>(exceptionResponseList, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 }
