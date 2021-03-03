@@ -1,6 +1,6 @@
 package com.epam.esm.controller.advice;
 
-import com.epam.esm.controller.model.ExceptionResponse;
+import com.epam.esm.controller.model.util.ExceptionResponse;
 import com.epam.esm.service.exception.impl.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 @RestControllerAdvice
@@ -27,8 +24,10 @@ public class GlobalExceptionHandler {
     private static final String GIFT_BY_PARAM_NOT_FOUND_LOCALE = "gifts.by_param_not_found";
     private static final String TAG_NOT_FOUND_LOCALE = "tags.not_found";
     private static final String USER_NOT_FOUND_LOCALE = "users.not_found";
+    private static final String AUTH_FAILED_LOCALE = "users.auth_failed";
     private static final String ORDER_NOT_FOUND_LOCALE = "orders.not_found";
     private static final String TAG_ALREADY_EXISTS_LOCALE = "tags.already_exists";
+    private static final String USER_ALREADY_EXISTS_LOCALE = "users.already_exists";
 
     private final MessageSource messageSource;
 
@@ -90,6 +89,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthException(AuthException e, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                AUTH_FAILED_LOCALE, new Object[]{}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleOrderNotFoundException(UserNotFoundException e, Locale locale) {
 
@@ -112,7 +122,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleTagAlreadyExistsException(UserAlreadyExistsException e,
+                                                                             Locale locale) {
+
+        String errorMessage = messageSource.getMessage(
+                USER_ALREADY_EXISTS_LOCALE, new Object[]{}, locale);
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage, e.getErrorCode());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    //@ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
 
         String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
@@ -124,7 +146,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JsonMappingException.class)
     public ResponseEntity<ExceptionResponse> handleJsonMappingException(JsonMappingException e, Locale locale) {
 
-        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -134,7 +157,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e,
                                                                                    Locale locale) {
 
-        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -148,7 +172,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<Object> handleNumberFormatException(NumberFormatException e, Locale locale) {
-        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -157,7 +182,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<Object> handleBindException(BindException e, Locale locale) {
 
-        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);

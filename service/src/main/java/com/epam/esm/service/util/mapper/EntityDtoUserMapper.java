@@ -29,6 +29,7 @@ public final class EntityDtoUserMapper {
 
         user.setId(userDto.getId());
         user.setName(userDto.getName());
+        user.setLogin(userDto.getLogin());
 
         return user;
     }
@@ -48,6 +49,7 @@ public final class EntityDtoUserMapper {
 
         userDto.setId(user.getId());
         userDto.setName(user.getName());
+        userDto.setLogin(user.getLogin());
 
         return userDto;
     }

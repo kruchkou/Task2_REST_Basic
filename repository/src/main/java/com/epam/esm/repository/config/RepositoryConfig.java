@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,6 +19,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "com.epam.esm.repository")
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "com.epam.esm.repository.dao")
 public class RepositoryConfig {
 
     @Bean
@@ -46,7 +48,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public PlatformTransactionManager hibernateTransactionManager(
+    public PlatformTransactionManager transactionManager(
             LocalContainerEntityManagerFactoryBean entityManagerFactory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -64,7 +66,7 @@ public class RepositoryConfig {
         Properties hibernateProperties = new Properties();
 
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
         hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
 

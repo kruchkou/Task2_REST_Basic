@@ -2,6 +2,8 @@ package com.epam.esm.service;
 
 import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.UserDto;
+import com.epam.esm.service.model.util.AuthRequest;
+import com.epam.esm.service.model.util.SignUpUserData;
 
 import java.util.List;
 
@@ -26,5 +28,9 @@ public interface UserService {
      * @return List of {@link UserDto} objects with user data.
      */
     List<UserDto> getUsers(Page page);
+
+    UserDto signUp(SignUpUserData signUpUserData);
+
+    UserDto signIn(AuthRequest authRequest);
 
 }

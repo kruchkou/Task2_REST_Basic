@@ -6,9 +6,10 @@ import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.UserDto;
+import com.epam.esm.service.model.util.AuthRequest;
+import com.epam.esm.service.model.util.SignUpUserData;
 import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * Implementation of {@link UserService}. Interface provides methods to interact with UserDao.
  * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
  */
-@Service
+//@Service
 public class UserServiceImpl implements UserService {
 
     /**
@@ -80,5 +81,15 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userDao.getUsers(page.getPage(), page.getSize());
 
         return EntityDtoUserMapper.toDto(userList);
+    }
+
+    @Override
+    public UserDto signUp(SignUpUserData signUpUserData) {
+        return null;
+    }
+
+    @Override
+    public UserDto signIn(AuthRequest authRequest) {
+        return null;
     }
 }
