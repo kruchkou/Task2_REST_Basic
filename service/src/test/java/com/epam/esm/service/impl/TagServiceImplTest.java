@@ -1,13 +1,17 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.GiftCertificateDao;
+import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.dao.UserDao;
+import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.util.Page;
+import com.epam.esm.service.exception.impl.DataValidationException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
-import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
-import com.epam.esm.service.model.dto.TagDTO;
-import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
-import org.junit.jupiter.api.AfterEach;
+import com.epam.esm.service.model.dto.TagDto;
+import com.epam.esm.service.util.mapper.EntityDtoTagMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,16 +40,23 @@ class TagServiceImplTest {
     private TagServiceImpl tagService;
 
     @Mock
-    private TagDAO tagDAO;
+    private TagDao tagDao;
+    @Mock
+    private GiftCertificateDao giftCertificateDao;
+    @Mock
+    private UserDao userDao;
 
     private Tag tag;
-    private TagDTO tagDTO;
-    private TagDTO emptyTagDTO;
+    private TagDto testTagDto;
+    private TagDto emptyTagDto;
+    private Page page;
 
     private List<Tag> tagList;
-
+    private List<TagDto> testDtoList;
     @BeforeEach
     public void setUp() {
+        page = Page.def();
+
         tag = new Tag();
         tag.setId(TEST_ID);
         tag.setName(TEST_NAME);
@@ -52,86 +64,104 @@ class TagServiceImplTest {
         tagList = new ArrayList<>();
         tagList.add(tag);
 
-        tag = new Tag();
-        tag.setId(TEST_ID);
-        tag.setName(TEST_NAME);
+        testDtoList = EntityDtoTagMapper.toDto(tagList);
 
-        emptyTagDTO = new TagDTO();
+        emptyTagDto = new TagDto();
 
-        tagDTO = new TagDTO();
-        tagDTO.setName(TEST_NAME);
+        testTagDto = new TagDto();
+        testTagDto.setName(TEST_NAME);
+        testTagDto.setId(TEST_ID);
 
-        tagService = new TagServiceImpl(tagDAO);
-    }
 
-    @AfterEach
-    public void tearDown() {
+        tagService = new TagServiceImpl(tagDao, giftCertificateDao, userDao);
     }
 
     @Test
     public void deleteTag() {
-        given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
+        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
 
         tagService.deleteTag(TEST_ID);
 
-        verify(tagDAO, times(1)).deleteTag(TEST_ID);
+        verify(tagDao, times(1)).deleteTag(TEST_ID);
     }
 
     @Test
-    public void deleteCertificateShouldException() {
-        given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.empty());
+    public void deleteTagShouldException() {
+        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.deleteTag(TEST_ID));
     }
 
     @Test
     public void getTagByID() {
-        given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
-        TagDTO receivedTagDTO = tagService.getTagByID(TEST_ID);
+        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
+        TagDto receivedTagDto = tagService.getTagByID(TEST_ID);
 
-        TagDTO testedDTO = EntityDTOTagMapper.toDTO(tag);
-        assertEquals(testedDTO, receivedTagDTO);
+        assertEquals(testTagDto, receivedTagDto);
     }
 
 
     @Test
     public void getTagByIDShouldException() {
-        given(tagDAO.getTagByID(TEST_ID)).willReturn(Optional.empty());
+        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.getTagByID(TEST_ID));
     }
 
     @Test
     public void createTag() {
-        given(tagDAO.createTag(any())).willReturn(tag);
+        given(tagDao.createTag(any())).willReturn(tag);
 
-        TagDTO receivedDTO = tagService.createTag(tagDTO);
+        TagDto receivedDto = tagService.createTag(testTagDto);
 
-        assertEquals(TEST_NAME, receivedDTO.getName());
+        assertEquals(TEST_NAME, receivedDto.getName());
     }
 
     @Test
     public void createTagShouldValidationException() {
-        assertThrows(TagDataValidationException.class,
-                () -> tagService.createTag(emptyTagDTO));
+        assertThrows(DataValidationException.class,
+                () -> tagService.createTag(emptyTagDto));
     }
 
     @Test
     public void createTagShouldAlreadyExistsException() {
-        given(tagDAO.getTagByName(TEST_NAME)).willReturn(Optional.of(tag));
+        given(tagDao.getTagByName(TEST_NAME)).willReturn(Optional.of(tag));
 
         assertThrows(TagAlreadyExistsException.class,
-                () -> tagService.createTag(tagDTO));
+                () -> tagService.createTag(testTagDto));
     }
 
     @Test
-    public void getCertificates() {
-        given(tagDAO.getTags()).willReturn(tagList);
+    public void getTags() {
+        given(tagDao.getTags(anyInt(),anyInt())).willReturn(tagList);
 
-        List<TagDTO> receivedDTOList = tagService.getTags();
-        List<TagDTO> testDTOList = EntityDTOTagMapper.toDTO(tagList);
+        List<TagDto> receivedDtoList = tagService.getTags(page);
 
-        assertIterableEquals(testDTOList, receivedDTOList);
+        assertIterableEquals(testDtoList, receivedDtoList);
+    }
+
+
+    @Test
+    public void getTagByName() {
+        given(tagDao.getTagByName(any())).willReturn(Optional.of(tag));
+
+        TagDto receivedTagDto = tagService.getTagByName(TEST_NAME);
+        assertEquals(testTagDto,receivedTagDto);
+    }
+
+    @Test
+    public void getTagsByGiftCertificateID() {
+        given(tagDao.getTagListByGiftCertificateID(TEST_ID)).willReturn(tagList);
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(new GiftCertificate()));
+
+        List<TagDto> receivedTagList = tagService.getTagListByGiftCertificateID(TEST_ID);
+        assertEquals(testDtoList,receivedTagList);
+    }
+
+    @Test
+    public void getTagsByGiftCertificateShouldGiftNotFoundException() {
+        assertThrows(GiftCertificateByParameterNotFoundException.class, () ->
+                tagService.getTagListByGiftCertificateID(TEST_ID));
     }
 
 }

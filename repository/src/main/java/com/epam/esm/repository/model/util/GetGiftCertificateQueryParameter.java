@@ -1,79 +1,82 @@
 package com.epam.esm.repository.model.util;
 
-import org.springframework.util.StringUtils;
 
+import com.epam.esm.repository.dao.util.FilterFactory;
+import com.epam.esm.repository.dao.util.SortFactory;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
 public class GetGiftCertificateQueryParameter {
 
+    @Size(min = 1, max = 45)
     private String name;
+
+    @Size(min = 1,max = 200)
     private String description;
-    private String tagName;
-    private SortBy sortBy;
-    private SortOrientation sortOrientation;
 
-    public GetGiftCertificateQueryParameter() {
+    @Valid
+    private List<Filter> price;
 
-    }
+    @Valid
+    private List<Filter> duration;
+    private List<String> tagName;
+    private Sort sort;
 
-    public GetGiftCertificateQueryParameter(String tagName, String name, String description, String sortBy, String sortOrientation) {
-        if (!StringUtils.isEmpty(tagName)) {
-            setTagName(tagName);
-        }
+    @Valid
+    private Page page = Page.def();
+
+    public GetGiftCertificateQueryParameter(String name, String description, List<String> price,
+                                            List<String> duration, String sort, List<String> tagName) {
         if (!StringUtils.isEmpty(name)) {
             setName(name);
         }
         if (!StringUtils.isEmpty(description)) {
             setDescription(description);
         }
-        if (!StringUtils.isEmpty(sortBy)) {
-            setSortBy(sortBy);
+        if (price != null && !price.isEmpty()) {
+            setPrice(price);
         }
-        if (!StringUtils.isEmpty(sortOrientation)) {
-            setSortOrientation(sortOrientation);
+        if (duration != null && !duration.isEmpty()) {
+            setDuration(duration);
+        }
+        if (!StringUtils.isEmpty(sort)) {
+            setSort(sort);
+        }
+        if (tagName != null && !tagName.isEmpty()) {
+            this.tagName = tagName;
         }
     }
 
-    public String getTagName() {
-        return tagName;
+    public void setPrice(List<String> price) {
+        this.price = FilterFactory.createFilter(price);
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setDuration(List<String> duration) {
+        this.duration = FilterFactory.createFilter(duration);
     }
 
-    public SortBy getSortBy() {
-        return sortBy;
+    public void setPage(int page) {
+        this.page.setPage(page);
     }
 
-    public void setSortBy(String sortBy) {
-        this.sortBy = SortBy.valueOf(sortBy.toUpperCase());
+    public void setSize(int size) {
+        this.page.setSize(size);
     }
 
-    public SortOrientation getSortOrientation() {
-        return sortOrientation;
-    }
-
-    public void setSortOrientation(String sortOrientation) {
-        this.sortOrientation = SortOrientation.valueOf(sortOrientation.toUpperCase());
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSort(String sortBy) {
+        sort = SortFactory.createSort(sortBy);
     }
 
     public boolean isEmpty() {
-        return name == null && description == null && tagName == null && sortBy == null && sortOrientation == null;
+        return name == null && description == null && price == null && duration == null &&
+                tagName == null && sort == null;
     }
 
 }

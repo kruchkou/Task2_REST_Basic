@@ -1,60 +1,70 @@
 package com.epam.esm.service;
 
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.repository.model.util.Page;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
 
 import java.util.List;
 
 /**
- * Interface provides methods to interact with GiftCertificateDAO.
- * Methods should transforms received information into DAO-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with GiftCertificateDao.
+ * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
  */
 public interface GiftCertificateService {
 
     /**
-     * Invokes DAO method to delete GiftCertificate with provided id.
+     * Invokes Dao method to delete GiftCertificate with provided id.
      *
      * @param id is id of GiftCertificate to be deleted.
      */
     void deleteCertificate(int id);
 
     /**
-     * Invokes DAO method to get GiftCertificate with provided id.
+     * Invokes Dao method to get GiftCertificate with provided id.
      *
      * @param id is id of GiftCertificate to be returned.
-     * @return {@link GiftCertificateDTO} object with GiftCertificate data.
+     * @return {@link GiftCertificateDto} object with GiftCertificate data.
      */
-    GiftCertificateDTO getGiftCertificateByID(int id);
+    GiftCertificateDto getGiftCertificateByID(int id);
 
     /**
-     * Invokes DAO method to create GiftCertificate with provided data.
+     * Invokes Dao method to create GiftCertificate with provided data.
      *
-     * @param giftCertificateDTO is {@link GiftCertificateDTO} object with GiftCertificate data.
-     * @return {@link GiftCertificateDTO} object with created data.
+     * @param giftCertificateDto is {@link GiftCertificateDto} object with GiftCertificate data.
+     * @return {@link GiftCertificateDto} object with created data.
      */
-    GiftCertificateDTO createGiftCertificate(GiftCertificateDTO giftCertificateDTO);
+    GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto);
 
     /**
-     * Invokes DAO method to update GiftCertificate with provided data.
+     * Invokes Dao method to update GiftCertificate with provided data.
      *
-     * @param giftCertificateDTO is {@link GiftCertificateDTO} object with GiftCertificate data.
-     * @return {@link GiftCertificateDTO} object with updated data.
+     * @param giftCertificateDto is {@link GiftCertificateDto} object with GiftCertificate data.
+     * @return {@link GiftCertificateDto} object with updated data.
      */
-    GiftCertificateDTO updateCertificate(GiftCertificateDTO giftCertificateDTO, int id);
+    GiftCertificateDto updateCertificate(GiftCertificateDto giftCertificateDto, int id);
 
     /**
-     * Invokes DAO method to get List of all GiftCertificates from database.
+     * Invokes Dao method to get List of all GiftCertificates from database.
      *
-     * @return List of {@link GiftCertificateDTO} objects with GiftCertificate data.
+     * @param page is {@link Page} object with page number and page size
+     * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
-    List<GiftCertificateDTO> getCertificates();
+    List<GiftCertificateDto> getCertificates(Page page);
 
     /**
-     * Invokes DAO method to get List of all GiftCertificates that matches parameters
+     * Invokes Dao method to get List of all GiftCertificates that matches parameters
      *
      * @param giftCertificateQueryParameter is {@link GetGiftCertificateQueryParameter} object with requested parameters
-     * @return List of {@link GiftCertificateDTO} objects with GiftCertificate data.
+     * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
-    List<GiftCertificateDTO> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter);
+    List<GiftCertificateDto> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter);
+
+    /**
+     * Invokes Dao method to get List of all GiftCertificates that linked with Order by it's id
+     *
+     * @param id is id of Order.
+     * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
+     */
+    List<GiftCertificateDto> getCertificateListByOrderID(int id);
 
 }

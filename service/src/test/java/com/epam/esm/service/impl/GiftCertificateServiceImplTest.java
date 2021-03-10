@@ -1,17 +1,16 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDAO;
-import com.epam.esm.repository.dao.TagDAO;
-import com.epam.esm.repository.dao.util.GetGiftCertificateSQLBuilder;
+import com.epam.esm.repository.dao.GiftCertificateDao;
+import com.epam.esm.repository.dao.OrderDao;
+import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.repository.model.util.GiftCertificateSQL;
-import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
-import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
-import org.junit.jupiter.api.AfterEach;
+import com.epam.esm.repository.model.util.Page;
+import com.epam.esm.service.exception.impl.DataValidationException;
+import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
+import com.epam.esm.service.model.dto.GiftCertificateDto;
+import com.epam.esm.service.util.mapper.EntityDtoGiftCertificateMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,23 +46,30 @@ class GiftCertificateServiceImplTest {
     private GiftCertificateServiceImpl giftCertificateService;
 
     @Mock
-    private GiftCertificateDAO giftCertificateDAO;
+    private GiftCertificateDao giftCertificateDao;
     @Mock
-    private TagDAO tagDAO;
+    private TagDao tagDao;
+    @Mock
+    private OrderDao orderDao;
 
     private Tag testTag;
     private GiftCertificate giftCertificate;
-    private GiftCertificateDTO notFullyValuedGiftCertificateDTO;
-    private GiftCertificateDTO validGiftCertificateDTO;
+    private GiftCertificateDto notFullyValuedGiftCertificateDto;
+    private GiftCertificateDto dtoWithoutID;
+    private GiftCertificateDto testGiftCertificateDto;
     private GetGiftCertificateQueryParameter emptyQueryParameter;
     private GetGiftCertificateQueryParameter queryParameter;
 
     private List<String> tagNamesList;
     private List<Tag> giftTagList;
     private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificateDto> testGiftCertificateDtoList;
+    private Page page;
 
     @BeforeEach
     public void setUp() {
+        page = Page.def();
+
         testTag = new Tag();
         testTag.setId(TEST_TAG_ID);
         testTag.setName(TEST_TAG_NAME);
@@ -79,142 +85,142 @@ class GiftCertificateServiceImplTest {
         giftCertificate.setDuration(TEST_DURATION);
         giftCertificate.setTagList(giftTagList);
 
-        notFullyValuedGiftCertificateDTO = new GiftCertificateDTO();
-        notFullyValuedGiftCertificateDTO.setName(TEST_NEW_NAME);
-        notFullyValuedGiftCertificateDTO.setDescription(TEST_NEW_DESCRIPTION);
+        notFullyValuedGiftCertificateDto = new GiftCertificateDto();
+        notFullyValuedGiftCertificateDto.setName(TEST_NEW_NAME);
+        notFullyValuedGiftCertificateDto.setDescription(TEST_NEW_DESCRIPTION);
 
         tagNamesList = new ArrayList<>();
         tagNamesList.add(TEST_TAG_NAME);
 
-        validGiftCertificateDTO = new GiftCertificateDTO();
-        validGiftCertificateDTO.setName(TEST_NAME);
-        validGiftCertificateDTO.setDescription(TEST_DESCRIPTION);
-        validGiftCertificateDTO.setPrice(TEST_PRICE);
-        validGiftCertificateDTO.setDuration(TEST_DURATION);
-        validGiftCertificateDTO.setTagNames(tagNamesList);
+        testGiftCertificateDto = new GiftCertificateDto();
+        testGiftCertificateDto.setId(TEST_ID);
+        testGiftCertificateDto.setName(TEST_NAME);
+        testGiftCertificateDto.setDescription(TEST_DESCRIPTION);
+        testGiftCertificateDto.setPrice(TEST_PRICE);
+        testGiftCertificateDto.setDuration(TEST_DURATION);
+        testGiftCertificateDto.setTags(tagNamesList);
+
+        dtoWithoutID = new GiftCertificateDto();
+        dtoWithoutID.setName(TEST_NAME);
+        dtoWithoutID.setDescription(TEST_DESCRIPTION);
+        dtoWithoutID.setPrice(TEST_PRICE);
+        dtoWithoutID.setDuration(TEST_DURATION);
+        dtoWithoutID.setTags(tagNamesList);
 
         giftCertificateList = new ArrayList<>();
         giftCertificateList.add(giftCertificate);
         giftCertificateList.add(giftCertificate);
         giftCertificateList.add(giftCertificate);
 
+        testGiftCertificateDtoList = EntityDtoGiftCertificateMapper.toDto(giftCertificateList);
+
         emptyQueryParameter = new GetGiftCertificateQueryParameter();
         queryParameter = new GetGiftCertificateQueryParameter();
 
         queryParameter.setName(TEST_NEW_NAME);
-        queryParameter.setTagName(TEST_TAG_NAME);
+        queryParameter.setTagName(tagNamesList);
 
-        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDAO, tagDAO);
-    }
-
-    @AfterEach
-    public void tearDown() {
+        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDao, tagDao, orderDao);
     }
 
     @Test
     public void deleteCertificate() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
 
         giftCertificateService.deleteCertificate(TEST_ID);
 
-        verify(giftCertificateDAO, times(1)).deleteGiftCertificate(TEST_ID);
-        verify(tagDAO, times(1)).deleteTag(TEST_TAG_ID);
+        verify(giftCertificateDao, times(1)).deleteGiftCertificate(TEST_ID);
     }
 
     @Test
     public void deleteCertificateShouldException() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class, () -> giftCertificateService.deleteCertificate(TEST_ID));
+        assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.deleteCertificate(TEST_ID));
     }
 
     @Test
     public void getGiftCertificateByID() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
-        GiftCertificateDTO receivedCertificateDTO = giftCertificateService.getGiftCertificateByID(TEST_ID);
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
+        GiftCertificateDto receivedCertificateDto = giftCertificateService.getGiftCertificateByID(TEST_ID);
 
-        GiftCertificateDTO testedDTO = EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
-        assertEquals(testedDTO, receivedCertificateDTO);
+
+        assertEquals(testGiftCertificateDto, receivedCertificateDto);
     }
 
 
     @Test
     public void getGiftCertificateByIDShouldException() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class, () -> giftCertificateService.getGiftCertificateByID(TEST_ID));
+        assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.getGiftCertificateByID(TEST_ID));
     }
 
 
     @Test
     public void updateCertificate() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
-        given(giftCertificateDAO.updateGiftCertificate(any(), anyInt())).willReturn(giftCertificate);
-        given(tagDAO.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
+        given(giftCertificateDao.updateGiftCertificate(any(), anyInt())).willReturn(giftCertificate);
+        given(tagDao.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
 
-        GiftCertificateDTO receivedDTO = giftCertificateService.updateCertificate(validGiftCertificateDTO, TEST_ID);
-        assertEquals(validGiftCertificateDTO, receivedDTO);
+        GiftCertificateDto receivedDto = giftCertificateService.updateCertificate(dtoWithoutID, TEST_ID);
+        assertEquals(testGiftCertificateDto, receivedDto);
     }
 
     @Test
     public void updateCertificateShouldException() {
-        given(giftCertificateDAO.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
 
-        assertThrows(GiftCertificateNotFoundException.class,
+        assertThrows(GiftCertificateByParameterNotFoundException.class,
                 () -> giftCertificateService.updateCertificate(any(), TEST_ID));
     }
 
     @Test
     public void createGiftCertificate() {
-        given(giftCertificateDAO.createGiftCertificate(any())).willReturn(giftCertificate);
-        given(tagDAO.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
+        given(giftCertificateDao.createGiftCertificate(any())).willReturn(giftCertificate);
+        given(giftCertificateDao.getGiftCertificateByID(anyInt())).willReturn(Optional.of(giftCertificate));
+        given(tagDao.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
 
-        GiftCertificateDTO receivedDTO = giftCertificateService.createGiftCertificate(validGiftCertificateDTO);
+        GiftCertificateDto receivedDto = giftCertificateService.createGiftCertificate(dtoWithoutID);
 
-        assertEquals(TEST_NAME, receivedDTO.getName());
-        assertEquals(TEST_DESCRIPTION, receivedDTO.getDescription());
-        assertEquals(TEST_PRICE, receivedDTO.getPrice());
-        assertEquals(TEST_DURATION, receivedDTO.getDuration());
-        assertEquals(tagNamesList, receivedDTO.getTagNames());
+        assertEquals(TEST_NAME, receivedDto.getName());
+        assertEquals(TEST_DESCRIPTION, receivedDto.getDescription());
+        assertEquals(TEST_PRICE, receivedDto.getPrice());
+        assertEquals(TEST_DURATION, receivedDto.getDuration());
+        assertEquals(tagNamesList, receivedDto.getTags());
     }
 
     @Test
     public void createGiftCertificateShouldException() {
-        assertThrows(GiftCertificateDataValidationException.class,
-                () -> giftCertificateService.createGiftCertificate(notFullyValuedGiftCertificateDTO));
+        assertThrows(DataValidationException.class,
+                () -> giftCertificateService.createGiftCertificate(notFullyValuedGiftCertificateDto));
     }
 
     @Test
     public void getCertificates() {
-        given(giftCertificateDAO.getGiftCertificates()).willReturn(giftCertificateList);
-        given(tagDAO.getTagListByGiftCertificateID(TEST_ID)).willReturn(giftTagList);
+        given(giftCertificateDao.getGiftCertificates(any())).willReturn(giftCertificateList);
 
-        List<GiftCertificateDTO> receivedDTOList = giftCertificateService.getCertificates();
-        List<GiftCertificateDTO> testDTOList = EntityDTOGiftCertificateMapper.toDTO(giftCertificateList);
+        List<GiftCertificateDto> receivedDtoList = giftCertificateService.getCertificates(page);
 
-        assertIterableEquals(testDTOList, receivedDTOList);
+        assertIterableEquals(testGiftCertificateDtoList, receivedDtoList);
     }
 
     @Test
     public void getCertificatesWithEmptyQueryParameter() {
         giftCertificateService.getCertificates(emptyQueryParameter);
 
-        verify(giftCertificateDAO).getGiftCertificates();
+        verify(giftCertificateDao).getGiftCertificates(any());
     }
 
     @Test
     public void getCertificatesByQueryParameter() {
         final int CORRECT_SIZE = 3;
 
-        GiftCertificateSQL giftCertificateSQL = GetGiftCertificateSQLBuilder.getInstance().build(queryParameter);
-        given(giftCertificateDAO.getGiftCertificates(giftCertificateSQL)).willReturn(giftCertificateList);
+        given(giftCertificateDao.getGiftCertificates(queryParameter)).willReturn(giftCertificateList);
 
-        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateService.getCertificates(queryParameter);
+        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService.getCertificates(queryParameter);
 
-        verify(giftCertificateDAO).getGiftCertificates(giftCertificateSQL);
-        assertEquals(CORRECT_SIZE, giftCertificateDTOList.size());
+        verify(giftCertificateDao).getGiftCertificates(queryParameter);
+        assertEquals(CORRECT_SIZE, giftCertificateDtoList.size());
     }
 }
