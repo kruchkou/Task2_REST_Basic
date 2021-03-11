@@ -12,18 +12,18 @@ import javax.validation.constraints.Size;
 public class SignUpUserData {
 
     @NotNull
-    @Size(min=3, max=45)
-    @Pattern(regexp="^[\\wа-яА-Я]+\\h[\\wа-яА-Я]+$")
+    @Size(min = 3, max = 45)
+    @Pattern(regexp = "^[\\wа-яА-Я]+\\h[\\wа-яА-Я]+$")
     private String name;
 
     @NotNull
-    @Size(min=3, max=255)
-    @Pattern(regexp="^[a-z0-9_-]+$")
+    @Size(min = 3, max = 255)
+    @Pattern(regexp = "^[a-z0-9_-]+$")
     private String login;
 
     @NotNull
-    @Size(min=3, max=255)
-    @Pattern(regexp="^[a-z0-9_.-]+$")
+    @Size(min = 3, max = 255)
+    @Pattern(regexp = "^[a-z0-9_.-]+$")
     private String password;
 
 }

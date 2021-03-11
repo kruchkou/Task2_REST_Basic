@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EntityDtoOrderMapper {
-    
+
     private EntityDtoOrderMapper() {
     }
 
@@ -93,5 +93,5 @@ public final class EntityDtoOrderMapper {
 
         return orderList;
     }
-    
+
 }

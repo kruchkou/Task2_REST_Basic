@@ -1,12 +1,11 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDao;
-import com.epam.esm.repository.dao.OrderDao;
-import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.OrderRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
@@ -16,7 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +26,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {
@@ -41,16 +41,17 @@ class GiftCertificateServiceImplTest {
     private static final String TEST_NEW_DESCRIPTION = "New description";
     private static final int TEST_PRICE = 10;
     private static final int TEST_DURATION = 30;
+    private static final int CORRECT_SIZE = 3;
 
     @InjectMocks
     private GiftCertificateServiceImpl giftCertificateService;
 
     @Mock
-    private GiftCertificateDao giftCertificateDao;
+    private GiftCertificateRepository giftCertificateRepository;
     @Mock
-    private TagDao tagDao;
+    private TagRepository tagRepository;
     @Mock
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     private Tag testTag;
     private GiftCertificate giftCertificate;
@@ -64,11 +65,9 @@ class GiftCertificateServiceImplTest {
     private List<Tag> giftTagList;
     private List<GiftCertificate> giftCertificateList;
     private List<GiftCertificateDto> testGiftCertificateDtoList;
-    private Page page;
 
     @BeforeEach
     public void setUp() {
-        page = Page.def();
 
         testTag = new Tag();
         testTag.setId(TEST_TAG_ID);
@@ -120,28 +119,28 @@ class GiftCertificateServiceImplTest {
         queryParameter.setName(TEST_NEW_NAME);
         queryParameter.setTagName(tagNamesList);
 
-        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDao, tagDao, orderDao);
+        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateRepository, tagRepository, orderRepository);
     }
 
     @Test
     public void deleteCertificate() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.of(giftCertificate));
 
         giftCertificateService.deleteCertificate(TEST_ID);
 
-        verify(giftCertificateDao, times(1)).deleteGiftCertificate(TEST_ID);
+        verify(giftCertificateRepository, times(1)).deleteById(TEST_ID);
     }
 
     @Test
     public void deleteCertificateShouldException() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.deleteCertificate(TEST_ID));
     }
 
     @Test
     public void getGiftCertificateByID() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.of(giftCertificate));
         GiftCertificateDto receivedCertificateDto = giftCertificateService.getGiftCertificateByID(TEST_ID);
 
 
@@ -151,7 +150,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void getGiftCertificateByIDShouldException() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(GiftCertificateByParameterNotFoundException.class, () -> giftCertificateService.getGiftCertificateByID(TEST_ID));
     }
@@ -159,9 +158,9 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void updateCertificate() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(giftCertificate));
-        given(giftCertificateDao.updateGiftCertificate(any(), anyInt())).willReturn(giftCertificate);
-        given(tagDao.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.of(giftCertificate));
+        given(giftCertificateRepository.save(any())).willReturn(giftCertificate);
+        given(tagRepository.findByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
 
         GiftCertificateDto receivedDto = giftCertificateService.updateCertificate(dtoWithoutID, TEST_ID);
         assertEquals(testGiftCertificateDto, receivedDto);
@@ -169,17 +168,16 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void updateCertificateShouldException() {
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.empty());
+        given(giftCertificateRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(GiftCertificateByParameterNotFoundException.class,
-                () -> giftCertificateService.updateCertificate(any(), TEST_ID));
+                () -> giftCertificateService.updateCertificate(dtoWithoutID, TEST_ID));
     }
 
     @Test
     public void createGiftCertificate() {
-        given(giftCertificateDao.createGiftCertificate(any())).willReturn(giftCertificate);
-        given(giftCertificateDao.getGiftCertificateByID(anyInt())).willReturn(Optional.of(giftCertificate));
-        given(tagDao.getTagByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
+        given(giftCertificateRepository.save(any())).willReturn(giftCertificate);
+        given(tagRepository.findByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
 
         GiftCertificateDto receivedDto = giftCertificateService.createGiftCertificate(dtoWithoutID);
 
@@ -198,29 +196,40 @@ class GiftCertificateServiceImplTest {
 
     @Test
     public void getCertificates() {
-        given(giftCertificateDao.getGiftCertificates(any())).willReturn(giftCertificateList);
+        org.springframework.data.domain.Page<GiftCertificate> pageable = mock(org.springframework.data.domain.Page.class);
+        when(pageable.toList()).thenReturn(giftCertificateList);
 
-        List<GiftCertificateDto> receivedDtoList = giftCertificateService.getCertificates(page);
+        given(giftCertificateRepository.findAll(any(Pageable.class))).willReturn(pageable);
+
+        List<GiftCertificateDto> receivedDtoList = giftCertificateService.getCertificates(Pageable.unpaged());
 
         assertIterableEquals(testGiftCertificateDtoList, receivedDtoList);
     }
 
     @Test
     public void getCertificatesWithEmptyQueryParameter() {
-        giftCertificateService.getCertificates(emptyQueryParameter);
+        org.springframework.data.domain.Page<GiftCertificate> pageable = mock(org.springframework.data.domain.Page.class);
+        when(pageable.toList()).thenReturn(giftCertificateList);
 
-        verify(giftCertificateDao).getGiftCertificates(any());
+        given(giftCertificateRepository.findAll(any(Pageable.class)))
+                .willReturn(pageable);
+
+        giftCertificateService.getCertificates(emptyQueryParameter, Pageable.unpaged());
+
+        verify(giftCertificateRepository).findAll(any(Pageable.class));
     }
 
     @Test
     public void getCertificatesByQueryParameter() {
-        final int CORRECT_SIZE = 3;
+        org.springframework.data.domain.Page<GiftCertificate> pageable = mock(org.springframework.data.domain.Page.class);
+        when(pageable.toList()).thenReturn(giftCertificateList);
 
-        given(giftCertificateDao.getGiftCertificates(queryParameter)).willReturn(giftCertificateList);
+        given(giftCertificateRepository.findAll(Mockito.any(Specification.class), any(Pageable.class)))
+                .willReturn(pageable);
 
-        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService.getCertificates(queryParameter);
+        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService.getCertificates(queryParameter,
+                Pageable.unpaged());
 
-        verify(giftCertificateDao).getGiftCertificates(queryParameter);
         assertEquals(CORRECT_SIZE, giftCertificateDtoList.size());
     }
 }

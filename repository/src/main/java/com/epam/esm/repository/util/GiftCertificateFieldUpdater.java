@@ -1,4 +1,4 @@
-package com.epam.esm.repository.dao.util;
+package com.epam.esm.repository.util;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
@@ -13,7 +13,7 @@ public class GiftCertificateFieldUpdater {
      * Set field values to giftToUpdate from non-null dataFrom fields
      *
      * @param giftToUpdate {@link GiftCertificate} object that is needed to be updated
-     * @param dataFrom {@link GiftCertificate} that contains data to update
+     * @param dataFrom     {@link GiftCertificate} that contains data to update
      */
     public void updateFields(GiftCertificate giftToUpdate, GiftCertificate dataFrom) {
 
@@ -41,7 +41,7 @@ public class GiftCertificateFieldUpdater {
         if (tagList != null) {
             giftToUpdate.setTagList(tagList);
         }
-        
+
     }
 
 }

@@ -1,12 +1,11 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDao;
-import com.epam.esm.repository.dao.OrderDao;
-import com.epam.esm.repository.dao.UserDao;
+import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.OrderRepository;
+import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Order;
 import com.epam.esm.repository.model.entity.User;
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
@@ -15,9 +14,9 @@ import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
 import com.epam.esm.service.util.mapper.EntityDtoOrderMapper;
-import com.epam.esm.service.util.validator.GiftCertificateValidator;
 import com.epam.esm.service.util.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +26,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of {@link OrderService}. Interface provides methods to interact with OrderDao.
- * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
+ * Implementation of {@link OrderService}. Interface provides methods to interact with OrderRepository.
+ * Methods should transforms received information into Repository-accepted data and invoke corresponding methods.
  */
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -89,41 +88,41 @@ public class OrderServiceImpl implements OrderService {
     private static final String ERROR_CODE_ORDER_VALIDATION_FAILED = "0401";
 
     /**
-     * An object of {@link OrderDao}
+     * An object of {@link OrderRepository}
      */
-    private final OrderDao orderDao;
+    private final OrderRepository orderRepository;
     /**
-     * An object of {@link UserDao}
+     * An object of {@link UserRepository}
      */
-    private final UserDao userDao;
+    private final UserRepository userRepository;
     /**
-     * An object of {@link GiftCertificateDao}
+     * An object of {@link GiftCertificateRepository}
      */
-    private final GiftCertificateDao giftCertificateDao;
+    private final GiftCertificateRepository giftCertificateRepository;
 
     /**
-     * Public constructor that receives orderDao
+     * Public constructor that receives orderRepository
      *
-     * @param orderDao           is {@link OrderDao} interface providing Dao methods.
-     * @param userDao            is {@link UserDao} interface providing Dao methods.
-     * @param giftCertificateDao is {@link GiftCertificateDao} interface providing Dao methods.
+     * @param orderRepository           is {@link OrderRepository} interface providing Repository methods.
+     * @param userRepository            is {@link UserRepository} interface providing Repository methods.
+     * @param giftCertificateRepository is {@link GiftCertificateRepository} interface providing Repository methods.
      */
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, GiftCertificateDao giftCertificateDao) {
-        this.orderDao = orderDao;
-        this.userDao = userDao;
-        this.giftCertificateDao = giftCertificateDao;
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, GiftCertificateRepository giftCertificateRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.giftCertificateRepository = giftCertificateRepository;
     }
 
     @Override
     public List<OrderDto> getOrdersByUserID(int userID) {
-        List<Order> orderList = orderDao.getOrdersByUserID(userID);
+        List<Order> orderList = orderRepository.findByUser_Id(userID);
 
         return EntityDtoOrderMapper.toDto(orderList);
     }
 
     /**
-     * Invokes Dao method to get Order with provided id.
+     * Invokes Repository method to get Order with provided id.
      *
      * @param id is id of order to be returned.
      * @return {@link OrderDto} object with order data.
@@ -131,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderDto getOrder(int id) {
-        Optional<Order> optionalOrder = orderDao.getOrder(id);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
 
         Order order = optionalOrder.orElseThrow(() -> new OrderNotFoundException(
                 String.format(NO_ORDER_WITH_ID_FOUND, id),
@@ -157,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Integer userID = createOrderParameter.getUser();
-        Optional<User> userOptional = userDao.getUser(createOrderParameter.getUser());
+        Optional<User> userOptional = userRepository.findById(createOrderParameter.getUser());
 
         User user = userOptional.orElseThrow(() -> new UserNotFoundException(
                 String.format(NO_USER_WITH_ID_FOUND, userID),
@@ -169,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
         int orderPrice = 0;
 
         for (Integer giftID : createOrderParameter.getGifts()) {
-            Optional<GiftCertificate> giftOptional = giftCertificateDao.getGiftCertificateByID(giftID);
+            Optional<GiftCertificate> giftOptional = giftCertificateRepository.findById(giftID);
 
             GiftCertificate giftCertificate = giftOptional.orElseThrow(() -> new GiftCertificateByParameterNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, giftID),
@@ -189,19 +188,19 @@ public class OrderServiceImpl implements OrderService {
         order.setPrice(orderPrice);
         order.setDate(currentLocalDateTime);
 
-        Order resultOrder = orderDao.createOrder(order);
+        Order resultOrder = orderRepository.save(order);
         return EntityDtoOrderMapper.toDto(resultOrder);
     }
 
     /**
-     * Invokes Dao method to get List of all Orders from database.
+     * Invokes Repository method to get List of all Orders from database.
      *
-     * @param page is {@link Page} object with page number and page size
+     * @param pageable is {@link Pageable} object with page number and page size
      * @return List of {@link OrderDto} objects with order data.
      */
     @Override
-    public List<OrderDto> getOrders(Page page) {
-        List<Order> orderList = orderDao.getOrders(page.getPage(), page.getSize());
+    public List<OrderDto> getOrders(Pageable pageable) {
+        List<Order> orderList = orderRepository.findAll(pageable).toList();
 
         return EntityDtoOrderMapper.toDto(orderList);
     }

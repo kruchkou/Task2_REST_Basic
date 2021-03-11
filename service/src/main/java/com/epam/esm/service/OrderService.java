@@ -1,14 +1,14 @@
 package com.epam.esm.service;
 
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.OrderDto;
 import com.epam.esm.service.model.util.CreateOrderParameter;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * Interface provides methods to interact with OrderDao.
- * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with OrderRepository.
+ * Methods should transforms received information into Repository-accepted data and invoke corresponding methods.
  */
 public interface OrderService {
 
@@ -37,11 +37,11 @@ public interface OrderService {
     OrderDto createOrder(CreateOrderParameter createOrderParameter);
 
     /**
-     * Invokes Dao method to get List of all Orders from database.
+     * Invokes Repository method to get List of all Orders from database.
      *
-     * @param page is {@link Page} object with page number and page size
+     * @param pageable is {@link Pageable} object with page number and page size
      * @return List of {@link OrderDto} objects with order data.
      */
-    List<OrderDto> getOrders(Page page);
+    List<OrderDto> getOrders(Pageable pageable);
 
 }

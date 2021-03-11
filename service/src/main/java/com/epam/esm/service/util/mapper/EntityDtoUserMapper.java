@@ -55,7 +55,7 @@ public final class EntityDtoUserMapper {
     }
 
     private static List<UserOrderDto> toUserOrder(List<Order> orders) {
-        if(orders != null) {
+        if (orders != null) {
             return orders.stream().map(EntityDtoUserMapper::toUserOrder).collect(Collectors.toList());
         }
         return new ArrayList<>();

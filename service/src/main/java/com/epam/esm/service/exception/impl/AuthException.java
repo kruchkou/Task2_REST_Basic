@@ -1,6 +1,5 @@
 package com.epam.esm.service.exception.impl;
 
-import com.epam.esm.service.exception.ByParameterNotFoundException;
 import com.epam.esm.service.exception.ServiceException;
 
 public class AuthException extends ServiceException {

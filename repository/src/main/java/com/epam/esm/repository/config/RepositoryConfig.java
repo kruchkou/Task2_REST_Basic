@@ -19,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "com.epam.esm.repository")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.epam.esm.repository.dao")
+@EnableJpaRepositories(basePackages = "com.epam.esm.repository")
 public class RepositoryConfig {
 
     @Bean
@@ -58,7 +58,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 

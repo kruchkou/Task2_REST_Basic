@@ -1,26 +1,26 @@
 package com.epam.esm.service;
 
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.model.dto.GiftCertificateDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * Interface provides methods to interact with GiftCertificateDao.
- * Methods should transforms received information into Dao-accepted data and invoke corresponding methods.
+ * Interface provides methods to interact with GiftCertificateRepository.
+ * Methods should transforms received information into Repository-accepted data and invoke corresponding methods.
  */
 public interface GiftCertificateService {
 
     /**
-     * Invokes Dao method to delete GiftCertificate with provided id.
+     * Invokes Repository method to delete GiftCertificate with provided id.
      *
      * @param id is id of GiftCertificate to be deleted.
      */
     void deleteCertificate(int id);
 
     /**
-     * Invokes Dao method to get GiftCertificate with provided id.
+     * Invokes Repository method to get GiftCertificate with provided id.
      *
      * @param id is id of GiftCertificate to be returned.
      * @return {@link GiftCertificateDto} object with GiftCertificate data.
@@ -28,7 +28,7 @@ public interface GiftCertificateService {
     GiftCertificateDto getGiftCertificateByID(int id);
 
     /**
-     * Invokes Dao method to create GiftCertificate with provided data.
+     * Invokes Repository method to create GiftCertificate with provided data.
      *
      * @param giftCertificateDto is {@link GiftCertificateDto} object with GiftCertificate data.
      * @return {@link GiftCertificateDto} object with created data.
@@ -36,7 +36,7 @@ public interface GiftCertificateService {
     GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto);
 
     /**
-     * Invokes Dao method to update GiftCertificate with provided data.
+     * Invokes Repository method to update GiftCertificate with provided data.
      *
      * @param giftCertificateDto is {@link GiftCertificateDto} object with GiftCertificate data.
      * @return {@link GiftCertificateDto} object with updated data.
@@ -44,23 +44,24 @@ public interface GiftCertificateService {
     GiftCertificateDto updateCertificate(GiftCertificateDto giftCertificateDto, int id);
 
     /**
-     * Invokes Dao method to get List of all GiftCertificates from database.
+     * Invokes Repository method to get List of all GiftCertificates from database.
      *
-     * @param page is {@link Page} object with page number and page size
+     * @param pageable is {@link Pageable} object with page number and page size
      * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
-    List<GiftCertificateDto> getCertificates(Page page);
+    List<GiftCertificateDto> getCertificates(Pageable pageable);
 
     /**
-     * Invokes Dao method to get List of all GiftCertificates that matches parameters
+     * Invokes Repository method to get List of all GiftCertificates that matches parameters
      *
      * @param giftCertificateQueryParameter is {@link GetGiftCertificateQueryParameter} object with requested parameters
      * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.
      */
-    List<GiftCertificateDto> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter);
+    List<GiftCertificateDto> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter,
+                                             Pageable pageable);
 
     /**
-     * Invokes Dao method to get List of all GiftCertificates that linked with Order by it's id
+     * Invokes Repository method to get List of all GiftCertificates that linked with Order by it's id
      *
      * @param id is id of Order.
      * @return List of {@link GiftCertificateDto} objects with GiftCertificate data.

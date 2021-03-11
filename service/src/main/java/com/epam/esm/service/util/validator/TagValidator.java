@@ -17,7 +17,7 @@ public final class TagValidator {
      * @return true if data is OK, false if data failed validation
      */
     public static boolean validateForCreate(TagDto tagDto) {
-        return validateName(tagDto.getName());
+        return validateName(tagDto.getName()) && validateId(tagDto.getId());
     }
 
     /**
@@ -30,6 +30,16 @@ public final class TagValidator {
         final int MAX_NAME_LENGTH = 45;
 
         return name != null && name.length() < MAX_NAME_LENGTH;
+    }
+
+    /**
+     * Validates id
+     *
+     * @param id parameter of Tag
+     * @return true if data is OK, false if data failed validation
+     */
+    public static boolean validateId(Integer id) {
+        return id == null;
     }
 
 }
