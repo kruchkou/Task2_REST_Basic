@@ -50,10 +50,7 @@ public class ServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .antMatcher("/**")
-                //.anonymous()
-                //.and()
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.GET,"/gift-certificates**").permitAll()
                 .antMatchers("/oauth**").permitAll()
                 .and()
                 .httpBasic();
