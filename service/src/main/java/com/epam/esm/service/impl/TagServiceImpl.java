@@ -246,7 +246,6 @@ public class TagServiceImpl implements TagService {
         Pageable firstResult = PageRequest.of(0, 1);
         User user = userRepository.findFirstByQuery(firstResult).toList().get(0);
 
-        //Tag tag = tagRepository.findOne(TagSpecification.getMostWidelyUsedTagFromUser(user.getId())).get();
         Tag tag = tagRepository.getMostWidelyUsedTag(user.getId());
 
         return EntityDtoTagMapper.toDto(tag);
