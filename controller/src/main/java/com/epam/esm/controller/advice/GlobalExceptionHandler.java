@@ -134,7 +134,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    //@ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, Locale locale) {
 
         String errorMessage = messageSource.getMessage(RUNTIME_EXCEPTION_MESSAGE_LOCALE, new Object[]{}, locale);
@@ -146,8 +146,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JsonMappingException.class)
     public ResponseEntity<ExceptionResponse> handleJsonMappingException(JsonMappingException e, Locale locale) {
 
-        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
-        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -157,8 +156,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e,
                                                                                    Locale locale) {
 
-        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
-        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -172,8 +170,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<Object> handleNumberFormatException(NumberFormatException e, Locale locale) {
-        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
-        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -182,8 +179,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<Object> handleBindException(BindException e, Locale locale) {
 
-        //String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
-        String errorMessage = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
+        String errorMessage = messageSource.getMessage(DATA_VALIDATION_EXCEPTION_LOCALE, new Object[]{}, locale);
         ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
