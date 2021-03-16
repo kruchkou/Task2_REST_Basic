@@ -25,6 +25,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>, JpaSpeci
      * @param id is Order ID value.
      * @return List of all {@link Order} entities from database.
      */
-    List<Order> findByUser_Id(int id);
+    List<Order> findByUserId(int id);
 
 }
