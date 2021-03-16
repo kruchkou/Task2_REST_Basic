@@ -40,7 +40,7 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ANONYMOUS')")
+    @PreAuthorize("isAnonymous()")
     public EntityModel<GiftCertificateDto> getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateModelAssembler.toModel(giftCertificateService.getGiftCertificateByID(id));
     }
