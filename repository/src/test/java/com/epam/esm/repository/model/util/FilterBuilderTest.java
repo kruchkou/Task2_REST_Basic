@@ -1,6 +1,6 @@
 package com.epam.esm.repository.model.util;
 
-import com.epam.esm.repository.dao.util.FilterFactory;
+import com.epam.esm.repository.util.FilterFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,15 +24,15 @@ class FilterBuilderTest {
         Filter goodRandomHeightFilter = FilterFactory.createFilter(GOOD_RANDOM_HEIGHT_PARAMETER_INPUT);
         Filter onlyValueFilter = FilterFactory.createFilter(ONLY_VALUE_PARAMETER_INPUT);
 
-        assertEquals(FilterType.LTE,goodLowerFilter.getType());
-        assertEquals(FilterType.LT,goodHighFilter.getType());
-        assertEquals(FilterType.GTE,goodRandomHeightFilter.getType());
-        assertEquals(FilterType.EQUALS,onlyValueFilter.getType());
+        assertEquals(FilterType.LTE, goodLowerFilter.getType());
+        assertEquals(FilterType.LT, goodHighFilter.getType());
+        assertEquals(FilterType.GTE, goodRandomHeightFilter.getType());
+        assertEquals(FilterType.EQUALS, onlyValueFilter.getType());
 
-        assertEquals(10,goodLowerFilter.getValue());
-        assertEquals(10,goodHighFilter.getValue());
-        assertEquals(10,goodRandomHeightFilter.getValue());
-        assertEquals(10,onlyValueFilter.getValue());
+        assertEquals(10, goodLowerFilter.getValue());
+        assertEquals(10, goodHighFilter.getValue());
+        assertEquals(10, goodRandomHeightFilter.getValue());
+        assertEquals(10, onlyValueFilter.getValue());
     }
 
     @Test

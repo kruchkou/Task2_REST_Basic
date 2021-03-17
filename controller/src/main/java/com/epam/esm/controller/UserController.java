@@ -1,15 +1,15 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.controller.util.assembler.UserModelAssembler;
-import com.epam.esm.repository.model.util.Page;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.impl.UserServiceImpl;
 import com.epam.esm.service.model.dto.UserDto;
+import com.epam.esm.service.model.util.SignUpUserData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,21 +18,31 @@ import java.util.List;
 @RequestMapping("v1/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final UserModelAssembler userModelAssembler;
+    //private final JwtProvider jwtProvider;
 
     @Autowired
-    public UserController(UserService userService, UserModelAssembler userModelAssembler) {
+    public UserController(UserServiceImpl userService, UserModelAssembler userModelAssembler
+    ) {
         this.userService = userService;
         this.userModelAssembler = userModelAssembler;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public EntityModel<UserDto> signUp(@Valid SignUpUserData signUpUserData) {
+        return userModelAssembler.toModel(userService.signUp(signUpUserData));
+    }
+
     @GetMapping
-    public List<EntityModel<UserDto>> getUsers(@Valid Page page) {
-        return userModelAssembler.toModel(userService.getUsers(page));
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public List<EntityModel<UserDto>> getUsers(Pageable pageable) {
+        return userModelAssembler.toModel(userService.getUsers(pageable));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public EntityModel<UserDto> getUserByID(@PathVariable int id) {
         return userModelAssembler.toModel(userService.getUser(id));
     }

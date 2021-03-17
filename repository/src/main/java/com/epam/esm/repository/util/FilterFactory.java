@@ -1,4 +1,4 @@
-package com.epam.esm.repository.dao.util;
+package com.epam.esm.repository.util;
 
 import com.epam.esm.repository.model.util.Filter;
 import com.epam.esm.repository.model.util.FilterType;
@@ -33,11 +33,12 @@ public final class FilterFactory {
 
             filter.setType(FilterType.valueOf(filterTypeName));
 
-            String stringFilterValue = matcher.group(FILTER_VALUE_GROUP_INDEX).toUpperCase();;
+            String stringFilterValue = matcher.group(FILTER_VALUE_GROUP_INDEX).toUpperCase();
+            ;
             filter.setValue(Integer.parseInt(stringFilterValue));
         }
 
         return filter;
     }
-    
+
 }

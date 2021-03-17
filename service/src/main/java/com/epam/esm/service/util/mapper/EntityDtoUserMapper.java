@@ -29,6 +29,7 @@ public final class EntityDtoUserMapper {
 
         user.setId(userDto.getId());
         user.setName(userDto.getName());
+        user.setLogin(userDto.getLogin());
 
         return user;
     }
@@ -48,12 +49,13 @@ public final class EntityDtoUserMapper {
 
         userDto.setId(user.getId());
         userDto.setName(user.getName());
+        userDto.setLogin(user.getLogin());
 
         return userDto;
     }
 
     private static List<UserOrderDto> toUserOrder(List<Order> orders) {
-        if(orders != null) {
+        if (orders != null) {
             return orders.stream().map(EntityDtoUserMapper::toUserOrder).collect(Collectors.toList());
         }
         return new ArrayList<>();

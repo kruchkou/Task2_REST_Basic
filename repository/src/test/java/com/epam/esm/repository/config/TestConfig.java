@@ -1,4 +1,4 @@
-package com.epam.esm.repository.dao.config;
+package com.epam.esm.repository.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

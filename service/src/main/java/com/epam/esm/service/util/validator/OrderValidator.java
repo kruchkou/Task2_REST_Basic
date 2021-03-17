@@ -26,7 +26,7 @@ public class OrderValidator {
 
         List<Integer> listWithoutDuplicates = giftList.stream().distinct().collect(Collectors.toList());
 
-        if(!giftList.equals(listWithoutDuplicates)) {
+        if (!giftList.equals(listWithoutDuplicates)) {
             giftsValidated = false;
         }
 

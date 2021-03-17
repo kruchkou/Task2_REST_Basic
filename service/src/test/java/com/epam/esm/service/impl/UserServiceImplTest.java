@@ -1,8 +1,8 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.UserDao;
+import com.epam.esm.repository.RoleRepository;
+import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.model.entity.User;
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.UserNotFoundException;
 import com.epam.esm.service.model.dto.UserDto;
 import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
@@ -12,13 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +32,15 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Mock
-    private UserDao userDao;
+    private UserRepository userRepository;
+
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     private User user;
-
     private List<User> userList;
 
     @BeforeEach
@@ -50,12 +56,12 @@ class UserServiceImplTest {
         user.setId(TEST_ID);
         user.setName(TEST_NAME);
 
-        userService = new UserServiceImpl(userDao);
+        userService = new UserServiceImpl(userRepository, roleRepository, passwordEncoder);
     }
 
     @Test
     public void getUserByID() {
-        given(userDao.getUser(TEST_ID)).willReturn(Optional.of(user));
+        given(userRepository.findById(TEST_ID)).willReturn(Optional.of(user));
         UserDto receivedUserDto = userService.getUser(TEST_ID);
 
         UserDto testedDto = EntityDtoUserMapper.toDto(user);
@@ -65,16 +71,16 @@ class UserServiceImplTest {
 
     @Test
     public void getUserByIDShouldException() {
-        given(userDao.getUser(TEST_ID)).willReturn(Optional.empty());
+        given(userRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.getUser(TEST_ID));
     }
 
     @Test
     public void getUsers() {
-        given(userDao.getUsers(anyInt(),anyInt())).willReturn(userList);
+        given(userRepository.findAll()).willReturn(userList);
 
-        List<UserDto> receivedDtoList = userService.getUsers(Page.def());
+        List<UserDto> receivedDtoList = userService.getUsers(Pageable.unpaged());
         List<UserDto> testDtoList = EntityDtoUserMapper.toDto(userList);
 
         assertIterableEquals(testDtoList, receivedDtoList);

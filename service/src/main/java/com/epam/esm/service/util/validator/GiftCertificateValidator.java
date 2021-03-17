@@ -124,7 +124,7 @@ public final class GiftCertificateValidator {
 
         List<String> listWithoutDuplicates = tagNamesList.stream().distinct().collect(Collectors.toList());
 
-        if(!tagNamesList.equals(listWithoutDuplicates)) {
+        if (!tagNamesList.equals(listWithoutDuplicates)) {
             tagsValidated = false;
         }
 

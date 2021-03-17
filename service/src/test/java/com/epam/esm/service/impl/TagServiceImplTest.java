@@ -1,11 +1,10 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.repository.dao.GiftCertificateDao;
-import com.epam.esm.repository.dao.TagDao;
-import com.epam.esm.repository.dao.UserDao;
+import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.entity.Tag;
-import com.epam.esm.repository.model.util.Page;
 import com.epam.esm.service.exception.impl.DataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateByParameterNotFoundException;
 import com.epam.esm.service.exception.impl.TagAlreadyExistsException;
@@ -18,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TagServiceImplTest {
@@ -40,22 +40,22 @@ class TagServiceImplTest {
     private TagServiceImpl tagService;
 
     @Mock
-    private TagDao tagDao;
+    private TagRepository tagRepository;
     @Mock
-    private GiftCertificateDao giftCertificateDao;
+    private GiftCertificateRepository giftCertificateRepository;
     @Mock
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     private Tag tag;
     private TagDto testTagDto;
+    private TagDto testForCreationTagDto;
     private TagDto emptyTagDto;
-    private Page page;
 
     private List<Tag> tagList;
     private List<TagDto> testDtoList;
+
     @BeforeEach
     public void setUp() {
-        page = Page.def();
 
         tag = new Tag();
         tag.setId(TEST_ID);
@@ -72,29 +72,32 @@ class TagServiceImplTest {
         testTagDto.setName(TEST_NAME);
         testTagDto.setId(TEST_ID);
 
+        testForCreationTagDto = new TagDto();
+        testForCreationTagDto.setName(TEST_NAME);
 
-        tagService = new TagServiceImpl(tagDao, giftCertificateDao, userDao);
+
+        tagService = new TagServiceImpl(tagRepository, giftCertificateRepository, userRepository);
     }
 
     @Test
     public void deleteTag() {
-        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
+        given(tagRepository.findById(TEST_ID)).willReturn(Optional.of(tag));
 
         tagService.deleteTag(TEST_ID);
 
-        verify(tagDao, times(1)).deleteTag(TEST_ID);
+        verify(tagRepository, times(1)).deleteById(TEST_ID);
     }
 
     @Test
     public void deleteTagShouldException() {
-        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.empty());
+        given(tagRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.deleteTag(TEST_ID));
     }
 
     @Test
     public void getTagByID() {
-        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.of(tag));
+        given(tagRepository.findById(TEST_ID)).willReturn(Optional.of(tag));
         TagDto receivedTagDto = tagService.getTagByID(TEST_ID);
 
         assertEquals(testTagDto, receivedTagDto);
@@ -103,16 +106,16 @@ class TagServiceImplTest {
 
     @Test
     public void getTagByIDShouldException() {
-        given(tagDao.getTagByID(TEST_ID)).willReturn(Optional.empty());
+        given(tagRepository.findById(TEST_ID)).willReturn(Optional.empty());
 
         assertThrows(TagNotFoundException.class, () -> tagService.getTagByID(TEST_ID));
     }
 
     @Test
     public void createTag() {
-        given(tagDao.createTag(any())).willReturn(tag);
+        given(tagRepository.save(any())).willReturn(tag);
 
-        TagDto receivedDto = tagService.createTag(testTagDto);
+        TagDto receivedDto = tagService.createTag(testForCreationTagDto);
 
         assertEquals(TEST_NAME, receivedDto.getName());
     }
@@ -125,17 +128,20 @@ class TagServiceImplTest {
 
     @Test
     public void createTagShouldAlreadyExistsException() {
-        given(tagDao.getTagByName(TEST_NAME)).willReturn(Optional.of(tag));
+        given(tagRepository.findByName(any())).willReturn(Optional.of(tag));
 
         assertThrows(TagAlreadyExistsException.class,
-                () -> tagService.createTag(testTagDto));
+                () -> tagService.createTag(testForCreationTagDto));
     }
 
     @Test
     public void getTags() {
-        given(tagDao.getTags(anyInt(),anyInt())).willReturn(tagList);
+        org.springframework.data.domain.Page<Tag> pageable = mock(org.springframework.data.domain.Page.class);
+        when(pageable.toList()).thenReturn(tagList);
 
-        List<TagDto> receivedDtoList = tagService.getTags(page);
+        given(tagRepository.findAll(any(Pageable.class))).willReturn(pageable);
+
+        List<TagDto> receivedDtoList = tagService.getTags(Pageable.unpaged());
 
         assertIterableEquals(testDtoList, receivedDtoList);
     }
@@ -143,19 +149,19 @@ class TagServiceImplTest {
 
     @Test
     public void getTagByName() {
-        given(tagDao.getTagByName(any())).willReturn(Optional.of(tag));
+        given(tagRepository.findByName(any())).willReturn(Optional.of(tag));
 
         TagDto receivedTagDto = tagService.getTagByName(TEST_NAME);
-        assertEquals(testTagDto,receivedTagDto);
+        assertEquals(testTagDto, receivedTagDto);
     }
 
     @Test
     public void getTagsByGiftCertificateID() {
-        given(tagDao.getTagListByGiftCertificateID(TEST_ID)).willReturn(tagList);
-        given(giftCertificateDao.getGiftCertificateByID(TEST_ID)).willReturn(Optional.of(new GiftCertificate()));
+        given(tagRepository.findAll(any(Specification.class))).willReturn(tagList);
+        given(giftCertificateRepository.findById(anyInt())).willReturn(Optional.of(new GiftCertificate()));
 
         List<TagDto> receivedTagList = tagService.getTagListByGiftCertificateID(TEST_ID);
-        assertEquals(testDtoList,receivedTagList);
+        assertEquals(testDtoList, receivedTagList);
     }
 
     @Test

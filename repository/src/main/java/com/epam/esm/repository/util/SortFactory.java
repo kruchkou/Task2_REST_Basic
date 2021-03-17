@@ -1,4 +1,4 @@
-package com.epam.esm.repository.dao.util;
+package com.epam.esm.repository.util;
 
 import com.epam.esm.repository.model.util.Sort;
 import com.epam.esm.repository.model.util.SortBy;
