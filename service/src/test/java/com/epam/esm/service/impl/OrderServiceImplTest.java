@@ -166,7 +166,7 @@ class OrderServiceImplTest {
 
     @Test
     public void getOrdersByUserID() {
-        given(orderRepository.findByUser_Id(TEST_USER_ID)).willReturn(orderList);
+        given(orderRepository.findByUserId(TEST_USER_ID)).willReturn(orderList);
 
         List<OrderDto> receivedDtoList = orderService.getOrdersByUserID(TEST_USER_ID);
         assertIterableEquals(orderDtoList, receivedDtoList);
