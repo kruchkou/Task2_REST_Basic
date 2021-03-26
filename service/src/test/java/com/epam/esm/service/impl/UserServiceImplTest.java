@@ -9,6 +9,7 @@ import com.epam.esm.service.util.mapper.EntityDtoUserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,6 +22,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -78,7 +81,10 @@ class UserServiceImplTest {
 
     @Test
     public void getUsers() {
-        given(userRepository.findAll()).willReturn(userList);
+        org.springframework.data.domain.Page<User> pageable = mock(org.springframework.data.domain.Page.class);
+        when(pageable.toList()).thenReturn(userList);
+
+        given(userRepository.findAll(ArgumentMatchers.any(Pageable.class))).willReturn(pageable);
 
         List<UserDto> receivedDtoList = userService.getUsers(Pageable.unpaged());
         List<UserDto> testDtoList = EntityDtoUserMapper.toDto(userList);

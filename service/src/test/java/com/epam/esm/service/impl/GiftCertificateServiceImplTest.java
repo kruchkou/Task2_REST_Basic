@@ -163,6 +163,7 @@ class GiftCertificateServiceImplTest {
         given(tagRepository.findByName(TEST_TAG_NAME)).willReturn(Optional.of(testTag));
 
         GiftCertificateDto receivedDto = giftCertificateService.updateCertificate(dtoWithoutID, TEST_ID);
+        testGiftCertificateDto.setLastUpdateDate(receivedDto.getLastUpdateDate());
         assertEquals(testGiftCertificateDto, receivedDto);
     }
 
