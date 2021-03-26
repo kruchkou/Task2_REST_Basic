@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrdersByUserID(int userID) {
-        List<Order> orderList = orderRepository.findByUser_Id(userID);
+        List<Order> orderList = orderRepository.findByUserId(userID);
 
         return EntityDtoOrderMapper.toDto(orderList);
     }

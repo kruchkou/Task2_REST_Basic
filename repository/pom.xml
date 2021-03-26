@@ -7,7 +7,7 @@
     <artifactId>repository</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>models</name>
+    <name>models</name>                                     
 
     <parent>
         <groupId>com.epam.esm</groupId>
